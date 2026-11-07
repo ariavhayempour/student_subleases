@@ -55,7 +55,8 @@
   `room_features` and `amenities` are de-duplicated.
 - **Form model:** the details step reveals groups in order, each once the previous is answered
   (`lib/listing-reveal.ts`; edit mode shows all): property type (`apartment` or `house`, fixed after
-  creation) → bedrooms, bathrooms, roommates (0 reads "No roommates") → gender preference (always
+  creation; the new-listing picker also shows a disabled "Parking spot (coming soon)" option, not
+  in `LISTING_TYPES`) → bedrooms, bathrooms, roommates (0 reads "No roommates") → gender preference (always
   asked) → room type (`single` or `shared`) → room features, furnished, and a private-bathroom
   answer when roommates > 0 → amenities. `amenities` must come from the list for the property type
   (`HOUSE_AMENITIES` or `APARTMENT_AMENITIES` in `lib/listing-options.ts`); on a house edit,

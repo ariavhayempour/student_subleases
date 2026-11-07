@@ -105,6 +105,9 @@ export function GuidedDetails({ form, lockType, showAll }: GuidedDetailsProps) {
                 {LISTING_TYPE_LABELS[value]}
               </option>
             ))}
+            <option value="parking" disabled>
+              Parking spot (coming soon)
+            </option>
           </select>
         )}
         <FieldError id="type-error" message={errors.type?.message} />
