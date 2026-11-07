@@ -6,9 +6,10 @@ type SchoolBandProps = {
   // Accessible page heading; the band shows the school name large beside it.
   heading: string;
   aside?: ReactNode;
+  back?: ReactNode;
 };
 
-export function SchoolBand({ school, heading, aside }: SchoolBandProps) {
+export function SchoolBand({ school, heading, aside, back }: SchoolBandProps) {
   const sub = [`Subleases from students near ${school.campusName}`, school.city]
     .filter(Boolean)
     .join(' · ');
@@ -16,6 +17,7 @@ export function SchoolBand({ school, heading, aside }: SchoolBandProps) {
     <section className="on-school bg-school text-on-school">
       <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-x-6 gap-y-3 px-4 pt-3 pb-4 sm:px-6 lg:px-8">
         <div className="min-w-0">
+          {back}
           <h1>
             <span className="sr-only">{heading}</span>
             <span

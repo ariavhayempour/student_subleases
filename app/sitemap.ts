@@ -5,7 +5,7 @@ import { listActiveSchools } from '@/server/services/schools';
 // Rendered per request so the build never needs the database.
 export const dynamic = 'force-dynamic';
 
-const STATIC_PATHS = ['/about', '/terms', '/privacy', '/contact'] as const;
+const STATIC_PATHS = ['/schools', '/about', '/terms', '/privacy', '/contact'] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const origin = siteUrl();

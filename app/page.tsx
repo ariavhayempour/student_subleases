@@ -111,12 +111,6 @@ export default async function HomePage() {
                 Create your free account
                 <ArrowRight aria-hidden className={ctaArrow} />
               </Link>
-              <a
-                href="#schools"
-                className="font-semibold text-white underline underline-offset-4 hover:no-underline"
-              >
-                or look around first
-              </a>
             </div>
           </div>
         </div>
@@ -156,13 +150,13 @@ export default async function HomePage() {
                 Filter by rent, dates, bedrooms, and distance to campus, see every place on a map,
                 and message the host without leaving the site.
               </p>
-              <a
-                href="#schools"
+              <Link
+                href="/schools"
                 className="group mt-5 inline-flex items-center gap-1.5 font-semibold text-school-link no-underline transition-colors duration-500"
               >
                 Browse a school
                 <ArrowRight aria-hidden className={ctaArrow} />
-              </a>
+              </Link>
             </div>
           </div>
         </section>

@@ -13,6 +13,7 @@ export const RESERVED_TOP_LEVEL_SLUGS: readonly string[] = [
   'terms',
   'privacy',
   'contact',
+  'schools',
 ];
 
 export function isReservedSlug(slug: string): boolean {

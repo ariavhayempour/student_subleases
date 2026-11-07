@@ -1,4 +1,4 @@
-import { House, SearchX } from 'lucide-react';
+import { ChevronLeft, House, SearchX } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -84,6 +84,18 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
       <SchoolBand
         school={brand}
         heading={`Subleases near ${school.name}`}
+        back={
+          // Students are locked to one school; visitors can pick another.
+          actor.kind !== 'user' && (
+            <Link
+              href="/schools"
+              className="mb-1 inline-flex items-center gap-1 text-sm font-semibold text-on-school no-underline hover:underline"
+            >
+              <ChevronLeft aria-hidden="true" className="size-4" />
+              All schools
+            </Link>
+          )
+        }
         aside={
           <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
             {switchable && <SchoolSwitcher current={school.slug} schools={switchable} />}

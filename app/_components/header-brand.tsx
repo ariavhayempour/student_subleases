@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useThemeSchool } from '@/app/_components/school-theme';
@@ -7,11 +8,14 @@ import { APP_NAME } from '@/lib/app-config';
 
 export function HeaderBrand() {
   const school = useThemeSchool();
+  // Signed-out visitors always get a way back to the landing page.
+  const { isSignedIn } = useAuth();
+  const toSchool = school && isSignedIn !== false;
   return (
     <Link
-      href={school ? `/${school.slug}` : '/'}
+      href={toSchool ? `/${school.slug}` : '/'}
       className="flex items-center gap-2.5 text-on-school no-underline"
-      aria-label={school ? `${APP_NAME}, ${school.shortName} listings` : `${APP_NAME} home`}
+      aria-label={toSchool ? `${APP_NAME}, ${school.shortName} listings` : `${APP_NAME} home`}
     >
       <span className="varsity text-[1.4rem] font-black tracking-[0.02em] sm:text-2xl">
         {APP_NAME}

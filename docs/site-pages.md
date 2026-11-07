@@ -4,16 +4,19 @@ Public static pages, the site footer, the contact form, and `robots.txt` / `site
 
 ## Pages
 
-| Route      | File                   | Notes                                            |
-| ---------- | ---------------------- | ------------------------------------------------ |
-| `/about`   | `app/about/page.tsx`   | How the site works, safety tips, non-affiliation |
-| `/terms`   | `app/terms/page.tsx`   | Terms of Use; dated "Last updated"               |
-| `/privacy` | `app/privacy/page.tsx` | Privacy Policy; dated "Last updated"             |
-| `/contact` | `app/contact/page.tsx` | Web3Forms contact form (`contact-form.tsx`)      |
+| Route      | File                   | Notes                                                         |
+| ---------- | ---------------------- | ------------------------------------------------------------- |
+| `/schools` | `app/schools/page.tsx` | Every active school as a colored block linking to `/{school}` |
+| `/about`   | `app/about/page.tsx`   | How the site works, safety tips, non-affiliation              |
+| `/terms`   | `app/terms/page.tsx`   | Terms of Use; dated "Last updated"                            |
+| `/privacy` | `app/privacy/page.tsx` | Privacy Policy; dated "Last updated"                          |
+| `/contact` | `app/contact/page.tsx` | Web3Forms contact form (`contact-form.tsx`)                   |
 
-All four are public and indexable. They render per request, because the root layout reads the
+All five are public and indexable. `/schools` reads `listActiveSchools()`; the landing page's
+"Browse a school" link, the signed-out header, the footer, and the signed-out "All schools" link
+in a school page's band point to it. They render per request, because the root layout reads the
 request path to pick the school colors (see `design-system.md`). They share `app/_components/static-page.tsx` (title,
-optional "Last updated" line, and prose styling for `h2`, `p`, `ul`, `a`). The slugs are already
+optional "Last updated" line (all but `/schools`), and prose styling for `h2`, `p`, `ul`, `a`). The slugs are already
 in `lib/reserved-slugs.ts`, so no school can take them.
 
 **Policy copy** covers what the spec requires the Terms and Privacy Policy to disclose, and the
@@ -27,7 +30,7 @@ reviewed before launch, and update the "Last updated" date with every change. Wh
 
 The root layout sets `metadataBase` from `siteUrl()`, so relative metadata URLs
 (such as canonical) resolve to absolute ones, and Next does not warn at build about a missing
-`metadataBase`. `/`, the four static pages, and
+`metadataBase`. `/`, the five static pages, and
 `/{school}` each set `alternates.canonical` to their own path; `/{school}` drops the query string,
 so filtered views do not compete with the bare browse page. Tested in `tests/app/canonical.test.ts`
 and `e2e/public.spec.ts`.
@@ -36,7 +39,11 @@ and `e2e/public.spec.ts`.
 
 `app/_components/site-footer.tsx` is mounted in the root layout after the page and pinned to the
 bottom with `mt-auto` (the body is a flex column). It links the four pages and states the site is
-free, student-only, and not affiliated with any university.
+free, student-only, and not affiliated with any university. Its first link is Schools.
+
+**Signed-out header:** Schools and How it works links (desktop), plus Sign in and Sign up. The
+brand always links to `/` for signed-out visitors, even on a school page; signed in, it links to
+the current school (`header-brand.tsx`, via Clerk `useAuth`).
 
 It renders nothing on `/messages` and `/messages/*`: that screen is sized to exactly the viewport
 below the header and its stripe (`h-[calc(100dvh-4.5rem)]`), so a footer would make the whole page scroll. That is
@@ -93,7 +100,7 @@ falls back to `http://localhost:3000` when unset.
 - **Listing pages are not disallowed.** They are kept out of search results by their `noindex` meta
   tag, and a crawler can only read that tag if it may fetch the page. Disallowing them could still
   let their bare URLs be indexed from outside links.
-- **sitemap.xml** lists `/`, every active school's browse page, and the four static pages. It has
+- **sitemap.xml** lists `/`, every active school's browse page, and the five static pages. It has
   no listing URLs. It reads schools from the database, so it is `force-dynamic` (rendered
   per request) to keep `next build` free of a database dependency.
 
@@ -120,7 +127,7 @@ non-production branch, Vercel omits that header and staging must add its own `no
 need onboarding go to `/onboarding`, everyone else with a home school goes to `/{school}`.
 
 Sections, top to bottom: an ink hero (headline, lede, **Create your free account** linking to
-`/sign-up`, and "or look around first" jumping to the ribbon), the school ribbon, a "leaving /
+`/sign-up`), the school ribbon (`#schools`), a "leaving /
 looking" section with an illustrative term timeline, the three sign-up steps, the platform's
 promises (students only, every listing reviewed, free, unit number private), and a closing call to
 action with a "Don't see your school? Tell us" link to `/contact`. Copy states only product facts;

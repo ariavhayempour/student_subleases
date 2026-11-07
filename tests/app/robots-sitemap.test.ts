@@ -74,6 +74,7 @@ describe('sitemap', () => {
         `${ORIGIN}/uw-madison`,
         `${ORIGIN}/umich`,
         `${ORIGIN}/ucla`,
+        `${ORIGIN}/schools`,
         `${ORIGIN}/about`,
         `${ORIGIN}/terms`,
         `${ORIGIN}/privacy`,

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { APP_NAME } from '@/lib/app-config';
 
 const FOOTER_LINKS = [
+  { href: '/schools', label: 'Schools' },
   { href: '/about', label: 'About' },
   { href: '/terms', label: 'Terms' },
   { href: '/privacy', label: 'Privacy' },

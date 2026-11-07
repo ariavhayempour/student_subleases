@@ -19,6 +19,9 @@ export function SiteHeader() {
         <HeaderBrand />
         <Show when="signed-out">
           <nav className="flex items-center gap-2" aria-label="Account">
+            <Link href="/schools" className={`${navLink} hidden h-9 rounded-md md:flex`}>
+              Schools
+            </Link>
             <Link href="/about" className={`${navLink} hidden h-9 rounded-md md:flex`}>
               How it works
             </Link>

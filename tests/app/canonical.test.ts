@@ -32,6 +32,7 @@ describe('canonical URLs', () => {
   });
 
   it.each([
+    ['/schools', () => import('@/app/schools/page')],
     ['/about', () => import('@/app/about/page')],
     ['/terms', () => import('@/app/terms/page')],
     ['/privacy', () => import('@/app/privacy/page')],
