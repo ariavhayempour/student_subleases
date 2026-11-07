@@ -9,13 +9,14 @@ import { withRollback } from '../helpers/db';
 import { createSchool } from '../helpers/fixtures';
 
 describe('schools service', () => {
-  it('seeds the three launch schools with their timezones', async () => {
+  it('seeds the schools with their timezones', async () => {
     const rows = await rootDb().select().from(schools);
     const bySlug = Object.fromEntries(rows.map((row) => [row.slug, row.timezone]));
     expect(bySlug).toMatchObject({
       'uw-madison': 'America/Chicago',
       umich: 'America/Detroit',
       ucla: 'America/Los_Angeles',
+      sdsu: 'America/Los_Angeles',
     });
   });
 
@@ -29,7 +30,7 @@ describe('schools service', () => {
       await createSchool({ name: 'AAA Closed University', isActive: false });
       const list = await listActiveSchools();
       expect(list.map((school) => school.slug)).toEqual(
-        expect.arrayContaining(['uw-madison', 'umich', 'ucla']),
+        expect.arrayContaining(['uw-madison', 'umich', 'ucla', 'sdsu']),
       );
       expect(list.some((school) => school.name === 'AAA Closed University')).toBe(false);
       const names = list.map((school) => school.name);
@@ -58,6 +59,11 @@ describe('schools service', () => {
     });
     expect(bySlug['uw-madison'].theme.primary).toBe('#C5050C');
     expect(bySlug.ucla.theme.highlight).toBe('#FFD100');
+    expect(bySlug.sdsu).toMatchObject({
+      shortName: 'SDSU',
+      campusName: 'Hepner Hall',
+      theme: { primary: '#A6192E', highlight: '#000000' },
+    });
   });
 
   it('falls back to the full name and neutral colors for an unbranded school', () =>

@@ -4,7 +4,8 @@ A website where college students sublease their own apartment, house, or room to
 Students only (no landlords), free, and web only. Desktop-first and responsive down to phone
 width; the admin area is desktop-only. Live at [studentsubleases.com](https://studentsubleases.com).
 
-It launches with UW–Madison, University of Michigan, and UCLA. New schools are data, not code.
+It launches with UW–Madison, University of Michigan, and UCLA, and now also serves San Diego State
+University. New schools are data, not code.
 
 ## Features
 

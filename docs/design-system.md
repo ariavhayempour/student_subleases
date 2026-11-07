@@ -7,7 +7,8 @@ the way a school applies its athletic graphic standards. Product facts and brand
 ## School colors are data
 
 `schools` carries the branding (migration `0009_school-branding.sql` adds the columns,
-`0010_school-branding-seed.sql` fills the launch schools):
+`0010_school-branding-seed.sql` fills the launch schools, `0013_seed-sdsu.sql` adds SDSU with its
+branding in one `INSERT`):
 
 | column        | use                                                                |
 | ------------- | ------------------------------------------------------------------ |

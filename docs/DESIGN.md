@@ -178,19 +178,19 @@ A neutral ink-and-paper base, with a per-school set of role colors injected at r
 
 ### Primary
 
-- **School Primary** (`school`): header bar, browse band, default buttons, active-filter chips, timeline bar, map pins and clusters, selection, focus rings, the rent panel head. Neutral fallback is ink. Launch values: UW–Madison #C5050C, Michigan #00274C, UCLA #2774AE.
-- **School Deep** (`school-deep`): hover and pressed state of anything filled with the primary. UW #9B0000, Michigan #001A33, UCLA #005587.
+- **School Primary** (`school`): header bar, browse band, default buttons, active-filter chips, timeline bar, map pins and clusters, selection, focus rings, the rent panel head. Neutral fallback is ink. Launch values: UW–Madison #C5050C, Michigan #00274C, UCLA #2774AE, SDSU #A6192E.
+- **School Deep** (`school-deep`): hover and pressed state of anything filled with the primary. UW #9B0000, Michigan #001A33, UCLA #005587, SDSU #7E1323.
 - **On School** (`on-school`): text and icons on primary fields; white for all three launch schools.
 
 ### Secondary
 
-- **Varsity Stripe** (`school-secondary`, with `on-school-secondary`): only the stripe, the current-page bar under header nav links, and focus rings inside school-colored regions. UW white, Michigan maize #FFCB05, UCLA gold #FFD100.
+- **Varsity Stripe** (`school-secondary`, with `on-school-secondary`): only the stripe, the current-page bar under header nav links, and focus rings inside school-colored regions. UW white, Michigan maize #FFCB05, UCLA gold #FFD100, SDSU white (black on SDSU red is 2.8:1, too low for focus rings).
 
 ### Tertiary
 
-- **Highlight** (`school-highlight`, with `on-school-highlight`): Post a listing and Sign up, the school tag in the header, New tags, unread and count pills, the hovered map pin. Michigan maize on navy text, UCLA gold on #003B5C, UW charcoal #282728 on white (red-and-white has no third color, so UW borrows charcoal).
-- **Tint** (`school-tint`): selected rows, expanded filter toggle, avatar discs, empty-state icon discs. UW #FBEDEE, Michigan #EEF2F7, UCLA #EDF4FA.
-- **Link** (`school-link`): inline text links and link buttons on white; a darker cut of the primary that passes AA as text (UW #A8040A, Michigan #00396E, UCLA #005587).
+- **Highlight** (`school-highlight`, with `on-school-highlight`): Post a listing and Sign up, the school tag in the header, New tags, unread and count pills, the hovered map pin. Michigan maize on navy text, UCLA gold on #003B5C, UW charcoal #282728 on white (red-and-white has no third color, so UW borrows charcoal), SDSU black on white.
+- **Tint** (`school-tint`): selected rows, expanded filter toggle, avatar discs, empty-state icon discs. UW #FBEDEE, Michigan #EEF2F7, UCLA #EDF4FA, SDSU #F9ECEE.
+- **Link** (`school-link`): inline text links and link buttons on white; a darker cut of the primary that passes AA as text (UW #A8040A, Michigan #00396E, UCLA #005587, SDSU #A6192E).
 
 ### Neutral
 

@@ -27,8 +27,8 @@ escrow.
 
 ## Operating Context
 
-- Launch schools: UW–Madison (`uw-madison`), University of Michigan (`umich`), UCLA (`ucla`). New
-  schools are data, not code.
+- Launch schools: UW–Madison (`uw-madison`), University of Michigan (`umich`), UCLA (`ucla`).
+  Added since: San Diego State University (`sdsu`, 2026-11-07). New schools are data, not code.
 - Desktop-first (≥1024px) and usable down to phone width, because shared links open on phones.
   Admin is desktop-only.
 - Students pick a home school once, at account creation. When signed in they land on that school's
@@ -62,7 +62,7 @@ escrow.
 - The name is "Student Subleases", read from the `APP_NAME` constant, and must not reference any
   one school.
 - Each school's pages use that school's colors: UW–Madison red and white, Michigan maize and blue,
-  UCLA blue and gold. The primary color carries structure (header, key accents) and the secondary
+  UCLA blue and gold, SDSU red and black. The primary color carries structure (header, key accents) and the secondary
   color (maize, gold) appears as deliberate highlights.
 - Not affiliated with any university, and the site says so. School colors only; no university
   logos, wordmarks, seals, or mascots.
