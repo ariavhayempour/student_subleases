@@ -38,10 +38,12 @@ and `e2e/public.spec.ts`.
 ## Footer
 
 `app/_components/site-footer.tsx` is mounted in the root layout after the page and pinned to the
-bottom with `mt-auto` (the body is a flex column). It links the four pages and states the site is
-free, student-only, and not affiliated with any university. Its first link is Schools.
+bottom with `mt-auto` (the body is a flex column). From `sm` up it is a three-column grid: "Not
+affiliated with any university." on the left, a GitHub link to the public repo centered, and the
+page links (Schools first) on the right. Below `sm` the three stack, left-aligned.
 
-**Signed-out header:** Schools and How it works links (desktop), plus Sign in and Sign up. The
+**Signed-out header:** Home, Browse schools, and How it works links (desktop), FAQ, plus Sign in
+and Sign up. The
 brand always links to `/` for signed-out visitors, even on a school page; signed in, it links to
 the current school (`header-brand.tsx`, via Clerk `useAuth`).
 
