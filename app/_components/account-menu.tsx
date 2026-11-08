@@ -23,7 +23,7 @@ export function AccountMenu() {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         aria-label="Account menu"
-        className="numeral grid size-9 place-items-center rounded-full bg-on-school text-[15px] tracking-[0.04em] text-school ring-offset-2 ring-offset-school transition-shadow hover:ring-2 hover:ring-on-school/60"
+        className="grid size-9 place-items-center rounded-full bg-school font-display text-[14px] font-extrabold tracking-[0.03em] text-on-school shadow-[0_0_0_2px_rgb(255_255_255/0.7)] transition-shadow hover:shadow-[0_0_0_3px_rgb(255_255_255/0.9)]"
       >
         {initials}
       </DropdownMenu.Trigger>
@@ -31,7 +31,7 @@ export function AccountMenu() {
         <DropdownMenu.Content
           align="end"
           sideOffset={10}
-          className="z-50 w-60 rounded-md border border-line bg-background p-1.5 shadow-[0_10px_30px_rgb(21_23_28/0.16)]"
+          className="z-50 w-60 rounded-[5px] border border-line bg-white p-1.5 shadow-[0_10px_30px_-8px_rgb(40_20_5/0.35)]"
         >
           <div className="px-2.5 pt-1.5 pb-2">
             <p className="truncate text-sm font-semibold text-ink">{name}</p>

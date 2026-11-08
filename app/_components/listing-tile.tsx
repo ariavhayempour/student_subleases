@@ -45,7 +45,7 @@ export function ListingTile({
         onFocus={onHover && (() => onHover(card.id))}
         onBlur={onHover && (() => onHover(null))}
       >
-        <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-surface-2">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-[6px] bg-surface-2">
           {card.coverThumbUrl && (
             <Image
               src={card.coverThumbUrl}
@@ -56,15 +56,21 @@ export function ListingTile({
             />
           )}
           {card.isNew && (
-            <Tag className="absolute top-2.5 left-2.5 bg-highlight text-on-highlight">New</Tag>
+            <Tag className="absolute top-2.5 left-2.5 bg-highlight text-on-highlight shadow-[0_1px_3px_rgb(0_0_0/0.25)]">
+              New
+            </Tag>
           )}
         </div>
         <div className="grid gap-[3px] pt-3">
           <p className="flex items-baseline gap-1">
-            <span className="numeral text-[2.375rem]">{usd.format(card.rentCents / 100)}</span>
-            <span className="text-[13px] font-medium text-ink-2">/ month</span>
+            <span className="font-display text-[30px] leading-none font-extrabold tracking-[-0.02em] tabular-nums">
+              {usd.format(card.rentCents / 100)}
+            </span>
+            <span className="text-[13px] font-semibold text-ink-2">/ month</span>
           </p>
-          <h2 className="truncate text-[15px] font-semibold group-hover:underline">{card.title}</h2>
+          <h2 className="mt-1 truncate text-[15px] font-bold group-hover:underline">
+            {card.title}
+          </h2>
           <p className="truncate text-[13px] text-ink-2">
             <span className="sr-only">{LISTING_TYPE_LABELS[card.type]}. </span>
             <span aria-hidden="true">{facts.join(' · ')}</span>

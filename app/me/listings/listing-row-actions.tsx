@@ -1,5 +1,6 @@
 'use client';
 
+import { Check, EyeOff, Pencil, RotateCcw, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useTransition } from 'react';
 import type { ActionResult } from '@/app/_lib/action-result';
@@ -31,10 +32,11 @@ export function ListingRowActions({ listingId, status, reviewStatus }: ListingRo
   }
 
   return (
-    <div className="flex flex-col items-start gap-2">
-      <div className="flex flex-wrap gap-2">
+    <div className="flex flex-col items-start gap-2 sm:items-end">
+      <div className="flex flex-wrap gap-2 sm:justify-end">
         <Button asChild variant="outline" size="sm">
           <Link href={`/listings/${listingId}/edit`}>
+            <Pencil aria-hidden="true" />
             {reviewStatus === 'rejected' ? 'Edit and resubmit' : 'Edit'}
           </Link>
         </Button>
@@ -46,6 +48,7 @@ export function ListingRowActions({ listingId, status, reviewStatus }: ListingRo
               disabled={pending}
               onClick={() => run(() => setListingStatusAction(listingId, 'taken'))}
             >
+              <Check aria-hidden="true" />
               Mark as taken
             </Button>
             <Button
@@ -54,6 +57,7 @@ export function ListingRowActions({ listingId, status, reviewStatus }: ListingRo
               disabled={pending}
               onClick={() => run(() => setListingStatusAction(listingId, 'removed'))}
             >
+              <EyeOff aria-hidden="true" />
               Remove
             </Button>
           </>
@@ -64,16 +68,12 @@ export function ListingRowActions({ listingId, status, reviewStatus }: ListingRo
             disabled={pending}
             onClick={() => run(() => setListingStatusAction(listingId, 'active'))}
           >
+            <RotateCcw aria-hidden="true" />
             Reactivate
           </Button>
         )}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-bad hover:bg-bad-bg hover:text-bad"
-          disabled={pending}
-          onClick={confirmDelete}
-        >
+        <Button variant="destructive" size="sm" disabled={pending} onClick={confirmDelete}>
+          <Trash2 aria-hidden="true" />
           Delete
         </Button>
       </div>

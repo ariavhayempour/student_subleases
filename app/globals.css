@@ -8,10 +8,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-archivo);
+  --font-sans: var(--font-hanken);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-big-shoulders);
-  --font-display: var(--font-big-shoulders);
+  --font-heading: var(--font-bricolage);
+  --font-display: var(--font-bricolage);
   --color-school: var(--school);
   --color-school-deep: var(--school-deep);
   --color-on-school: var(--on-school);
@@ -33,6 +33,9 @@
   --color-warn-bg: var(--warn-bg);
   --color-bad: var(--bad);
   --color-bad-bg: var(--bad-bg);
+  --color-sticky: var(--sticky);
+  --color-alu-edge: var(--alu-edge);
+  --color-cork: var(--cork);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -74,28 +77,38 @@
 
 :root {
   /* School colors; the root layout overrides these per school (see lib/school-theme.ts). */
-  --school: #15171c;
+  --school: #1a1410;
   --school-deep: #000000;
   --on-school: #ffffff;
   --school-secondary: #ffffff;
-  --on-school-secondary: #15171c;
-  --school-highlight: #ffffff;
-  --on-school-highlight: #15171c;
-  --school-tint: #f1f2f4;
-  --school-link: #15171c;
+  --on-school-secondary: #1a1410;
+  --school-highlight: #1a1410;
+  --on-school-highlight: #ffffff;
+  --school-tint: #f4f1ec;
+  --school-link: #1a1410;
 
-  --ink: #15171c;
-  --ink-2: #444a55;
-  --ink-3: #626977;
-  --line: #e2e4e8;
-  --line-2: #cdd1d7;
-  --surface-2: #f5f6f8;
+  /* Warm inks and rules that sit with cork and paper. */
+  --ink: #1a1410;
+  --ink-2: #463a30;
+  --ink-3: #6b6058;
+  --line: #e4e0da;
+  --line-2: #cfc8bf;
+  --surface-2: #f7f5f2;
   --ok: #1d6b3a;
   --ok-bg: #e6f2ea;
-  --warn: #8a5a00;
-  --warn-bg: #fff4d6;
+  --warn: #7a4f00;
+  --warn-bg: #fff3d1;
   --bad: #a4161a;
   --bad-bg: #fbe9e9;
+
+  /* Union Board materials. */
+  --cork: #c08552;
+  --alu-1: #e6e8eb;
+  --alu-2: #c3c7cc;
+  --alu-edge: #9aa0a7;
+  --wall: #2f4858;
+  --sticky: #ffe36e;
+  --paper-shadow: 0 1px 1px rgb(40 20 5 / 0.18), 0 14px 22px -12px rgb(40 20 5 / 0.55);
 
   --background: #ffffff;
   --foreground: var(--ink);
@@ -120,7 +133,7 @@
   --chart-3: var(--ink-3);
   --chart-4: var(--line-2);
   --chart-5: var(--ink);
-  --radius: 0.375rem;
+  --radius: 0.3125rem;
   --sidebar: var(--surface-2);
   --sidebar-foreground: var(--ink);
   --sidebar-primary: var(--school);
@@ -199,29 +212,6 @@
   }
 }
 
-@layer components {
-  /* Condensed block caps: headings, the school band, block-letter tags. */
-  .varsity {
-    font-family: var(--font-display);
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-    line-height: 0.92;
-  }
-  /* Jersey-style numerals for rent and counts. */
-  .numeral {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-variant-numeric: tabular-nums lining-nums;
-    line-height: 0.95;
-  }
-  /* The one recurring motif: a double rule in the school's second color. */
-  .varsity-stripe {
-    height: 13px;
-    border-top: 4px solid var(--school-secondary);
-    border-bottom: 4px solid var(--school-secondary);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -231,307 +221,238 @@
   }
 }
 
-/* Signed-out landing: school lights, hollow headline, entrances, and scroll reveals (docs/site-pages.md). */
+/* Union Board world: cork, aluminum, paper, pins, tape, and the packing-tape school ribbon (docs/design-system.md). */
 @layer components {
-  .landing-lights {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
-    mask-image: linear-gradient(to bottom, transparent, #000 7rem);
+  .cork {
+    background-color: var(--cork);
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='2' seed='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.32  0 0 0 0 0.17  0 0 0 0 0.05  0 0 0 2.2 -1.05'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='1' seed='11' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.88  0 0 0 0 0.68  0 0 0 2.4 -1.6'/></filter><rect width='100%' height='100%' filter='url(%23m)'/></svg>"),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='337' height='337'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' seed='23' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.24  0 0 0 0 0.12  0 0 0 0 0.03  0 0 0 9 -6.2'/></filter><rect width='100%' height='100%' filter='url(%23f)'/></svg>");
+    background-size:
+      260px 260px,
+      300px 300px,
+      337px 337px;
   }
-  .landing-glow {
-    position: absolute;
-    border-radius: 9999px;
-    mix-blend-mode: screen;
-    opacity: 0.62;
-    pointer-events: none;
-    background: radial-gradient(
-      closest-side,
-      var(--glow) 0%,
-      color-mix(in srgb, var(--glow) 50%, transparent) 30%,
-      color-mix(in srgb, var(--glow) 14%, transparent) 62%,
-      transparent 100%
-    );
-    transition: background 0.6s;
+  .alu {
+    background:
+      repeating-linear-gradient(90deg, rgb(255 255 255 / 0.22) 0 1px, transparent 1px 3px),
+      linear-gradient(180deg, var(--alu-1), var(--alu-2));
   }
-  .landing-lights .landing-glow:nth-child(1) {
-    width: min(52rem, 130vw);
-    aspect-ratio: 1;
-    right: -16rem;
-    top: -18rem;
-    animation: landing-drift-a 26s ease-in-out infinite;
-  }
-  .landing-lights .landing-glow:nth-child(2) {
-    width: min(30rem, 90vw);
-    aspect-ratio: 1;
-    left: 24%;
-    top: 8%;
-    animation: landing-drift-b 31s ease-in-out infinite;
-  }
-  .landing-lights .landing-glow:nth-child(3) {
-    width: min(44rem, 120vw);
-    aspect-ratio: 1;
-    left: -18rem;
-    top: 42%;
-    animation: landing-drift-c 23s ease-in-out infinite;
-  }
-  .landing-lights .landing-glow:nth-child(4) {
-    width: min(30rem, 90vw);
-    aspect-ratio: 1;
-    right: 8%;
-    top: 52%;
-    animation: landing-drift-b 29s ease-in-out -9s infinite;
-  }
-  .landing-glow-closing {
-    width: 40rem;
-    aspect-ratio: 1;
-    left: -8rem;
-    top: -10rem;
-    z-index: -1;
-    opacity: 0.38;
-    animation: landing-drift-a 28s ease-in-out infinite;
-  }
-  [data-paused] .landing-glow {
-    animation-play-state: paused;
-  }
-  .landing-grain {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.06;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)'/%3E%3C/svg%3E");
-  }
-
-  /* Headline lines rise out of their own mask; the hollow line lets the lights show through. */
-  .landing-line {
-    display: block;
-    overflow: hidden;
-    padding-bottom: 0.06em;
-    margin-bottom: -0.06em;
-  }
-  .landing-line > span {
-    display: block;
-  }
-  .landing-hollow {
-    color: transparent;
-    -webkit-text-stroke: clamp(1.5px, 0.16vw, 2.5px) #fff;
-  }
-
-  .landing-chip {
+  /* A sheet pinned or taped to the board; --r tilts it. */
+  .paper {
     position: relative;
-    transition:
-      transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.2s;
+    background: #fff;
+    box-shadow: var(--paper-shadow);
+    transform: rotate(var(--r, 0deg));
   }
-  .landing-chip:hover {
-    transform: translateY(-1px);
-  }
-  .landing-chip[aria-pressed='true'] {
-    box-shadow:
-      0 0 0 2px var(--school-tint),
-      0 0 0 4px var(--ink);
-  }
-  .landing-chip[aria-pressed='true']::after {
+  .paper::after {
     content: '';
     position: absolute;
-    left: 8px;
-    right: 8px;
-    bottom: 5px;
-    height: 2px;
-    background: var(--chip-mark);
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(160deg, rgb(255 255 255 / 0) 55%, rgb(60 40 20 / 0.06) 100%);
   }
-
-  .landing-bar-host,
-  .landing-bar-guest {
-    transition: background-color 0.45s;
+  .pin {
+    position: absolute;
+    z-index: 3;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 32%, rgb(255 255 255 / 0.85) 0 2px, transparent 3.5px),
+      var(--pin, #d23a2e);
+    box-shadow:
+      inset -2px -3px 4px rgb(0 0 0 / 0.28),
+      3px 5px 5px -1px rgb(30 15 5 / 0.45);
   }
-  .landing-bar-host {
-    background-color: var(--school);
-    transform-origin: left;
+  .pin-red {
+    --pin: #d23a2e;
   }
-  /* Hatched so the two stays differ by pattern, not color alone. */
-  .landing-bar-guest {
+  .pin-blue {
+    --pin: #2a5bd7;
+  }
+  .pin-yellow {
+    --pin: #f2c230;
+  }
+  .pin-green {
+    --pin: #2e9a57;
+  }
+  .masking-tape {
+    position: absolute;
+    z-index: 3;
+    width: 92px;
+    height: 26px;
+    background: rgb(238 228 200 / 0.82);
+    box-shadow: 0 1px 2px rgb(40 20 5 / 0.2);
+    transform: rotate(var(--tr, -4deg));
+  }
+  /* Painted cinderblock: running-bond courses drawn with gradients. */
+  .wall {
+    position: relative;
+    background-color: var(--wall);
+    background-image:
+      linear-gradient(180deg, rgb(0 0 0 / 0.16) 0 3px, transparent 3px),
+      linear-gradient(90deg, rgb(0 0 0 / 0.16) 0 3px, transparent 3px);
+    background-size:
+      100% 96px,
+      192px 96px;
+  }
+  .wall::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(90deg, rgb(0 0 0 / 0.16) 0 3px, transparent 3px);
+    background-size: 192px 96px;
+    background-position: 96px 48px;
+    mask: repeating-linear-gradient(180deg, transparent 0 48px, #000 48px 96px);
+  }
+  .wall::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(180deg, rgb(0 0 0 / 0.16) 0 3px, transparent 3px);
+    background-size: 100% 48px;
+    background-position: 0 48px;
+  }
+  .board-display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+  }
+  /* The flyer voice: narrowed, all caps. */
+  .flyer-caps {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-variation-settings: 'wdth' 78;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.9;
+  }
+  .scribble {
+    font-family: var(--font-scribble), cursive;
+  }
+  /* Printed packing tape: a glossy band of school-colored segments. */
+  .packing-tape {
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 2px 3px rgb(40 20 5 / 0.28),
+      0 12px 20px -10px rgb(40 20 5 / 0.55);
+  }
+  .packing-tape::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        180deg,
+        rgb(255 255 255 / 0.34) 0,
+        rgb(255 255 255 / 0.1) 16%,
+        rgb(255 255 255 / 0) 38%,
+        rgb(0 0 0 / 0) 70%,
+        rgb(0 0 0 / 0.12) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgb(255 255 255 / 0.35) 0 2px,
+        transparent 2px calc(100% - 2px),
+        rgb(255 255 255 / 0.22) calc(100% - 2px)
+      );
+    mix-blend-mode: screen;
+  }
+  /* A drawn chevron for native selects, matching the lucide ChevronDown the browse filters overlay. */
+  .select-chevron {
+    appearance: none;
+    padding-right: 2.25rem;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23463a30' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 16px;
+  }
+  /* Term chart bars: a solid bar for the host, a hatched one for the student who needs the months. */
+  .term-bar {
+    position: absolute;
+    inset: 0;
+    transform-origin: left center;
+    transition:
+      transform 0.9s var(--ease-out-expo),
+      background-color 0.5s;
+  }
+  .term-bar-host {
+    background: var(--school);
+  }
+  .term-bar-guest {
     background: repeating-linear-gradient(
       -45deg,
-      var(--school) 0 6px,
-      color-mix(in srgb, var(--school) 30%, transparent) 6px 12px
+      var(--school) 0 9px,
+      color-mix(in oklab, var(--school) 32%, white) 9px 18px
     );
-    transform-origin: right;
+    transition-delay: 0.25s;
   }
-
-  .landing-step {
-    position: relative;
-    padding-top: 20px;
-  }
-  .landing-step::before,
-  .landing-step::after {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    top: 0;
-  }
-  .landing-step::before {
-    height: 2px;
-    background: var(--line-2);
-  }
-  .landing-step::after {
-    height: 4px;
-    margin-top: -1px;
-    background: var(--school);
-    transform-origin: left;
-    transition: background-color 0.45s;
-  }
-  .landing-step-numeral {
-    color: var(--school);
-    -webkit-text-stroke: 2px var(--school);
+  .term-matched {
     transition:
-      color 0.45s,
-      -webkit-text-stroke-color 0.45s;
-  }
-
-  .landing-guard > span {
-    transform-origin: left;
+      transform 0.45s var(--ease-out-expo) 0.9s,
+      opacity 0.3s ease 0.9s,
+      background-color 0.5s,
+      color 0.5s;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .landing-line > span {
-    animation: landing-rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  .tape-unroll {
+    animation: tape-unroll 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
   }
-  .landing-line + .landing-line > span {
-    animation-delay: 0.12s;
+  .pin-on {
+    animation: pin-on 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--d, 0) * 110ms + 80ms);
   }
-  .landing-enter {
-    animation: landing-fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
-  }
-  .landing-enter-late {
-    animation: landing-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
-  }
-  .landing-lights {
-    animation: landing-lights-up 2.4s ease-out both;
-  }
-  .landing-block-in {
-    animation: landing-block-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: calc(0.75s + var(--i, 0) * 70ms);
-  }
-
-  [data-reveal] .landing-bar-host,
-  [data-reveal] .landing-bar-guest {
+  /* Scroll reveals: sheets settle onto the board; LandingReveal sets data-reveal. */
+  [data-reveal] {
     transition:
-      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-      background-color 0.45s;
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      translate 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  [data-reveal] .landing-bar-guest {
-    transition-delay: 0.35s, 0s;
+  [data-reveal='armed'] {
+    opacity: 0;
+    translate: 0 -14px;
   }
-  [data-reveal] .landing-matched {
-    transition:
-      opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1s,
-      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1s,
-      background-color 0.45s,
-      color 0.45s;
-  }
-  [data-reveal='armed'] .landing-bar-host,
-  [data-reveal='armed'] .landing-bar-guest,
-  [data-reveal='reset'] .landing-bar-host,
-  [data-reveal='reset'] .landing-bar-guest {
+  [data-reveal='armed'] .term-bar,
+  [data-reveal='reset'] .term-bar {
     transform: scaleX(0);
+    transition-duration: 0s;
+    transition-delay: 0s;
   }
-  [data-reveal='armed'] .landing-matched,
-  [data-reveal='reset'] .landing-matched {
+  [data-reveal='armed'] .term-matched,
+  [data-reveal='reset'] .term-matched {
     opacity: 0;
-    transform: translateY(6px) scale(0.96);
-  }
-  [data-reveal='reset'] .landing-bar-host,
-  [data-reveal='reset'] .landing-bar-guest,
-  [data-reveal='reset'] .landing-matched {
-    transition: none;
-  }
-
-  [data-reveal] .landing-step::after {
-    transition:
-      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i) * 0.35s),
-      background-color 0.45s;
-  }
-  [data-reveal] .landing-step-numeral {
-    transition:
-      color 0.5s ease calc(var(--i) * 0.35s + 0.35s),
-      -webkit-text-stroke-color 0.5s ease calc(var(--i) * 0.35s + 0.35s);
-  }
-  [data-reveal='armed'] .landing-step::after {
-    transform: scaleX(0);
-  }
-  [data-reveal='armed'] .landing-step-numeral {
-    color: transparent;
-    -webkit-text-stroke-color: var(--line-2);
-  }
-
-  [data-reveal] .landing-promise {
-    transition:
-      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i) * 90ms),
-      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i) * 90ms);
-  }
-  [data-reveal='armed'] .landing-promise {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  [data-reveal] .landing-guard > span {
-    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i) * 90ms);
-  }
-  [data-reveal='armed'] .landing-guard > span {
-    transform: scaleX(0);
+    transform: scale(0.85) rotate(-4deg);
+    transition-duration: 0s;
+    transition-delay: 0s;
   }
 }
 
-@keyframes landing-drift-a {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(-7rem, 4rem) scale(1.08);
-  }
-}
-@keyframes landing-drift-b {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(6rem, -3rem) scale(0.94);
-  }
-}
-@keyframes landing-drift-c {
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(5rem, -5rem) scale(1.06);
-  }
-}
-@keyframes landing-rise {
+@keyframes tape-unroll {
   from {
-    transform: translateY(105%);
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
   }
 }
-@keyframes landing-fade-up {
+@keyframes pin-on {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    translate: 0 -16px;
+    scale: 1.035;
   }
-}
-@keyframes landing-lights-up {
-  from {
-    opacity: 0;
-  }
-}
-@keyframes landing-block-in {
-  from {
-    clip-path: inset(100% 0 0 0);
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
   }
 }

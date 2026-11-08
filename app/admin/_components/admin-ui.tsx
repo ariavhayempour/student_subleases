@@ -5,12 +5,12 @@ import { cn } from '@/lib/utils';
 
 export const TABLE = 'w-full border-collapse text-left text-sm tabular-nums';
 export const TH =
-  'varsity border-b border-line-2 px-2.5 py-3 text-xs font-bold tracking-[0.08em] whitespace-nowrap text-ink-2 first:pl-0';
+  'border-b border-line-2 px-2.5 py-3 font-display text-[12px] font-extrabold tracking-[0.06em] whitespace-nowrap text-ink-2 uppercase first:pl-0';
 export const TD = 'border-b border-line px-2.5 py-3 align-middle first:pl-0';
 export const LINK =
   'font-semibold text-ink underline decoration-line-2 underline-offset-4 hover:decoration-ink';
 export const SELECT =
-  'h-10 rounded-md border border-line-2 bg-background px-3 text-sm text-ink hover:border-ink-3';
+  'h-10 rounded-[5px] border-[1.5px] border-line-2 bg-white px-3 text-sm text-ink hover:border-ink-3';
 
 type HeaderProps = {
   title: string;
@@ -33,7 +33,9 @@ export function AdminPageHeader({ title, back, actions, children }: HeaderProps)
         </Link>
       )}
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h1 className="varsity min-w-0 text-[2.5rem] font-black break-words">{title}</h1>
+        <h1 className="min-w-0 font-display text-[2.5rem] leading-none font-extrabold tracking-[-0.02em] break-words">
+          {title}
+        </h1>
         {actions}
       </div>
       {children}
@@ -54,7 +56,10 @@ export function AdminSection({
 }) {
   return (
     <section aria-labelledby={`${id}-heading`} className={cn('space-y-3', className)}>
-      <h2 id={`${id}-heading`} className="varsity text-[1.375rem] font-extrabold tracking-[0.02em]">
+      <h2
+        id={`${id}-heading`}
+        className="font-display text-[1.375rem] font-extrabold tracking-[-0.015em]"
+      >
         {title}
       </h2>
       {children}

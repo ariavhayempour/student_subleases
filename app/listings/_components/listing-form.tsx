@@ -59,7 +59,7 @@ const RENDERED_FIELDS = new Set([
   'photos',
 ]);
 const textareaClass =
-  'min-h-40 w-full rounded-md border border-line-2 bg-background px-3 py-2 text-base text-ink transition-[border-color,box-shadow] outline-none hover:border-ink-3 focus-visible:border-school focus-visible:ring-3 focus-visible:ring-school/20 aria-invalid:border-bad md:text-sm';
+  'min-h-40 w-full rounded-[5px] border-[1.5px] border-line-2 bg-white px-3 py-2 text-base text-ink transition-[border-color,box-shadow] outline-none hover:border-ink-3 focus-visible:border-school focus-visible:ring-3 focus-visible:ring-school/20 aria-invalid:border-bad md:text-sm';
 
 const STEPS = [
   { id: 'step-school', label: 'School' },
@@ -75,13 +75,18 @@ function Step({ index, children }: { index: number; children: ReactNode }) {
     <section
       id={step.id}
       aria-labelledby={`${step.id}-heading`}
-      className="scroll-mt-6 rounded-md border border-line p-5 sm:p-6"
+      className="scroll-mt-6 rounded-md border border-line bg-white p-5 shadow-[0_10px_24px_-20px_rgb(40_20_5/0.5)] sm:p-6"
     >
-      <h2 id={`${step.id}-heading`} className="flex items-baseline gap-3 text-ink">
-        <span aria-hidden="true" className="numeral text-[2rem] text-school">
+      <h2 id={`${step.id}-heading`} className="flex items-center gap-3 text-ink">
+        <span
+          aria-hidden="true"
+          className="grid size-8 shrink-0 place-items-center self-center rounded-full bg-school font-display text-[16px] font-extrabold text-on-school"
+        >
           {index + 1}
         </span>
-        <span className="varsity text-[1.75rem] font-extrabold">{step.label}</span>
+        <span className="font-display text-[1.5rem] leading-tight font-extrabold tracking-[-0.015em]">
+          {step.label}
+        </span>
       </h2>
       <div className="mt-5 space-y-5">{children}</div>
     </section>
@@ -103,7 +108,18 @@ function useActiveStep(): StepId {
       const el = document.getElementById(step.id);
       if (el) observer.observe(el);
     }
-    return () => observer.disconnect();
+    // The last step can sit below the middle band even at the end of the page, so the bottom picks it.
+    const onScroll = () => {
+      const { scrollHeight } = document.documentElement;
+      if (window.innerHeight + window.scrollY >= scrollHeight - 4) {
+        setActive(STEPS[STEPS.length - 1].id);
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
   return active;
 }
@@ -186,12 +202,12 @@ export function ListingForm({
               <a
                 href={`#${step.id}`}
                 aria-current={activeStep === step.id ? 'step' : undefined}
-                className="grid grid-cols-[2rem_1fr] items-center rounded-md px-2 py-2 text-[15px] font-semibold text-ink-2 no-underline transition-colors hover:bg-surface-2 hover:text-ink aria-[current=step]:bg-school-tint aria-[current=step]:text-ink"
+                className="grid grid-cols-[2rem_1fr] items-center rounded-[5px] px-2 py-2 text-[15px] font-bold text-ink-2 no-underline transition-colors hover:bg-surface-2 hover:text-ink aria-[current=step]:bg-school-tint aria-[current=step]:text-ink"
               >
                 <span
                   aria-hidden="true"
                   className={cn(
-                    'numeral grid size-7 place-items-center rounded-full text-[15px] ring-1 ring-line-2',
+                    'grid size-7 place-items-center rounded-full font-display text-[14px] font-extrabold ring-1 ring-line-2',
                     activeStep === step.id && 'bg-school text-on-school ring-0',
                   )}
                 >
@@ -376,7 +392,7 @@ export function ListingForm({
             {errors.root.message}
           </p>
         )}
-        <div className="sticky bottom-0 z-20 -mx-4 flex flex-col gap-2 border-t border-line bg-background px-4 py-3 sm:mx-0 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:rounded-t-md sm:border-x sm:px-5">
+        <div className="sticky bottom-0 z-20 -mx-4 flex flex-col gap-2 border-t border-line bg-white px-4 py-3 shadow-[0_-8px_18px_-14px_rgb(40_20_5/0.45)] sm:bottom-4 sm:mx-0 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:rounded-md sm:border sm:px-5 sm:shadow-[0_12px_28px_-12px_rgb(40_20_5/0.5)]">
           <p className="text-sm text-ink-2">{submitNote}</p>
           <Button
             type="submit"

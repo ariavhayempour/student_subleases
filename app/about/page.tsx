@@ -22,8 +22,8 @@ export default function AboutPage() {
       <h2>How it works</h2>
       <ul>
         <li>
-          Hosts post their place with photos, dates, and rent. We review every listing before it
-          appears, usually within 24 hours.
+          Hosts post their place with photos, dates, and rent. New listings go live after a short
+          review period.
         </li>
         <li>
           Renters browse by school, filter by price, dates, and more, and see listings on a map.
@@ -43,7 +43,7 @@ export default function AboutPage() {
           consent.
         </li>
         <li>Put the sublease in writing before you move in or hand over keys.</li>
-        <li>Report listings, messages, or users that seem wrong. We review every report.</li>
+        <li>Report listings, messages, or users that seem wrong.</li>
       </ul>
 
       <h2>The fine print</h2>

@@ -42,7 +42,7 @@ export function ReportDialog({ open, onClose, targetType, targetId, title }: Rep
         if (busy.current) event.preventDefault();
       }}
       aria-labelledby="report-dialog-title"
-      className="m-auto w-[min(28rem,calc(100vw-2rem))] rounded-md bg-background p-6 text-ink shadow-[0_20px_60px_rgb(0_0_0/0.3)] ring-1 ring-line backdrop:bg-ink/60"
+      className="m-auto w-[min(28rem,calc(100vw-2rem))] rounded-md bg-white p-6 text-ink shadow-[0_20px_60px_-12px_rgb(40_20_5/0.45)] ring-1 ring-line backdrop:bg-ink/60"
     >
       {open && (
         <ReportForm
@@ -106,7 +106,10 @@ function ReportForm({ title, targetType, targetId, onClose, onBusy }: ReportForm
 
   return (
     <div>
-      <h2 id="report-dialog-title" className="varsity text-[1.75rem] font-extrabold">
+      <h2
+        id="report-dialog-title"
+        className="font-display text-[1.6rem] leading-tight font-extrabold tracking-[-0.015em]"
+      >
         {title}
       </h2>
       {sent ? (
@@ -128,13 +131,13 @@ function ReportForm({ title, targetType, targetId, onClose, onBusy }: ReportForm
             className="space-y-2"
             aria-describedby={fieldErrors.reason ? `${id}-reason-error` : undefined}
           >
-            <legend className="mb-1 text-[13px] font-semibold text-ink">
+            <legend className="mb-1 text-[13px] font-bold text-ink">
               Why are you reporting this?
             </legend>
             {REPORT_REASONS.map((value, index) => (
               <label
                 key={value}
-                className="flex cursor-pointer items-center gap-3 rounded-md border border-line-2 px-3 py-2.5 text-sm text-ink hover:border-ink-3 has-checked:border-school has-checked:bg-school-tint"
+                className="flex cursor-pointer items-center gap-3 rounded-[5px] border-[1.5px] border-line-2 px-3 py-2.5 text-sm font-medium text-ink hover:border-ink-3 has-checked:border-school has-checked:bg-school-tint"
               >
                 <input
                   type="radio"
@@ -151,7 +154,7 @@ function ReportForm({ title, targetType, targetId, onClose, onBusy }: ReportForm
             <FieldError id={`${id}-reason-error`} message={fieldErrors.reason} />
           </fieldset>
           <div className="space-y-1.5">
-            <label htmlFor={`${id}-details`} className="text-[13px] font-semibold text-ink">
+            <label htmlFor={`${id}-details`} className="text-[13px] font-bold text-ink">
               Anything else we should know?
             </label>
             <textarea
@@ -163,7 +166,7 @@ function ReportForm({ title, targetType, targetId, onClose, onBusy }: ReportForm
               onChange={(event) => setDetails(event.target.value)}
               aria-invalid={fieldErrors.details ? true : undefined}
               aria-describedby={fieldErrors.details ? `${id}-details-error` : undefined}
-              className="w-full rounded-md border border-line-2 bg-background px-3 py-2 text-sm text-ink outline-none hover:border-ink-3 focus-visible:border-school focus-visible:ring-3 focus-visible:ring-school/20"
+              className="w-full rounded-[5px] border-[1.5px] border-line-2 bg-white px-3 py-2 text-sm text-ink outline-none hover:border-ink-3 focus-visible:border-school focus-visible:ring-3 focus-visible:ring-school/20"
             />
             <FieldError id={`${id}-details-error`} message={fieldErrors.details} />
           </div>

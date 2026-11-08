@@ -42,7 +42,9 @@ export default async function AdminOverviewPage() {
               prefetch={false}
               className="flex items-center gap-5 rounded-md border border-line p-5 text-ink no-underline transition-colors hover:border-ink-3"
             >
-              <span className="numeral text-[3.5rem]">{queue.count}</span>
+              <span className="font-display text-[3.5rem] leading-none font-extrabold tabular-nums">
+                {queue.count}
+              </span>
               <span className="min-w-0">
                 <b className="block text-base">{queue.label}</b>
                 <span className="text-sm text-ink-2">{queue.note}</span>

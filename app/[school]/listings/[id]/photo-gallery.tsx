@@ -38,7 +38,7 @@ export function PhotoGallery({ photos, title }: { photos: ListingPhotoView[]; ti
               sizes="88vw"
               className="object-cover"
             />
-            <span className="numeral absolute right-2 bottom-2 rounded-[2px] bg-ink/80 px-1.5 pt-1 pb-0.5 text-sm text-white">
+            <span className="absolute right-2 bottom-2 rounded-[3px] bg-ink/80 px-1.5 py-0.5 font-display text-sm font-extrabold text-white tabular-nums">
               {index + 1}/{photos.length}
             </span>
           </li>
@@ -47,11 +47,11 @@ export function PhotoGallery({ photos, title }: { photos: ListingPhotoView[]; ti
 
       <div
         className={cn(
-          'relative hidden h-[28rem] gap-2 md:grid',
+          'relative hidden h-[26.5rem] gap-2 overflow-hidden rounded-md md:grid',
           side.length > 0 ? 'grid-cols-[1.6fr_1fr]' : 'grid-cols-1',
         )}
       >
-        <div className="relative overflow-hidden rounded-md bg-surface-2">
+        <div className="relative overflow-hidden bg-surface-2">
           <Image
             src={lead.galleryUrl}
             alt={title}
@@ -67,7 +67,7 @@ export function PhotoGallery({ photos, title }: { photos: ListingPhotoView[]; ti
               <div
                 key={photo.id}
                 className={cn(
-                  'relative overflow-hidden rounded-md bg-surface-2',
+                  'relative overflow-hidden bg-surface-2',
                   SIDE_LAYOUT[side.length][index],
                 )}
               >
@@ -86,10 +86,10 @@ export function PhotoGallery({ photos, title }: { photos: ListingPhotoView[]; ti
           <button
             type="button"
             onClick={() => dialog.current?.showModal()}
-            className="absolute right-3 bottom-3 inline-flex h-9 items-center gap-2 rounded-md bg-white px-3 text-[13px] font-semibold text-ink shadow-[0_2px_8px_rgb(0_0_0/0.2)] hover:bg-surface-2"
+            className="absolute right-3.5 bottom-3.5 inline-flex h-9 items-center gap-2 rounded-[5px] bg-white px-3 text-[13.5px] font-bold text-ink shadow-[0_2px_8px_rgb(0_0_0/0.2)] hover:bg-surface-2"
           >
             <Grid2x2 aria-hidden="true" className="size-4" />
-            All {photos.length} photos
+            Show all {photos.length} photos
           </button>
         )}
       </div>
@@ -97,10 +97,12 @@ export function PhotoGallery({ photos, title }: { photos: ListingPhotoView[]; ti
       <dialog
         ref={dialog}
         aria-label={`All photos of ${title}`}
-        className="m-auto max-h-[92dvh] w-[min(64rem,calc(100vw-2rem))] rounded-md bg-background p-0 text-ink shadow-[0_20px_60px_rgb(0_0_0/0.35)] backdrop:bg-ink/70"
+        className="m-auto max-h-[92dvh] w-[min(64rem,calc(100vw-2rem))] rounded-md bg-white p-0 text-ink shadow-[0_20px_60px_rgb(0_0_0/0.35)] backdrop:bg-ink/70"
       >
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-background px-5 py-3">
-          <p className="varsity text-xl font-extrabold">{photos.length} photos</p>
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-white px-5 py-3">
+          <p className="font-display text-xl font-extrabold tracking-[-0.01em]">
+            {photos.length} photos
+          </p>
           <button
             type="button"
             onClick={() => dialog.current?.close()}

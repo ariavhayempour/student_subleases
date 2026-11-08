@@ -25,7 +25,7 @@ export function UnblockNotice({ otherUserId }: { otherUserId: string }) {
         type="button"
         onClick={unblock}
         disabled={pending}
-        className="h-9 rounded-md border border-line-2 bg-background px-3 font-semibold text-ink hover:border-ink-3 disabled:opacity-60"
+        className="h-9 rounded-[5px] border-[1.5px] border-line-2 bg-white px-3 font-bold text-ink hover:border-ink-3 disabled:opacity-60"
       >
         Unblock
       </button>

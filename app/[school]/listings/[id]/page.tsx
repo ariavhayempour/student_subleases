@@ -2,10 +2,11 @@ import {
   Bath,
   BedDouble,
   Check,
-  ChevronLeft,
+  CalendarDays,
   House,
   Lock,
   MapPin,
+  Footprints,
   ShieldCheck,
   Sofa,
   UserRound,
@@ -15,6 +16,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { cache, type ReactNode } from 'react';
+import { BoardBand, BoardWork } from '@/app/_components/board-band';
 import { FavoriteButton } from '@/app/_components/favorite-button';
 import { ListingBadge } from '@/app/_components/listing-badge';
 import { MessageHostButton } from '@/app/_components/message-host-button';
@@ -22,6 +24,7 @@ import { ReportButton } from '@/app/_components/report-button';
 import { TermTimelineBar } from '@/app/_components/term-timeline';
 import { orNotFound } from '@/app/_lib/guards';
 import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import {
   formatDate,
   formatDateRange,
@@ -71,10 +74,25 @@ export async function generateMetadata({ params }: ListingPageProps): Promise<Me
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="border-t border-line pt-7">
-      <h2 className="varsity text-[1.75rem] font-extrabold">{title}</h2>
-      <div className="mt-4">{children}</div>
+    <section className="border-t border-line pt-7 first:border-t-0 first:pt-0">
+      <h2 className="font-display text-[22px] leading-tight font-extrabold tracking-[-0.01em]">
+        {title}
+      </h2>
+      <div className="mt-3.5">{children}</div>
     </section>
+  );
+}
+
+function CheckList({ items }: { items: string[] }) {
+  return (
+    <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-[14.5px] text-ink sm:grid-cols-3">
+      {items.map((item) => (
+        <li key={item} className="flex items-center gap-2">
+          <Check aria-hidden="true" className="size-4 shrink-0 text-ok" />
+          {item}
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -123,241 +141,221 @@ export default async function ListingPage({ params }: ListingPageProps) {
   const street = listing.unit ? `${listing.address}, Unit ${listing.unit}` : listing.address;
   const cityLine = `${listing.city}, ${listing.state} ${listing.zip}`;
   const distance = `${formatDistanceKm(listing.distanceKm)} to ${campusName}`;
+  const rent = usd.format(listing.rentCents / 100);
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 pt-5 pb-16 sm:px-6 lg:px-8">
-      <Link
-        href={`/${listing.school.slug}`}
-        className="inline-flex items-center gap-1 text-sm font-semibold text-ink no-underline hover:underline"
+    <main className="flex flex-1 flex-col">
+      <BoardBand
+        title={listing.title}
+        back={{
+          href: `/${listing.school.slug}`,
+          label: `All ${brand?.shortName ?? listing.school.name} listings`,
+        }}
+        school={brand ?? undefined}
       >
-        <ChevronLeft aria-hidden="true" className="size-4" />
-        All {brand?.shortName ?? listing.school.name} listings
-      </Link>
+        <p className="mt-2.5 flex flex-wrap items-baseline gap-x-[18px] gap-y-1.5">
+          <span>
+            <span className="font-display text-[30px] leading-none font-extrabold tracking-[-0.02em]">
+              {rent}
+            </span>
+            <span className="text-[14px] font-semibold text-ink-2"> / month</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 text-[15px] font-bold">
+            <CalendarDays aria-hidden="true" className="size-4" />
+            {formatDateRange(listing.availableFrom, listing.availableTo)}
+          </span>
+        </p>
+      </BoardBand>
 
-      {!visitor && !listing.isPublic && (
-        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-md bg-school-tint px-4 py-3 text-sm text-ink">
-          <div className="flex flex-wrap gap-2">
-            {listingBadges(listing).map((badge) => (
-              <ListingBadge key={badge.label} badge={badge} />
-            ))}
-          </div>
-          <p>Only you{listing.viewer === 'admin' ? ' (admin)' : ''} can see this page right now.</p>
-          {listing.viewer === 'owner' && (
-            <Link href={`/listings/${listing.id}/edit`} className="font-semibold text-school-link">
-              Edit listing
-            </Link>
-          )}
-        </div>
-      )}
-
-      <div className="mt-4">
-        <PhotoGallery photos={listing.photos} title={listing.title} />
-      </div>
-
-      <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_22.5rem] lg:gap-x-14 lg:gap-y-8">
-        <div className="min-w-0 lg:col-start-1 lg:row-start-1">
-          <div>
-            <h1 className="varsity text-[clamp(2.25rem,4.4vw,3.5rem)] font-black">
-              {listing.title}
-            </h1>
-            <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-[15px] text-ink-2">
-              <span className="inline-flex items-center gap-1.5">
-                <MapPin aria-hidden="true" className="size-4" />
-                <span className="text-ink">{street}</span>
-              </span>
-              <span aria-hidden="true">·</span>
-              <span>{cityLine}</span>
-              <span aria-hidden="true">·</span>
-              <span className="font-semibold text-ink">{distance}</span>
-            </p>
-          </div>
-        </div>
-
-        <aside className="lg:sticky lg:top-6 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start">
-          <div className="overflow-hidden rounded-md border border-line-2 shadow-[0_6px_24px_rgb(21_23_28/0.07)]">
-            <div className="on-school bg-school px-5 pt-5 text-on-school">
-              <p className="flex items-baseline gap-1.5">
-                <span className="numeral text-[3.75rem]">
-                  {usd.format(listing.rentCents / 100)}
-                </span>
-                <span className="text-sm font-medium">/ month</span>
-              </p>
-              <div aria-hidden="true" className="varsity-stripe mt-4 border-b-0" />
+      <BoardWork>
+        {!visitor && !listing.isPublic && (
+          <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[5px] border border-line bg-school-tint px-4 py-3 text-sm text-ink">
+            <div className="flex flex-wrap gap-2">
+              {listingBadges(listing).map((badge) => (
+                <ListingBadge key={badge.label} badge={badge} />
+              ))}
             </div>
-            <div className="grid gap-4 p-5">
-              <dl className="grid grid-cols-2 rounded-md border border-line-2">
+            <p>
+              Only you{listing.viewer === 'admin' ? ' (admin)' : ''} can see this page right now.
+            </p>
+            {listing.viewer === 'owner' && (
+              <Link href={`/listings/${listing.id}/edit`} className="font-bold text-school-link">
+                Edit listing
+              </Link>
+            )}
+          </div>
+        )}
+
+        <PhotoGallery photos={listing.photos} title={listing.title} />
+
+        <div className="mt-8 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-12">
+          <div className="min-w-0 space-y-[30px]">
+            <Section title="The place">
+              <dl className="grid grid-cols-2 gap-x-4 gap-y-[18px] sm:grid-cols-4">
+                {facts.map((fact) => (
+                  <div key={fact.label} className="grid gap-[3px]">
+                    <dt className="flex items-center gap-[7px] text-[12.5px] font-bold text-ink-2 [&_svg]:size-4 [&_svg]:text-ink">
+                      <span aria-hidden="true">{fact.icon}</span>
+                      {fact.label}
+                    </dt>
+                    <dd className="text-[15.5px] font-bold text-ink">{fact.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Section>
+
+            <Section title="About it">
+              <p className="max-w-[68ch] text-[16px] leading-[1.65] whitespace-pre-line text-ink">
+                {listing.description}
+              </p>
+            </Section>
+
+            {listing.roomFeatures.length > 0 && (
+              <Section title="The room">
+                <CheckList
+                  items={listing.roomFeatures.map((feature) => ROOM_FEATURE_LABELS[feature])}
+                />
+              </Section>
+            )}
+
+            {listing.amenities.length > 0 && (
+              <Section title="Amenities">
+                <CheckList items={listing.amenities.map((amenity) => AMENITY_LABELS[amenity])} />
+              </Section>
+            )}
+
+            <Section title="Where it is">
+              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[15.5px]">
+                <MapPin aria-hidden="true" className="size-[17px] shrink-0" />
+                <span className="font-bold text-ink">{street}</span>
+                <span className="text-ink-2">{cityLine}</span>
+              </p>
+              {visitor && !listing.unit && (
+                <p className="mt-2 flex items-start gap-2 text-[14px] text-ink-2">
+                  <Lock aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+                  The unit number shows once you’re in a conversation with the host.
+                </p>
+              )}
+              <div className="mt-3.5">
+                <ListingMap
+                  listing={listing.location}
+                  campus={listing.school.campusLocation}
+                  campusName={campusName}
+                />
+              </div>
+              <p className="mt-3 flex items-center gap-[7px] text-[14.5px] text-ink">
+                <Footprints aria-hidden="true" className="size-4" />
+                <span className="font-bold">{distance}</span>
+              </p>
+            </Section>
+          </div>
+
+          <aside className="grid gap-4 max-lg:order-first lg:sticky lg:top-5">
+            <div className="rounded-md border border-line bg-white p-5 shadow-[0_10px_24px_-18px_rgb(40_20_5/0.5)]">
+              <p className="flex items-baseline gap-1.5">
+                <span className="font-display text-[36px] leading-none font-extrabold tracking-[-0.02em]">
+                  {rent}
+                </span>
+                <span className="text-sm font-semibold text-ink-2">/ month</span>
+              </p>
+              <dl className="mt-4 grid grid-cols-2 rounded-[5px] border border-line">
                 <div className="px-3 py-2.5">
-                  <dt className="varsity text-xs font-bold tracking-[0.08em] text-ink-2">
-                    Move in
-                  </dt>
-                  <dd className="mt-1 text-[15px] font-semibold text-ink">
+                  <dt className="text-[12.5px] font-bold text-ink-2">Move in</dt>
+                  <dd className="mt-0.5 text-[15px] font-bold text-ink">
                     {formatDate(listing.availableFrom)}
                   </dd>
                 </div>
-                <div className="border-l border-line-2 px-3 py-2.5">
-                  <dt className="varsity text-xs font-bold tracking-[0.08em] text-ink-2">
-                    Move out
-                  </dt>
-                  <dd className="mt-1 text-[15px] font-semibold text-ink">
+                <div className="border-l border-line px-3 py-2.5">
+                  <dt className="text-[12.5px] font-bold text-ink-2">Move out</dt>
+                  <dd className="mt-0.5 text-[15px] font-bold text-ink">
                     {formatDate(listing.availableTo)}
                   </dd>
                 </div>
               </dl>
+              <TermTimelineBar from={listing.availableFrom} to={listing.availableTo} />
               {listing.crossSchool && (
-                <p className="flex gap-2.5 rounded-md bg-surface-2 p-3 text-sm text-ink-2">
+                <p className="mt-4 flex gap-2.5 rounded-[5px] bg-surface-2 p-3 text-sm text-ink-2">
                   <Lock aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
                   This listing is at another school. You can look around, but messaging, saving, and
                   reporting are only available for listings at your own school.
                 </p>
               )}
-              {canInteract && (
-                <MessageHostButton
-                  listingId={listing.id}
-                  conversationId={listing.conversationId}
-                  signedIn={actor.kind === 'user'}
-                />
-              )}
-              {canInteract && (
-                <FavoriteButton
-                  listingId={listing.id}
-                  listingTitle={listing.title}
-                  initialFavorited={listing.isFavorited}
-                  signedIn={actor.kind === 'user'}
-                  withText
-                  className="w-full"
-                />
-              )}
-              {listing.viewer === 'owner' && (
-                <Link
-                  href={`/listings/${listing.id}/edit`}
-                  className={buttonVariants({ variant: 'outline', size: 'lg' })}
-                >
-                  Edit your listing
-                </Link>
-              )}
-              {listing.host ? (
-                <div className="flex items-center gap-3 border-t border-line pt-4">
-                  <span
-                    aria-hidden="true"
-                    className="varsity grid size-11 shrink-0 place-items-center rounded-full bg-school-tint text-lg font-extrabold text-school"
-                  >
-                    {listing.host.displayName.slice(0, 1)}
-                  </span>
-                  <p className="text-sm text-ink-2">
-                    <span className="block text-[15px] font-semibold text-ink">
-                      Hosted by {listing.host.displayName}
-                    </span>
-                    Student host · joined {formatMonthYear(listing.host.joinedAt)}
-                  </p>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3 border-t border-line pt-4">
-                  <span
-                    aria-hidden="true"
-                    className="grid size-11 shrink-0 place-items-center rounded-full bg-surface-2 text-ink-2"
-                  >
-                    <Lock className="size-5" />
-                  </span>
-                  <p className="text-sm text-ink-2">
-                    <span className="block text-[15px] font-semibold text-ink">Student host</span>
-                    {actor.kind === 'user'
-                      ? `Host details are shown only to ${listing.school.name} students.`
-                      : 'Sign in to see who is hosting.'}
-                  </p>
+              {(canInteract || listing.viewer === 'owner') && (
+                <div className="mt-[18px] grid gap-2">
+                  {canInteract && (
+                    <MessageHostButton
+                      listingId={listing.id}
+                      conversationId={listing.conversationId}
+                      signedIn={actor.kind === 'user'}
+                    />
+                  )}
+                  {canInteract && (
+                    <FavoriteButton
+                      listingId={listing.id}
+                      listingTitle={listing.title}
+                      initialFavorited={listing.isFavorited}
+                      signedIn={actor.kind === 'user'}
+                      withText
+                      className="w-full"
+                    />
+                  )}
+                  {listing.viewer === 'owner' && (
+                    <Link
+                      href={`/listings/${listing.id}/edit`}
+                      className={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'w-full')}
+                    >
+                      Edit your listing
+                    </Link>
+                  )}
                 </div>
               )}
-              <p className="flex gap-2.5 rounded-md bg-surface-2 p-3 text-[13px] leading-snug text-ink-2">
-                <ShieldCheck aria-hidden="true" className="mt-px size-4 shrink-0 text-ok" />
-                {SAFETY_NOTICE}
-              </p>
             </div>
-          </div>
-        </aside>
 
-        <div className="min-w-0 space-y-8 lg:col-start-1 lg:row-start-2">
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-3">
-            {facts.map((fact) => (
-              <div key={fact.label} className="flex gap-3">
-                <span aria-hidden="true" className="mt-0.5 text-ink-2 [&_svg]:size-5">
-                  {fact.icon}
-                </span>
-                <div>
-                  <dt className="text-[13px] text-ink-2">{fact.label}</dt>
-                  <dd className="text-[15px] font-semibold text-ink">{fact.value}</dd>
-                </div>
-              </div>
-            ))}
-          </dl>
+            <div className="flex items-center gap-3 rounded-md border border-line bg-white p-4 shadow-[0_10px_24px_-18px_rgb(40_20_5/0.5)]">
+              <span
+                aria-hidden="true"
+                className="grid size-11 shrink-0 place-items-center rounded-full bg-surface-2 font-display text-base font-extrabold text-ink ring-1 ring-line-2 ring-inset"
+              >
+                {listing.host ? (
+                  listing.host.displayName.slice(0, 1)
+                ) : (
+                  <Lock className="size-5 text-ink-2" />
+                )}
+              </span>
+              {listing.host ? (
+                <p className="text-[13.5px] text-ink-2">
+                  <span className="block text-[15.5px] font-bold text-ink">
+                    Hosted by {listing.host.displayName}
+                  </span>
+                  Student host · joined {formatMonthYear(listing.host.joinedAt)}
+                </p>
+              ) : (
+                <p className="text-[13.5px] text-ink-2">
+                  <span className="block text-[15.5px] font-bold text-ink">Student host</span>
+                  {actor.kind === 'user'
+                    ? `Host details are shown only to ${listing.school.name} students.`
+                    : 'Sign in to see who is hosting.'}
+                </p>
+              )}
+            </div>
 
-          <Section title="About this place">
-            <p className="max-w-[68ch] text-[15px] leading-relaxed whitespace-pre-line text-ink">
-              {listing.description}
+            <p className="flex gap-2.5 rounded-md bg-warn-bg px-3.5 py-3 text-[13.5px] leading-snug font-semibold text-warn">
+              <ShieldCheck aria-hidden="true" className="mt-px size-[17px] shrink-0" />
+              {SAFETY_NOTICE}
             </p>
-          </Section>
 
-          <Section title="Availability">
-            <p className="text-[15px] font-semibold text-ink">
-              {formatDate(listing.availableFrom)} to {formatDate(listing.availableTo)}
-            </p>
-            <TermTimelineBar from={listing.availableFrom} to={listing.availableTo} size="full" />
-          </Section>
-
-          {listing.roomFeatures.length > 0 && (
-            <Section title="The room">
-              <ul className="grid gap-x-6 gap-y-3 text-[15px] text-ink sm:grid-cols-2">
-                {listing.roomFeatures.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2.5">
-                    <Check aria-hidden="true" className="size-4 text-ok" />
-                    {ROOM_FEATURE_LABELS[feature]}
-                  </li>
-                ))}
-              </ul>
-            </Section>
-          )}
-
-          {listing.amenities.length > 0 && (
-            <Section title="Amenities">
-              <ul className="grid gap-x-6 gap-y-3 text-[15px] text-ink sm:grid-cols-2">
-                {listing.amenities.map((amenity) => (
-                  <li key={amenity} className="flex items-center gap-2.5">
-                    <Check aria-hidden="true" className="size-4 text-ok" />
-                    {AMENITY_LABELS[amenity]}
-                  </li>
-                ))}
-              </ul>
-            </Section>
-          )}
-
-          <Section title="Location">
-            <ListingMap
-              listing={listing.location}
-              campus={listing.school.campusLocation}
-              campusName={campusName}
-            />
-            <p className="mt-3 text-[15px] text-ink">
-              <span className="font-semibold">{cityLine}</span>
-              <span className="text-ink-2"> · {distance}</span>
-            </p>
-            {visitor && !listing.unit && (
-              <p className="mt-2 flex items-center gap-2 text-sm text-ink-2">
-                <Lock aria-hidden="true" className="size-4" />
-                Unit numbers are shown only to students in a conversation with the host.
-              </p>
-            )}
-          </Section>
-
-          {canInteract && actor.kind === 'user' && (
-            <div className="border-t border-line pt-5">
+            {canInteract && actor.kind === 'user' && (
               <ReportButton
                 targetType="listing"
                 targetId={listing.id}
                 label="Report listing"
                 title="Report listing"
+                className="justify-self-start"
               />
-            </div>
-          )}
+            )}
+          </aside>
         </div>
-      </div>
+      </BoardWork>
     </main>
   );
 }

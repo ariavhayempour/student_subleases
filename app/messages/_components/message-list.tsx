@@ -21,16 +21,16 @@ export function MessageList({ messages, viewerId }: MessageListProps) {
               className={cn('group flex flex-col', mine ? 'items-end' : 'items-start')}
             >
               {message.senderId === null && (
-                <span className="mb-1 text-xs text-ink-3">{DELETED_USER_LABEL}</span>
+                <span className="mb-1 text-xs text-ink-2">{DELETED_USER_LABEL}</span>
               )}
               <div className="flex max-w-[85%] items-center gap-1 md:max-w-[68%]">
                 <div
                   id={`message-${message.id}`}
                   className={cn(
-                    'min-w-0 px-3.5 py-2.5 text-[15px] break-words whitespace-pre-wrap',
+                    'min-w-0 px-3.5 py-2.5 text-[15px] leading-snug break-words whitespace-pre-wrap',
                     mine
-                      ? 'rounded-[14px_14px_3px_14px] bg-school text-on-school'
-                      : 'rounded-[14px_14px_14px_3px] bg-surface-2 text-ink',
+                      ? 'rounded-[12px_12px_4px_12px] bg-school text-on-school'
+                      : 'rounded-[12px_12px_12px_4px] border border-line bg-surface-2 text-ink',
                   )}
                 >
                   {message.body}
@@ -46,7 +46,7 @@ export function MessageList({ messages, viewerId }: MessageListProps) {
                   </button>
                 )}
               </div>
-              <LocalTime iso={message.createdAt} className="mt-1 text-xs text-ink-3" />
+              <LocalTime iso={message.createdAt} className="mt-1 text-xs text-ink-2" />
             </li>
           );
         })}

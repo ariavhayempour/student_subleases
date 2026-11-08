@@ -19,7 +19,7 @@ export function AdminNav({ pendingListings, openReports }: AdminNavProps) {
   return (
     <aside className="w-60 shrink-0 bg-ink text-white">
       <nav aria-label="Admin" className="sticky top-0 px-3.5 py-5">
-        <p className="varsity px-2.5 pb-4 text-xl font-black tracking-[0.02em]">Admin</p>
+        <p className="px-2.5 pb-4 font-display text-xl font-extrabold tracking-[-0.015em]">Admin</p>
         <ul className="grid gap-0.5">
           {items.map(({ href, label, icon: Icon, count }) => {
             const active = href === '/admin' ? pathname === href : pathname.startsWith(href);
@@ -30,14 +30,14 @@ export function AdminNav({ pendingListings, openReports }: AdminNavProps) {
                   prefetch={false}
                   aria-current={active ? 'page' : undefined}
                   className={cn(
-                    'flex items-center gap-2.5 rounded-[3px] px-2.5 py-2 text-sm font-medium text-[#d5d8de] no-underline hover:bg-white/[0.07] hover:text-white',
+                    'flex items-center gap-2.5 rounded-[3px] px-2.5 py-2 text-sm font-medium text-[#ddd6cc] no-underline hover:bg-white/[0.07] hover:text-white',
                     active && 'bg-white/10 font-bold text-white',
                   )}
                 >
                   <Icon aria-hidden="true" className="size-4" />
                   {label}
                   {count > 0 && (
-                    <span className="numeral ml-auto min-w-[22px] rounded-full bg-white px-1.5 pt-0.5 text-center text-xs text-ink">
+                    <span className="ml-auto grid h-5 min-w-[22px] place-items-center rounded-full bg-white px-1.5 text-xs font-extrabold text-ink tabular-nums">
                       {count}
                       <span className="sr-only"> to review</span>
                     </span>

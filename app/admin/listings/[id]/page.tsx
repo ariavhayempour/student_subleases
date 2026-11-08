@@ -106,7 +106,9 @@ export default async function AdminListingPage({ params }: AdminListingPageProps
           )}
           <div className="space-y-1">
             <p className="flex items-baseline gap-1.5">
-              <span className="numeral text-[2.75rem]">{usd.format(listing.rentCents / 100)}</span>
+              <span className="font-display text-[2.75rem] leading-none font-extrabold tracking-[-0.02em] tabular-nums">
+                {usd.format(listing.rentCents / 100)}
+              </span>
               <span className="text-sm font-medium text-ink-2">/ month</span>
             </p>
             <p className="text-sm text-ink-2">
@@ -150,7 +152,10 @@ export default async function AdminListingPage({ params }: AdminListingPageProps
             aria-labelledby="actions-heading"
             className="space-y-4 rounded-md border border-line-2 p-5 shadow-[0_6px_24px_rgb(21_23_28/0.07)]"
           >
-            <h2 id="actions-heading" className="varsity text-[1.375rem] font-extrabold">
+            <h2
+              id="actions-heading"
+              className="font-display text-[1.375rem] font-extrabold tracking-[-0.015em]"
+            >
               Actions
             </h2>
             <ReviewActions
@@ -161,7 +166,10 @@ export default async function AdminListingPage({ params }: AdminListingPageProps
             />
           </section>
           <section aria-labelledby="owner-heading" className="space-y-1.5 text-sm">
-            <h2 id="owner-heading" className="varsity text-[1.375rem] font-extrabold">
+            <h2
+              id="owner-heading"
+              className="font-display text-[1.375rem] font-extrabold tracking-[-0.015em]"
+            >
               Owner
             </h2>
             <p>

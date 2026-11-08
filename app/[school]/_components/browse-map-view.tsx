@@ -52,9 +52,9 @@ function readPinColors(): PinColors {
   const css = getComputedStyle(document.documentElement);
   const read = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback;
   return {
-    pin: read('--school', '#15171c'),
+    pin: read('--school', '#1a1410'),
     onPin: read('--on-school', '#ffffff'),
-    hot: read('--school-highlight', '#15171c'),
+    hot: read('--school-highlight', '#1a1410'),
     onHot: read('--on-school-highlight', '#ffffff'),
   };
 }
@@ -267,10 +267,10 @@ export default function BrowseMapView({
         <NavigationControl showCompass={false} />
         <Marker longitude={campus.lng} latitude={campus.lat} anchor="left" offset={[-15, 0]}>
           <span className="pointer-events-none flex items-center gap-1.5">
-            <span className="grid size-[30px] place-items-center rounded-[2px] bg-ink text-white shadow-[0_0_0_3px_#fff]">
+            <span className="grid size-[30px] place-items-center rounded-[3px] bg-ink text-white shadow-[0_0_0_3px_#fff]">
               <Building2 aria-hidden="true" className="size-4" />
             </span>
-            <span className="varsity rounded-[2px] bg-white/95 px-1.5 pt-1 pb-[3px] text-[13px] font-extrabold tracking-[0.06em] text-ink">
+            <span className="rounded-[3px] bg-white/95 px-1.5 py-[3px] font-display text-[13px] leading-none font-extrabold tracking-[0.04em] text-ink uppercase">
               {campusName}
             </span>
           </span>
@@ -355,12 +355,14 @@ export default function BrowseMapView({
                     />
                   </div>
                 )}
-                <p className="numeral mt-2 text-[1.375rem]">{formatRent(selected[0].rentCents)}</p>
+                <p className="mt-2 font-display text-[1.375rem] leading-none font-extrabold tracking-[-0.02em] tabular-nums">
+                  {formatRent(selected[0].rentCents)}
+                </p>
                 <p className="truncate text-sm font-semibold">{selected[0].title}</p>
               </Link>
             ) : (
               <div className="w-52">
-                <p className="varsity text-base font-extrabold text-ink">
+                <p className="font-display text-base font-extrabold text-ink">
                   {selected.length} listings here
                 </p>
                 <ul className="mt-1 max-h-60 overflow-y-auto">
@@ -370,7 +372,9 @@ export default function BrowseMapView({
                         href={`/${schoolSlug}/listings/${pin.id}`}
                         className="block py-1 text-ink no-underline hover:underline"
                       >
-                        <span className="numeral text-lg">{formatRent(pin.rentCents)}</span>
+                        <span className="font-display text-lg font-extrabold tracking-[-0.01em] tabular-nums">
+                          {formatRent(pin.rentCents)}
+                        </span>
                         <span className="block truncate text-sm">{pin.title}</span>
                       </Link>
                     </li>

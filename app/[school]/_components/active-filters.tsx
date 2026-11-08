@@ -19,10 +19,12 @@ export function ActiveFilters({ schoolSlug, filters }: ActiveFiltersProps) {
           <Link
             href={hrefFor(chip.without)}
             aria-label={`Remove filter: ${chip.label}`}
-            className="inline-flex h-8 items-center gap-1.5 rounded-full bg-school pr-2.5 pl-3.5 text-[13px] font-semibold text-on-school no-underline transition-colors hover:bg-school-deep"
+            className="group inline-flex h-8 items-center gap-1.5 rounded-full bg-school-tint pr-[5px] pl-3 text-[13.5px] font-semibold text-ink no-underline ring-1 ring-school/25 transition-colors ring-inset hover:ring-school"
           >
             {chip.label}
-            <X aria-hidden="true" className="size-3.5" />
+            <span className="grid size-[22px] place-items-center rounded-full bg-white text-school-link ring-1 ring-line-2 ring-inset group-hover:bg-school group-hover:text-on-school group-hover:ring-school">
+              <X aria-hidden="true" className="size-[13px]" />
+            </span>
           </Link>
         </li>
       ))}

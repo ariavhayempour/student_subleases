@@ -67,7 +67,7 @@ export function ReviewActions({
               onChange={(event) => setNote(event.target.value)}
               aria-invalid={fieldError('note') ? true : undefined}
               aria-describedby={fieldError('note') ? 'reject-note-error' : undefined}
-              className="w-full rounded-md border border-line-2 bg-background px-3 py-2.5 text-sm text-ink hover:border-ink-3 focus-visible:border-school focus-visible:ring-3 focus-visible:ring-school/20 focus-visible:outline-none"
+              className="w-full rounded-[5px] border-[1.5px] border-line-2 bg-white px-3 py-2.5 text-sm text-ink hover:border-ink-3 focus-visible:border-school focus-visible:ring-3 focus-visible:ring-school/20 focus-visible:outline-none"
             />
             {fieldError('note') && (
               <p id="reject-note-error" className="text-sm text-bad">

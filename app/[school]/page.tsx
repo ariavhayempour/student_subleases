@@ -1,9 +1,9 @@
-import { ChevronLeft, House, SearchX } from 'lucide-react';
+import { House, SearchX } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { SchoolBand } from '@/app/_components/school-band';
+import { BoardBand, BoardWork } from '@/app/_components/board-band';
 import { todayIso } from '@/lib/term-timeline';
 import { orNotFound } from '@/app/_lib/guards';
 import { buttonVariants } from '@/components/ui/button';
@@ -80,64 +80,61 @@ export default async function SchoolPage({ params, searchParams }: SchoolPagePro
   );
 
   return (
-    <main className="w-full">
-      <SchoolBand
+    <main className="flex w-full flex-1 flex-col">
+      <BoardBand
+        title={`Places near ${brand.campusName}`}
+        accessibleTitle={`Subleases near ${school.name}`}
+        description={
+          brand.city
+            ? `Student subleases in ${brand.city}.`
+            : `Student subleases near ${brand.campusName}.`
+        }
+        // Students are locked to one school; visitors can pick another.
+        back={actor.kind !== 'user' ? { href: '/schools', label: 'All schools' } : undefined}
         school={brand}
-        heading={`Subleases near ${school.name}`}
-        back={
-          // Students are locked to one school; visitors can pick another.
-          actor.kind !== 'user' && (
-            <Link
-              href="/schools"
-              className="mb-1 inline-flex items-center gap-1 text-sm font-semibold text-on-school no-underline hover:underline"
-            >
-              <ChevronLeft aria-hidden="true" className="size-4" />
-              All schools
-            </Link>
-          )
-        }
-        aside={
-          <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
-            {switchable && <SchoolSwitcher current={school.slug} schools={switchable} />}
-            <p className="sm:text-right">
-              <b className="numeral block text-[2.125rem]">{results.total}</b>
-              <span className="text-[13px]">{results.total === 1 ? 'listing' : 'listings'}</span>
-            </p>
-          </div>
-        }
       />
-      <div className="z-20 border-b border-line bg-background md:sticky md:top-0">
-        <div className="mx-auto w-full max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
-          <BrowseFilters key={query} schoolSlug={school.slug} filters={filters} />
+      <BoardWork bare>
+        <div className="z-20 border-b border-line bg-white md:sticky md:top-0">
+          <div className="mx-auto w-full max-w-7xl px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
+            {switchable && (
+              <div className="mb-3 flex justify-end">
+                <SchoolSwitcher current={school.slug} schools={switchable} />
+              </div>
+            )}
+            <BrowseFilters key={query} schoolSlug={school.slug} filters={filters} />
+          </div>
         </div>
-      </div>
-      <div className="mx-auto w-full max-w-7xl px-4 pt-5 pb-10 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-          <p className="text-sm font-semibold text-ink" aria-live="polite">
+        <div className="mx-auto w-full max-w-7xl px-4 pt-5 pb-12 sm:px-6 sm:pt-6 lg:px-8">
+          <ActiveFilters schoolSlug={school.slug} filters={filters} />
+          <p
+            className="mt-4 font-display text-[20px] font-extrabold tracking-[-0.01em] text-ink first:mt-0 sm:text-[22px]"
+            aria-live="polite"
+          >
             <span>
               {results.total} listing{results.total === 1 ? '' : 's'}
             </span>{' '}
-            <span className="font-normal text-ink-2">near {brand.campusName}</span>
+            <span className="font-sans text-[15px] font-medium tracking-normal text-ink-2">
+              near {brand.campusName}
+            </span>
           </p>
-          <ActiveFilters schoolSlug={school.slug} filters={filters} />
+          <BrowseView
+            school={{
+              id: school.id,
+              slug: school.slug,
+              campus: school.campusLocation,
+              campusName: brand.campusName,
+              timelineStart: todayIso(),
+              zoom: school.defaultMapZoom,
+            }}
+            filters={filters}
+            query={query}
+            results={results}
+            pins={pins}
+            signedIn={actor.kind === 'user'}
+            empty={empty}
+          />
         </div>
-        <BrowseView
-          school={{
-            id: school.id,
-            slug: school.slug,
-            campus: school.campusLocation,
-            campusName: brand.campusName,
-            timelineStart: todayIso(),
-            zoom: school.defaultMapZoom,
-          }}
-          filters={filters}
-          query={query}
-          results={results}
-          pins={pins}
-          signedIn={actor.kind === 'user'}
-          empty={empty}
-        />
-      </div>
+      </BoardWork>
     </main>
   );
 }
@@ -146,11 +143,11 @@ type EmptyStateProps = { icon: ReactNode; title: string; body: string; action: R
 
 function EmptyState({ icon, title, body, action }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center rounded-md bg-surface-2 px-6 py-14 text-center">
+    <div className="flex flex-col items-center rounded-md border border-line bg-surface-2 px-6 py-14 text-center">
       <span className="grid size-12 place-items-center rounded-full bg-school-tint text-school">
         {icon}
       </span>
-      <p className="varsity mt-4 text-[1.625rem] font-extrabold">{title}</p>
+      <p className="board-display mt-4 text-[1.5rem] text-balance">{title}</p>
       <p className="mt-2 max-w-sm text-sm text-ink-2">{body}</p>
       <div className="mt-5">{action}</div>
     </div>

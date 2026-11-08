@@ -18,7 +18,7 @@ export async function AdminNavLink({ className }: { className?: string }) {
       {total > 0 && (
         <span
           aria-hidden="true"
-          className="numeral min-w-[19px] rounded-full bg-highlight px-1.5 pt-0.5 text-center text-xs text-on-highlight"
+          className="grid h-5 min-w-5 place-items-center rounded-full bg-school px-1.5 text-[12px] font-extrabold text-on-school tabular-nums"
         >
           {total}
         </span>

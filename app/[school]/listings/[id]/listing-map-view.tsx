@@ -24,10 +24,10 @@ export default function ListingMapView({
       <NavigationControl showCompass={false} />
       <Marker longitude={campus.lng} latitude={campus.lat} anchor="left" offset={[-15, 0]}>
         <span className="pointer-events-none flex items-center gap-1.5">
-          <span className="grid size-[30px] place-items-center rounded-[2px] bg-ink text-white shadow-[0_0_0_3px_#fff]">
+          <span className="grid size-[30px] place-items-center rounded-[3px] bg-ink text-white shadow-[0_0_0_3px_#fff]">
             <Building2 aria-hidden="true" className="size-4" />
           </span>
-          <span className="varsity rounded-[2px] bg-white/95 px-1.5 pt-1 pb-[3px] text-[13px] font-extrabold tracking-[0.06em] text-ink">
+          <span className="rounded-[3px] bg-white/95 px-1.5 py-0.5 text-[12.5px] font-extrabold text-ink">
             {campusName}
           </span>
         </span>
