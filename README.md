@@ -10,12 +10,14 @@ University. New schools are data, not code.
 ## Features
 
 - Browse and search listings by school with filters, sorting, and a map
-- Post, edit, and manage listings with photos; every listing is reviewed before it appears
+- Post, edit, and manage listings with photos; new listings go live after a short review period
 - Save favorite listings
 - Private messaging between students with live delivery, plus blocking
 - Reporting, automatic hiding of heavily reported listings, and an admin area for review,
   moderation, and an audit log
-- Static pages (about, terms, privacy, contact), `robots.txt`, and a sitemap
+- A corkboard-style landing page with a school and term search
+- Static pages (about, terms, privacy) and a contact form with topics (general question, bug,
+  account help, add my school), `robots.txt`, and a sitemap
 
 ## Tech stack
 
@@ -80,7 +82,7 @@ Architecture and technical documentation live in [`docs/`](docs/). Start with
 - [`listings.md`](docs/listings.md), [`search.md`](docs/search.md),
   [`messaging.md`](docs/messaging.md), [`moderation.md`](docs/moderation.md),
   [`admin.md`](docs/admin.md), [`site-pages.md`](docs/site-pages.md),
-  [`design-system.md`](docs/design-system.md) (school colors, tokens, shared UI)
+  [`design-system.md`](docs/design-system.md) (the Union Board look, school colors, tokens, shared UI)
 - [`database.md`](docs/database.md), [`services.md`](docs/services.md),
   [`auth.md`](docs/auth.md), [`storage.md`](docs/storage.md)
 - [`environment.md`](docs/environment.md) (variables, CI, secrets),

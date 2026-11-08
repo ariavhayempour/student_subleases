@@ -62,11 +62,19 @@ access key. No server code, dependency, or environment variable is involved.
   (so local and preview submissions also reach the owner's inbox). Messages go to the email the key
   was created with; change that in the Web3Forms dashboard, or swap the key. With an empty key the
   form refuses to send and says it is not set up.
-- **Validation:** `lib/validation/contact.ts` (name 1–100, email, message 10–5,000; all
-  trimmed),
-  used by the form through `zodResolver`.
-- **Payload:** `access_key`, `h-captcha-response`, a fixed `subject` and `from_name` naming
-  `APP_NAME`, and the visitor's `name`, `email` (Web3Forms uses it as reply-to), and `message`.
+- **Topics:** a required choice from `CONTACT_TOPICS` in `lib/validation/contact.ts`: General
+  question (`general`, preselected), Report a bug (`bug`), Account or sign-in help (`account`), and
+  Add my school (`add-school`). Add my school shows a required **School name** field (1–120). A
+  link can preselect a topic with `/contact?topic=<value>`; the landing page's and `/schools`'
+  "Tell us" links use `?topic=add-school`. Unknown values fall back to General question
+  (`parseContactTopic`). Reports about a specific listing, message, or user still belong in the
+  Report option on that item, and the page says so.
+- **Validation:** `lib/validation/contact.ts` (topic, school name when adding a school, name 1–100,
+  email, message 10–5,000; all trimmed), used by the form through `zodResolver`.
+- **Payload:** `access_key`, `h-captcha-response`, a `subject` that starts with the topic label
+  (`Report a bug: new message from the … contact form`), `from_name` naming `APP_NAME`, the `topic`
+  label, `school` (only for Add my school), and the visitor's `name`, `email` (Web3Forms uses it as
+  reply-to), and `message`. Web3Forms emails every field, so the topic shows in the inbox.
 - **Spam:**
   - **hCaptcha** (`app/contact/hcaptcha-widget.tsx`): loaded from `js.hcaptcha.com` with
     `render=explicit&onload=onHCaptchaLoad` (no npm package) and rendered with Web3Forms' free
@@ -110,52 +118,74 @@ non-production branch, Vercel omits that header and staging must add its own `no
 
 ## Tests
 
-- `tests/lib/contact.test.ts`: schema, payload, and every failure path of `submitContactMessage`
-  with a fake `fetch`.
+- `tests/lib/contact.test.ts`: schema (topics, the school name rule), `parseContactTopic`, payload,
+  and every failure path of `submitContactMessage` with a fake `fetch`.
+- `tests/lib/terms.test.ts`: the landing search's term list (`upcomingTerms`).
 - `tests/lib/site-url.test.ts`: `siteUrl()`.
 - `tests/app/robots-sitemap.test.ts`: blocked and allowed paths (with a small robots matcher) and
   the sitemap against the seeded schools.
 - `e2e/static-pages.spec.ts`: pages and footer links, robots/sitemap over HTTP, and the contact
   form with the Web3Forms request intercepted (no real email is sent) and the hCaptcha script
-  stubbed: token in the payload, a fresh token after a failed send, the cooldown, and the
-  unsolved check.
+  stubbed: token and topic in the payload, a fresh token after a failed send, the cooldown, the
+  unsolved check, and `?topic=add-school` preselecting the topic and requiring a school name.
+- `e2e/public.spec.ts`: the landing headline, the tape linking to a school, and the landing search
+  opening a school filtered to a term (or unfiltered for Any dates).
 - `tests/lib/contact-cooldown.test.ts`: the cooldown countdown and unavailable storage.
 
 ## Landing page (`/`)
 
-`app/page.tsx` is the signed-out landing page. Signed-in users never see it: students who still
-need onboarding go to `/onboarding`, everyone else with a home school goes to `/{school}`.
+`app/page.tsx` is the signed-out landing page, drawn as the **Union Board**: a corkboard with
+pinned paper (see `docs/design-system.md`). Signed-in users never see it: students who still need
+onboarding go to `/onboarding`, everyone else with a home school goes to `/{school}`.
 
-Sections, top to bottom: an ink hero (headline, lede, **Create your free account** linking to
-`/sign-up`), the school ribbon (`#schools`), a "leaving /
-looking" section with an illustrative term timeline, the three sign-up steps, the platform's
-promises (students only, every listing reviewed, free, unit number private), and a closing call to
-action with a "Don't see your school? Tell us" link to `/contact`. Copy states only product facts;
-there are no counts or testimonials.
+Sections, top to bottom:
 
-**School ribbon** (`app/_components/school-ribbon.tsx`) lists every active school from
-`listActiveSchools()`, so new schools appear without code changes. Each block is a link to the
-school's browse page, wearing that school's colors via `schoolThemeStyle`. The list is repeated
-until half the row covers a 2560px screen, then the row scrolls itself sideways (32px/s) and wraps
-at the halfway point, which makes the loop seamless. Only the first copy is in the accessibility
-tree and tab order (repeats are `aria-hidden` with `tabIndex={-1}`, but stay clickable). Motion stops while the pointer is over
-the row, while anything in it has focus, during a touch, when the tab is hidden, and when the
-visitor presses **Pause**, which also pauses the hero's school lights. While paused it shows a thin scrollbar. Under `prefers-reduced-motion` it renders one copy
-as a wrapping grid that shows every school, with no Pause button. It moves `scrollLeft` rather than a CSS transform, so focus
-and manual scrolling bring any block into view.
+1. **Hero** (cork): the main flyer with **Sublet near campus.**, the lede, and the search
+   (`LandingSearch`), beside a pinned sample listing print. Under them runs the school tape.
+2. **Every term, someone leaves and someone arrives.** A pinned sheet with the term chart
+   (`TermMatch`): Jan–Apr / May–Aug / Sep–Dec, a solid bar for a host away May–Aug and a hatched
+   bar for a student who needs those months, and a **Same months** mark. School buttons recolor the
+   sheet and redraw the bars.
+3. **Like the board, but online.** A pinned printout of one school's browse page with sample
+   listings, a sample conversation with the real safety notice, and an index card on filter, map,
+   and message (`LandingPreview`). It uses Michigan when that school exists, otherwise the first
+   school.
+4. **Board rules.** On a painted cinderblock wall: the posting policy (students only, a short review
+   period, free with no payments, unit number kept private).
+5. **Questions, answered.** (`#faq`, linked from the header's **FAQ**): native `<details>`.
+6. **Find a place, or fill yours.** The closing flyer with **Create your free account** (`/sign-up`)
+   and "Don't see your school? Tell us" (`/contact?topic=add-school`).
 
-**School lights and accent.** The hero draws one glow per active school (up to four) behind the
-headline, colored by `schoolGlowColor` in `lib/school-theme.ts`. Everything below the hero sits in
-`LandingAccent` (`app/_components/landing-accent.tsx`), which holds one chosen school (the first by
-name to start) and spreads its `schoolThemeStyle` over those sections. The chips in the term example
-(`app/_components/term-match.tsx`) switch it; with one school the chips are hidden.
+Copy states only product facts; there are no counts or testimonials, and every sample listing or
+person is labeled as a sample. Listings are never described as reviewed by a person or by a
+deadline; the wording is "new listings go live after a short review period".
+
+**Search** (`app/_components/landing-search.tsx`): a school select (every active school) and a
+**When** select listing the current term and the two after it from `upcomingTerms()` in
+`lib/terms.ts` (Spring Jan 1–Apr 30, Summer May 1–Aug 31, Fall Sep 1–Dec 31), plus **Any dates**.
+It defaults to the next term. **Post or find a place** opens `/{school}?from=…&to=…`; the browse
+page's date filter matches any listing whose dates overlap that range. Any dates opens `/{school}`.
+
+**School tape** (`app/_components/school-tape.tsx`) lists every active school from
+`listActiveSchools()`, so new schools appear without code changes. Each segment is a link to the
+school's browse page in that school's primary color, with the name in its secondary color and the
+city in its on-primary color (names are 19px+ bold so maize and gold pass AA as large text). The
+list repeats until half the row covers a 2560px screen; the row then scrolls itself sideways at
+100px/s and wraps at the halfway point, which makes the loop seamless. Only the first copy is in the
+accessibility tree and tab order (repeats are `aria-hidden` with `tabIndex={-1}`, but stay
+clickable). Motion stops while the pointer is over the tape, while anything in it has focus, during
+a touch, and when the tab is hidden. The owner chose no Pause button (2026-11-07). Under
+`prefers-reduced-motion` the tape shows one wrapping copy and never moves. The tape unrolls once on
+load (`tape-unroll` in `app/globals.css`). It moves `scrollLeft` rather than a transform, so focus
+and manual scrolling bring any segment into view.
 
 **Reveals.** `LandingReveal` (`app/_components/landing-reveal.tsx`) finds every `[data-reveal]` block
-after hydration and, for blocks still below the fold, sets `data-reveal="armed"` (the hidden start
-state in `app/globals.css`), then `"in"` when the block scrolls into view. Blocks already on screen are
-left alone, nothing is armed under `prefers-reduced-motion`, and without JavaScript every block simply
-renders finished. The term example replays its bars on a school change by snapping to
-`data-reveal="reset"` and back to `"in"`.
+after hydration and, for blocks still below the fold, sets `data-reveal="armed"` (sheets wait
+slightly above their spot, transparent, in `app/globals.css`), then `"in"` when the block scrolls
+into view, so each sheet settles onto the board. The term chart's bars draw in and the **Same
+months** mark lands last. Blocks already on screen are left alone, nothing is armed under
+`prefers-reduced-motion`, and without JavaScript every block renders finished. The term chart
+replays on a school change by snapping to `data-reveal="reset"` and back to `"in"`.
 
-The header's bottom stripe is hidden on `/` for signed-out visitors so the ink header runs
-straight into the ink hero (`HeaderStripe` in `app/_components/header-brand.tsx`).
+**Images**: the sample photos are Unsplash photos saved as WebP in `public/landing/`, each with a
+`.json` sidecar recording its source.
