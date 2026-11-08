@@ -80,7 +80,7 @@ Material classes (one CSS block in `globals.css`):
 | `board-display`                                               | Bricolage Grotesque 800, tight, for headings                          |
 | `flyer-caps`                                                  | the flyer voice: Bricolage narrowed (`wdth` 78), all caps             |
 | `scribble`                                                    | Gochi Hand, for the odd sticky note only                              |
-| `select-chevron`                         | a drawn chevron for native selects (the post-a-listing form)          |
+| `select-chevron`                                              | a drawn chevron for native selects (the post-a-listing form)          |
 | `term-bar`, `term-bar-host`, `term-bar-guest`, `term-matched` | the term chart's bars and mark                                        |
 
 Rules: cork, pins, tape, and tilt belong to the board (landing sections and the title band at the
