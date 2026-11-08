@@ -40,7 +40,7 @@ export async function listActiveSchools(): Promise<SchoolSummary[]> {
     })
     .from(schools)
     .where(eq(schools.isActive, true))
-    .orderBy(asc(schools.name));
+    .orderBy(asc(schools.sortOrder), asc(schools.name));
   return rows.map((row) => ({ id: row.id, slug: row.slug, name: row.name, ...schoolBrand(row) }));
 }
 

@@ -20,7 +20,7 @@ export function LandingSearch({
   defaultTermKey: string;
 }) {
   const router = useRouter();
-  const [school, setSchool] = useState(schools[0]?.slug ?? '');
+  const [school, setSchool] = useState('');
   const [termKey, setTermKey] = useState(defaultTermKey);
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -38,8 +38,12 @@ export function LandingSearch({
           id="landing-school"
           value={school}
           onChange={(event) => setSchool(event.target.value)}
+          required
           className={selectClass}
         >
+          <option value="" disabled>
+            Select school
+          </option>
           {schools.map((entry) => (
             <option key={entry.slug} value={entry.slug}>
               {entry.shortName}
