@@ -1,5 +1,5 @@
 import { APP_NAME } from '@/lib/app-config';
-import type { ContactMessage } from '@/lib/validation/contact';
+import { contactTopicLabel, type ContactMessage } from '@/lib/validation/contact';
 
 // Public by design: Web3Forms only accepts browser submissions, so the key ships in the page.
 export const WEB3FORMS_ACCESS_KEY = '0f7c3774-a567-4ca9-8852-2ed55e7e6d61';
@@ -20,11 +20,14 @@ export function contactPayload(
   accessKey: string,
   captchaToken: string,
 ): Record<string, string> {
+  const topic = contactTopicLabel(message.topic);
   return {
     access_key: accessKey,
     'h-captcha-response': captchaToken,
-    subject: `New message from the ${APP_NAME} contact form`,
+    subject: `${topic}: new message from the ${APP_NAME} contact form`,
     from_name: APP_NAME,
+    topic,
+    ...(message.topic === 'add-school' ? { school: message.school } : {}),
     name: message.name,
     email: message.email,
     message: message.message,

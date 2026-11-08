@@ -1,9 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import { APP_NAME } from '@/lib/app-config';
 import { contactPayload, submitContactMessage, WEB3FORMS_ENDPOINT } from '@/lib/contact';
-import { contactSchema, type ContactMessage } from '@/lib/validation/contact';
+import { contactSchema, parseContactTopic, type ContactMessage } from '@/lib/validation/contact';
 
 const message: ContactMessage = {
+  topic: 'general',
+  school: '',
   name: 'Ada L.',
   email: 'ada@example.edu',
   message: 'Is there a way to edit my school?',
@@ -19,6 +21,8 @@ function jsonResponse(status: number, body: unknown): Response {
 describe('contactSchema', () => {
   it('trims fields and accepts a valid message', () => {
     const parsed = contactSchema.parse({
+      topic: 'general',
+      school: '',
       name: '  Ada L. ',
       email: ' ada@example.edu ',
       message: '  Is there a way to edit my school?  ',
@@ -27,12 +31,33 @@ describe('contactSchema', () => {
   });
 
   it('rejects a missing name, a bad email, and a too-short message', () => {
-    const result = contactSchema.safeParse({ name: '   ', email: 'nope', message: 'hi' });
+    const result = contactSchema.safeParse({
+      topic: 'general',
+      school: '',
+      name: '   ',
+      email: 'nope',
+      message: 'hi',
+    });
     expect(result.success).toBe(false);
     const fields = result.error?.flatten().fieldErrors;
     expect(fields?.name).toEqual(['Enter your name']);
     expect(fields?.email).toEqual(['Enter a valid email address']);
     expect(fields?.message).toEqual(['Write at least 10 characters']);
+  });
+
+  it('rejects an unknown topic', () => {
+    const result = contactSchema.safeParse({ ...message, topic: 'press' });
+    expect(result.success).toBe(false);
+    expect(result.error?.flatten().fieldErrors.topic).toEqual(['Choose a topic']);
+  });
+
+  it('needs a school name only when asking to add a school', () => {
+    const missing = contactSchema.safeParse({ ...message, topic: 'add-school', school: '  ' });
+    expect(missing.error?.flatten().fieldErrors.school).toEqual(['Enter the school’s name']);
+    expect(contactSchema.safeParse({ ...message, topic: 'bug', school: '' }).success).toBe(true);
+    expect(
+      contactSchema.parse({ ...message, topic: 'add-school', school: ' Ohio State ' }).school,
+    ).toBe('Ohio State');
   });
 
   it('rejects a message over 5,000 characters', () => {
@@ -41,17 +66,40 @@ describe('contactSchema', () => {
   });
 });
 
+describe('parseContactTopic', () => {
+  it('accepts known topics and rejects anything else', () => {
+    expect(parseContactTopic('add-school')).toBe('add-school');
+    expect(parseContactTopic('bug')).toBe('bug');
+    expect(parseContactTopic('press')).toBeNull();
+    expect(parseContactTopic(['bug'])).toBeNull();
+    expect(parseContactTopic(undefined)).toBeNull();
+  });
+});
+
 describe('contactPayload', () => {
-  it('sends the access key, the captcha token, a fixed subject, and the visitor fields', () => {
+  it('sends the access key, the captcha token, a topic subject, and the visitor fields', () => {
     expect(contactPayload(message, 'key-123', 'tok')).toEqual({
       access_key: 'key-123',
       'h-captcha-response': 'tok',
-      subject: `New message from the ${APP_NAME} contact form`,
+      subject: `General question: new message from the ${APP_NAME} contact form`,
       from_name: APP_NAME,
+      topic: 'General question',
       name: 'Ada L.',
       email: 'ada@example.edu',
       message: 'Is there a way to edit my school?',
     });
+  });
+
+  it('labels bug reports and includes the school only for school requests', () => {
+    const bug = contactPayload({ ...message, topic: 'bug', school: 'ignored' }, 'k', 't');
+    expect(bug.subject).toBe(`Report a bug: new message from the ${APP_NAME} contact form`);
+    expect(bug).not.toHaveProperty('school');
+    const school = contactPayload(
+      { ...message, topic: 'add-school', school: 'Ohio State' },
+      'k',
+      't',
+    );
+    expect(school).toMatchObject({ topic: 'Add my school', school: 'Ohio State' });
   });
 });
 

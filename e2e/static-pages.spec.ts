@@ -66,7 +66,7 @@ async function stubHCaptcha(page: Page, { solved = true } = {}): Promise<void> {
 }
 
 async function fillContactForm(page: Page): Promise<void> {
-  await page.getByLabel('Name').fill('Ada L.');
+  await page.getByLabel('Name', { exact: true }).fill('Ada L.');
   await page.getByLabel('Email').fill('ada@example.edu');
   await page.getByLabel('Message').fill('How long does listing review take?');
 }
@@ -84,7 +84,7 @@ test('the contact form validates, then sends through Web3Forms', async ({ page }
   await expect(page.getByText('Enter your name')).toBeVisible();
   await expect(page.getByText('Write at least 10 characters')).toBeVisible();
 
-  await page.getByLabel('Name').fill('Ada L.');
+  await page.getByLabel('Name', { exact: true }).fill('Ada L.');
   await page.getByLabel('Email').fill('ada@example.edu');
   await page.getByLabel('Message').fill('How long does listing review take?');
   await page.getByRole('button', { name: 'Send message' }).click();
@@ -97,9 +97,32 @@ test('the contact form validates, then sends through Web3Forms', async ({ page }
       name: 'Ada L.',
       email: 'ada@example.edu',
       message: 'How long does listing review take?',
+      topic: 'General question',
       'h-captcha-response': 'e2e-captcha-token-0',
     }),
   ]);
+});
+
+test('a contact link can preselect a topic, and adding a school asks for its name', async ({
+  page,
+}) => {
+  const sent: unknown[] = [];
+  await page.route(WEB3FORMS_ENDPOINT, async (route) => {
+    sent.push(route.request().postDataJSON());
+    await route.fulfill({ json: { success: true } });
+  });
+  await stubHCaptcha(page);
+
+  await page.goto('/contact?topic=add-school');
+  await expect(page.getByRole('radio', { name: 'Add my school' })).toBeChecked();
+  await fillContactForm(page);
+  await page.getByRole('button', { name: 'Send message' }).click();
+  await expect(page.getByText('Enter the school’s name')).toBeVisible();
+
+  await page.getByLabel('School name').fill('Ohio State');
+  await page.getByRole('button', { name: 'Send message' }).click();
+  await expect(page.getByText('Thanks, your message was sent.')).toBeVisible();
+  expect(sent).toEqual([expect.objectContaining({ topic: 'Add my school', school: 'Ohio State' })]);
 });
 
 test('the contact form shows an error and keeps the text when sending fails', async ({ page }) => {
