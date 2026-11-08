@@ -25,14 +25,14 @@ export function ThreadHeader({
   showMenu = true,
 }: ThreadHeaderProps) {
   return (
-    <header className="flex items-center gap-3.5 border-b border-line px-5 py-3.5">
-      <div className="relative aspect-[4/3] w-16 shrink-0 overflow-hidden rounded-md bg-surface-2">
+    <header className="flex items-center gap-3 border-b border-line px-3 py-3 sm:gap-3.5 sm:px-5">
+      <div className="relative aspect-[4/3] w-14 shrink-0 overflow-hidden rounded-md bg-surface-2 sm:w-16">
         {listing?.coverThumbUrl && (
           <Image src={listing.coverThumbUrl} alt="" fill sizes="64px" className="object-cover" />
         )}
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-[15px] font-semibold text-ink">
+        <p className="truncate text-[16px] font-extrabold text-ink">
           {otherUser?.displayName ?? DELETED_USER_LABEL}
         </p>
         <h2 className="truncate text-sm font-medium text-ink-2">
@@ -41,7 +41,7 @@ export function ThreadHeader({
           ) : listing.linkable ? (
             <Link
               href={`/${listing.schoolSlug}/listings/${listing.id}`}
-              className="inline-flex max-w-full items-center gap-1 text-school-link"
+              className="inline-flex max-w-full items-center gap-1 font-semibold text-school-link"
             >
               <span className="truncate">{listing.title}</span>
               <ArrowUpRight aria-hidden="true" className="size-3.5 shrink-0" />
@@ -51,14 +51,14 @@ export function ThreadHeader({
           )}
         </h2>
         {listing && (
-          <p className="truncate text-xs text-ink-3">
+          <p className="truncate text-xs text-ink-2">
             {listing.unit ? `${listing.address}, Unit ${listing.unit}` : listing.address}
           </p>
         )}
       </div>
       {listing && (
         <p className="hidden shrink-0 text-right sm:block">
-          <span className="numeral block text-[1.75rem] text-ink">
+          <span className="block font-display text-[1.5rem] leading-none font-extrabold tracking-[-0.02em] text-ink tabular-nums">
             {usd.format(listing.rentCents / 100)}
           </span>
           <span className="text-xs text-ink-2">/ month</span>

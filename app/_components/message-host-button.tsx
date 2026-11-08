@@ -2,6 +2,7 @@ import { SignUpButton } from '@clerk/nextjs';
 import { MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 type MessageHostButtonProps = {
   listingId: string;
@@ -13,7 +14,10 @@ export function MessageHostButton({ listingId, conversationId, signedIn }: Messa
   if (!signedIn) {
     return (
       <SignUpButton mode="redirect">
-        <button type="button" className={buttonVariants({ size: 'lg' })}>
+        <button
+          type="button"
+          className={cn(buttonVariants({ size: 'lg' }), 'w-full text-[15.5px]')}
+        >
           <MessageSquare aria-hidden="true" />
           Message host
         </button>
@@ -23,7 +27,7 @@ export function MessageHostButton({ listingId, conversationId, signedIn }: Messa
   return (
     <Link
       href={conversationId ? `/messages/${conversationId}` : `/messages/new?listing=${listingId}`}
-      className={buttonVariants({ size: 'lg' })}
+      className={cn(buttonVariants({ size: 'lg' }), 'w-full text-[15.5px]')}
     >
       <MessageSquare aria-hidden="true" />
       {conversationId ? 'View conversation' : 'Message host'}

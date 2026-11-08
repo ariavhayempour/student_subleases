@@ -36,12 +36,12 @@ export function ThreadMenu({ otherUserId, otherName, blocked }: ThreadMenuProps)
       <details ref={menu} className="relative">
         <summary
           ref={summary}
-          className="grid size-9 cursor-pointer list-none place-items-center rounded-md text-ink hover:bg-surface-2 [&::-webkit-details-marker]:hidden"
+          className="grid size-9 cursor-pointer list-none place-items-center rounded-[5px] border-[1.5px] border-line-2 bg-white text-ink hover:border-ink-3 hover:bg-surface-2 [&::-webkit-details-marker]:hidden"
         >
           <span className="sr-only">Conversation options</span>
           <MoreHorizontal aria-hidden="true" className="size-5" />
         </summary>
-        <div className="absolute right-0 z-20 mt-1.5 w-52 rounded-md bg-background p-1.5 shadow-[0_8px_28px_rgb(0_0_0/0.18)] ring-1 ring-line">
+        <div className="absolute right-0 z-20 mt-1.5 w-52 rounded-[5px] border border-line bg-white p-1.5 shadow-[0_10px_30px_-8px_rgb(40_20_5/0.35)]">
           <button
             type="button"
             onClick={run}

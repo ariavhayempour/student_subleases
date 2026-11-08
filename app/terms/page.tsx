@@ -38,8 +38,8 @@ export default function TermsPage() {
           the right to sublease. Check your lease: many require the landlord&apos;s consent.
         </li>
         <li>
-          Every listing is reviewed before it appears. We may reject, hide, or remove any listing at
-          our discretion, including after it has been approved.
+          New listings appear after a short review period. We may reject, hide, or remove any
+          listing at our discretion, including after it has been approved.
         </li>
         <li>
           You keep ownership of what you post. You give us permission to store, display, and resize

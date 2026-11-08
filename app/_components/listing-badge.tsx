@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { ListingBadge as Badge } from '@/lib/listing-rules';
 import { cn } from '@/lib/utils';
 
@@ -13,11 +14,11 @@ export function ListingBadge({ badge }: { badge: Badge }) {
 }
 
 // Block-letter tag; long text (a rejection reason) wraps instead of truncating.
-export function Tag({ className, children }: { className?: string; children: React.ReactNode }) {
+export function Tag({ className, children }: { className?: string; children: ReactNode }) {
   return (
     <span
       className={cn(
-        'varsity inline-flex min-h-[22px] items-center rounded-[2px] px-[7px] py-[3px] text-xs leading-tight font-bold tracking-[0.06em]',
+        'inline-flex min-h-[22px] items-center rounded-[3px] px-2 py-0.5 font-display text-[11.5px] leading-[1.2] font-extrabold tracking-[0.06em] uppercase',
         className,
       )}
     >

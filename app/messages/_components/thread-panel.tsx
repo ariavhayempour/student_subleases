@@ -124,7 +124,7 @@ export function ThreadPanel({ thread }: { thread: ThreadView }) {
           pinned.current = el.scrollHeight - el.scrollTop - el.clientHeight < 48;
         }}
         aria-label="Messages"
-        className="min-h-0 flex-1 overflow-y-auto px-5 py-6"
+        className="min-h-0 flex-1 overflow-y-auto px-3 py-5 sm:px-5 sm:py-6"
       >
         {hasEarlier && (
           <div className="mb-3 text-center">
@@ -132,7 +132,7 @@ export function ThreadPanel({ thread }: { thread: ThreadView }) {
               type="button"
               onClick={loadEarlier}
               disabled={loading}
-              className="rounded-md border border-line-2 px-3 py-1.5 text-sm font-semibold text-ink hover:bg-surface-2 disabled:opacity-60"
+              className="rounded-[5px] border-[1.5px] border-line-2 bg-white px-3 py-1.5 text-sm font-bold text-ink hover:border-ink-3 hover:bg-surface-2 disabled:opacity-60"
             >
               Load earlier messages
             </button>

@@ -1,14 +1,13 @@
-import { Plus } from 'lucide-react';
+import { Check, Info, Plus } from 'lucide-react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { BoardBand, BoardWork } from '@/app/_components/board-band';
 import { ListingBadge } from '@/app/_components/listing-badge';
 import { requireOnboardedUser } from '@/app/_lib/guards';
 import { formatDateRange } from '@/lib/format';
 import { MAX_ACTIVE_LISTINGS } from '@/lib/listing-options';
-import { listingCap } from '@/lib/listing-rules';
-import { listingBadges } from '@/lib/listing-rules';
-import { cn } from '@/lib/utils';
+import { listingBadges, listingCap } from '@/lib/listing-rules';
 import { listMyListings, type MyListing } from '@/server/services/listing-reads';
 import { ListingRowActions } from './listing-row-actions';
 
@@ -18,8 +17,8 @@ export const metadata: Metadata = {
 };
 
 const NOTICES: Record<string, string> = {
-  created: 'Thanks! Your listing is under review and usually goes live within 24 hours.',
-  'in-review': 'Saved. Your listing is under review and usually goes live within 24 hours.',
+  created: 'Thanks! Your listing will go live after a short review period.',
+  'in-review': 'Saved. Your listing will go live again after a short review period.',
   saved: 'Saved.',
 };
 
@@ -42,150 +41,153 @@ export default async function MyListingsPage({ searchParams }: MyListingsPagePro
   const cap = listingCap(actor.isAdmin);
   const slotted = mine.filter(usesSlot).slice(0, cap);
   const others = mine.filter((listing) => !slotted.includes(listing));
-  // Admins have no cap, so one "post" tile always shows.
+  // Admins have no cap, so one "post" slot always shows.
   const open = actor.isAdmin ? 1 : Math.max(cap - slotted.length, 0);
+  const capLine =
+    MAX_ACTIVE_LISTINGS === 1
+      ? 'One live listing at a time'
+      : `${MAX_ACTIVE_LISTINGS} live listings at a time`;
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-      <h1 className="varsity text-[clamp(2.75rem,6vw,4rem)] font-black text-ink">My listings</h1>
-      <p className="mt-3 text-[16px] text-ink-2">
-        {actor.isAdmin ? (
-          <span className="font-semibold text-ink">Admins have no listing limit.</span>
-        ) : (
-          <>
-            You can have {MAX_ACTIVE_LISTINGS} active{' '}
-            {MAX_ACTIVE_LISTINGS === 1 ? 'listing' : 'listings'}.{' '}
-            <span className="font-semibold text-ink">
-              {open === 0 ? 'Your slot is in use.' : 'Your slot is open.'}
-            </span>
-          </>
+    <main className="flex flex-1 flex-col">
+      <BoardBand
+        title="My listings"
+        pin="green"
+        description={
+          actor.isAdmin ? (
+            <span className="font-semibold text-ink">Admins have no listing limit.</span>
+          ) : (
+            <>
+              <span className="font-semibold text-ink">
+                {open === 0 ? 'Your slot is in use.' : 'Your slot is open.'}
+              </span>{' '}
+              Taken, removed, expired, and rejected listings don&apos;t use a slot.
+            </>
+          )
+        }
+        aside={
+          <div className="paper max-w-[320px] px-[18px] pt-[22px] pb-3 text-[14px] [--r:1.4deg]">
+            <span aria-hidden="true" className="pin pin-yellow -top-1.5 left-1/2 size-[18px]" />
+            <p className="mb-0.5 font-display text-[16px] leading-tight font-extrabold">
+              {actor.isAdmin ? 'No listing limit' : capLine}
+            </p>
+            <p className="text-ink-2">New listings go live after a short review period.</p>
+          </div>
+        }
+      />
+      <BoardWork>
+        {message && (
+          <p
+            role="status"
+            className="mb-2 flex items-start gap-2.5 rounded-md bg-ok-bg px-4 py-3 text-[14.5px] font-semibold text-ok"
+          >
+            <Check aria-hidden="true" className="mt-px size-[18px] shrink-0" />
+            {message}
+          </p>
         )}
-      </p>
-      {message && (
-        <p role="status" className="mt-6 rounded-md bg-ok-bg px-4 py-3 text-sm font-medium text-ok">
-          {message}
-        </p>
-      )}
 
-      <h2 className="sr-only">Active listings</h2>
-      <ul className="mt-8 grid gap-5 lg:grid-cols-2">
-        {slotted.map((listing) => (
-          <ListingSlot key={listing.id} listing={listing} />
-        ))}
-        {Array.from({ length: open }, (_, i) => (
-          <li key={`open-${i}`}>
+        <section aria-labelledby="active-heading" className="mt-6">
+          <h2 id="active-heading" className={sectionHeading}>
+            Active
+          </h2>
+          {slotted.length > 0 && (
+            <ul className="border-t border-line">
+              {slotted.map((listing) => (
+                <ListingRow key={listing.id} listing={listing} />
+              ))}
+            </ul>
+          )}
+          {Array.from({ length: open }, (_, i) => (
             <Link
+              key={`open-${i}`}
               href="/listings/new"
-              className="group flex h-full min-h-56 flex-col items-center justify-center gap-3 rounded-md border-2 border-dashed border-line-2 bg-surface-2 p-6 text-center text-ink no-underline transition-colors hover:border-school hover:bg-school-tint"
+              className="group mt-[18px] grid items-center gap-5 rounded-md border-[1.5px] border-dashed border-line-2 p-[18px] text-[14.5px] text-ink-2 no-underline transition-colors hover:border-school hover:bg-school-tint sm:grid-cols-[132px_1fr]"
             >
-              <span className="grid size-12 place-items-center rounded-full bg-school text-on-school">
-                <Plus aria-hidden="true" className="size-6" />
+              <span className="hidden h-24 place-items-center rounded-[5px] bg-surface-2 sm:grid">
+                <Plus aria-hidden="true" className="size-[26px] text-ink" />
               </span>
-              <span className="varsity text-[1.625rem] font-extrabold">Post a listing</span>
-              <span className="max-w-[34ch] text-sm text-ink-2">
-                Reviewed by a person, usually within 24 hours.
+              <span>
+                <span className="block font-display text-[18px] font-extrabold text-ink group-hover:underline">
+                  Post a listing
+                </span>
+                New listings go live after a short review period.
               </span>
             </Link>
-          </li>
-        ))}
-      </ul>
-
-      {others.length > 0 && (
-        <section className="mt-14" aria-labelledby="past-heading">
-          <h2 id="past-heading" className="varsity text-[1.75rem] font-extrabold text-ink">
-            Past and inactive
-          </h2>
-          <p className="mt-1 text-sm text-ink-2">
-            Taken, removed, expired, and rejected listings don&apos;t use a slot.
-          </p>
-          <ul className="mt-5 divide-y divide-line rounded-md border border-line">
-            {others.map((listing) => (
-              <li key={listing.id} className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center">
-                <Cover listing={listing} className="w-full sm:w-32" />
-                <div className="min-w-0 flex-1 space-y-1.5">
-                  <Title listing={listing} />
-                  <p className="text-sm text-ink-2">
-                    <span className="numeral text-[1.125rem] text-ink">
-                      {usd.format(listing.rentCents / 100)}
-                    </span>
-                    /month · {formatDateRange(listing.availableFrom, listing.availableTo)}
-                  </p>
-                  <Badges listing={listing} />
-                </div>
-                <ListingRowActions
-                  listingId={listing.id}
-                  status={listing.status}
-                  reviewStatus={listing.reviewStatus}
-                />
-              </li>
-            ))}
-          </ul>
+          ))}
         </section>
-      )}
+
+        {others.length > 0 && (
+          <section className="mt-12" aria-labelledby="past-heading">
+            <h2 id="past-heading" className={sectionHeading}>
+              Past and inactive
+            </h2>
+            <p className="-mt-1.5 mb-3.5 text-[14px] text-ink-2">
+              These don&apos;t count toward your slot.
+            </p>
+            <ul className="border-t border-line">
+              {others.map((listing) => (
+                <ListingRow key={listing.id} listing={listing} past />
+              ))}
+            </ul>
+          </section>
+        )}
+      </BoardWork>
     </main>
   );
 }
 
-function ListingSlot({ listing }: { listing: MyListing }) {
+const sectionHeading =
+  'mb-3 font-display text-[22px] leading-tight font-extrabold tracking-[-0.01em] text-ink';
+
+function ListingRow({ listing, past = false }: { listing: MyListing; past?: boolean }) {
+  const inReview = listing.reviewStatus === 'pending';
   return (
-    <li className="flex flex-col overflow-hidden rounded-md border border-line sm:flex-row">
-      <Cover listing={listing} className="w-full rounded-none sm:w-56" />
-      <div className="flex min-w-0 flex-1 flex-col gap-2 p-5">
-        <Badges listing={listing} />
-        <p className="flex items-baseline gap-1">
-          <span className="numeral text-[2.25rem] text-ink">
-            {usd.format(listing.rentCents / 100)}
-          </span>
-          <span className="text-[13px] font-medium text-ink-2">/ month</span>
-        </p>
-        <Title listing={listing} />
-        <p className="text-sm text-ink-2">
-          {formatDateRange(listing.availableFrom, listing.availableTo)}
-        </p>
-        <div className="mt-auto pt-2">
-          <ListingRowActions
-            listingId={listing.id}
-            status={listing.status}
-            reviewStatus={listing.reviewStatus}
+    <li className="grid grid-cols-[96px_minmax(0,1fr)] items-center gap-x-3.5 gap-y-3 border-b border-line py-[18px] sm:grid-cols-[132px_minmax(0,1fr)_auto] sm:gap-5">
+      <div className="relative h-[76px] overflow-hidden rounded-[5px] bg-surface-2 sm:h-24">
+        {listing.coverThumbUrl && (
+          <Image
+            src={listing.coverThumbUrl}
+            alt=""
+            fill
+            sizes="132px"
+            className={past ? 'object-cover opacity-85 grayscale-[0.6]' : 'object-cover'}
           />
+        )}
+      </div>
+      <div className="grid min-w-0 justify-items-start gap-[5px]">
+        <div className="flex flex-wrap gap-2">
+          {listingBadges(listing).map((badge) => (
+            <ListingBadge key={badge.label} badge={badge} />
+          ))}
         </div>
+        <h3 className="max-w-full truncate text-[16px] font-extrabold">
+          <Link
+            href={`/${listing.schoolSlug}/listings/${listing.id}`}
+            className="text-ink no-underline hover:underline"
+          >
+            {listing.title}
+          </Link>
+        </h3>
+        <p className="text-[13.5px] text-ink-2">
+          <b className="font-display text-[15px] font-extrabold text-ink">
+            {usd.format(listing.rentCents / 100)}
+          </b>{' '}
+          / month · {formatDateRange(listing.availableFrom, listing.availableTo)}
+        </p>
+        {inReview && !past && (
+          <p className="mt-0.5 flex gap-1.5 text-[13.5px] text-ink-2">
+            <Info aria-hidden="true" className="mt-0.5 size-[15px] shrink-0" />
+            Students can see it once the review period ends.
+          </p>
+        )}
+      </div>
+      <div className="col-span-2 sm:col-span-1">
+        <ListingRowActions
+          listingId={listing.id}
+          status={listing.status}
+          reviewStatus={listing.reviewStatus}
+        />
       </div>
     </li>
-  );
-}
-
-function Cover({ listing, className }: { listing: MyListing; className?: string }) {
-  return (
-    <div
-      className={cn(
-        'relative aspect-[4/3] shrink-0 overflow-hidden rounded-md bg-surface-2',
-        className,
-      )}
-    >
-      {listing.coverThumbUrl && (
-        <Image src={listing.coverThumbUrl} alt="" fill sizes="224px" className="object-cover" />
-      )}
-    </div>
-  );
-}
-
-function Title({ listing }: { listing: MyListing }) {
-  return (
-    <Link
-      href={`/${listing.schoolSlug}/listings/${listing.id}`}
-      className="block truncate text-[15px] font-semibold text-ink no-underline hover:underline"
-    >
-      {listing.title}
-    </Link>
-  );
-}
-
-function Badges({ listing }: { listing: MyListing }) {
-  return (
-    <div className="flex flex-wrap gap-2">
-      {listingBadges(listing).map((badge) => (
-        <ListingBadge key={badge.label} badge={badge} />
-      ))}
-    </div>
   );
 }

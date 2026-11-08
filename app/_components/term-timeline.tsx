@@ -19,8 +19,8 @@ export function TermTimelineBar({ from, to, size = 'compact', axisStart }: TermT
         <span
           key={block.label}
           className={cn(
-            'varsity font-bold tracking-[0.06em]',
-            full ? 'text-[13px]' : 'text-xs',
+            'font-display leading-none font-extrabold tracking-[0.06em] uppercase',
+            full ? 'text-[12.5px]' : 'text-[11px]',
             block.active && 'text-ink',
           )}
         >
@@ -32,16 +32,21 @@ export function TermTimelineBar({ from, to, size = 'compact', axisStart }: TermT
   return (
     <div role="img" aria-label={`Available ${formatDateRange(from, to)}`} className="mt-2">
       {full && labels}
-      <div className={cn('relative grid grid-cols-3 gap-0.5', full ? 'h-8 gap-[3px]' : 'h-2')}>
+      <div className={cn('relative grid grid-cols-3 gap-0.5', full ? 'h-8 gap-[3px]' : 'h-[6px]')}>
         {t.blocks.map((block) => (
           <i
             key={block.label}
-            className={full ? 'bg-surface-2 ring-1 ring-line ring-inset' : 'bg-line'}
+            className={
+              full
+                ? 'rounded-[3px] bg-surface-2 ring-1 ring-line ring-inset'
+                : 'rounded-[1px] bg-line'
+            }
           />
         ))}
         <div
           className={cn(
             'absolute inset-y-0 bg-school',
+            full ? 'rounded-[3px]' : 'rounded-[1px]',
             full &&
               'flex items-center justify-between gap-2 overflow-hidden px-2.5 text-xs font-semibold whitespace-nowrap text-on-school',
           )}

@@ -19,6 +19,7 @@ describe('reserved slugs', () => {
       'terms',
       'privacy',
       'contact',
+      'schools',
     ]) {
       expect(isReservedSlug(slug)).toBe(true);
     }

@@ -92,7 +92,9 @@ export default async function AdminStatsPage({ searchParams }: PageProps<'/admin
                     <td className={TD}>
                       <SchoolLabel name={row.schoolName} color={color} />
                     </td>
-                    <td className={`${TD} numeral text-right text-[1.75rem]`}>
+                    <td
+                      className={`${TD} text-right font-display text-[1.75rem] font-extrabold tabular-nums`}
+                    >
                       {row.listingsPosted}
                     </td>
                     <td className={`${TD} w-[34%]`}>
@@ -116,7 +118,9 @@ export default async function AdminStatsPage({ searchParams }: PageProps<'/admin
                         : formatDuration(row.medianFirstReplySeconds)}{' '}
                       <span className="text-ink-2">({row.repliedConversations} replied)</span>
                     </td>
-                    <td className={`${TD} numeral text-right text-[1.75rem]`}>
+                    <td
+                      className={`${TD} text-right font-display text-[1.75rem] font-extrabold tabular-nums`}
+                    >
                       {row.listingsTaken}
                     </td>
                   </tr>

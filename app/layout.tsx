@@ -1,7 +1,7 @@
 import { ClerkProvider } from '@clerk/nextjs';
 import { shadcn } from '@clerk/ui/themes';
 import type { Metadata } from 'next';
-import { Archivo, Big_Shoulders, Geist_Mono } from 'next/font/google';
+import { Bricolage_Grotesque, Geist_Mono, Gochi_Hand, Hanken_Grotesk } from 'next/font/google';
 import { MessagingProvider } from '@/app/_components/messaging-provider';
 import { SiteFooter } from '@/app/_components/site-footer';
 import { SchoolThemeProvider } from '@/app/_components/school-theme';
@@ -12,19 +12,24 @@ import { NEUTRAL_THEME, schoolThemeStyle } from '@/lib/school-theme';
 import { siteUrl } from '@/lib/site-url';
 import './globals.css';
 
-const archivo = Archivo({
-  variable: '--font-archivo',
+const hanken = Hanken_Grotesk({
+  variable: '--font-hanken',
   subsets: ['latin'],
 });
 
-// Variable weight plus the optical-size axis, so large display sizes get the display cut.
-const bigShoulders = Big_Shoulders({
-  variable: '--font-big-shoulders',
+// Width and optical-size axes: the flyer caps narrow the face, large sizes get the display cut.
+const bricolage = Bricolage_Grotesque({
+  variable: '--font-bricolage',
   subsets: ['latin'],
-  axes: ['opsz'],
-  // Next has no fallback metrics for this face; a narrow system fallback keeps the swap close.
-  adjustFontFallback: false,
-  fallback: ['Arial Narrow', 'sans-serif'],
+  axes: ['opsz', 'wdth'],
+});
+
+// Handwriting for the odd sticky note; not preloaded since few pages use it.
+const gochiHand = Gochi_Hand({
+  variable: '--font-scribble',
+  subsets: ['latin'],
+  weight: '400',
+  preload: false,
 });
 
 const geistMono = Geist_Mono({
@@ -43,7 +48,7 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${bigShoulders.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${hanken.variable} ${bricolage.variable} ${gochiHand.variable} ${geistMono.variable} h-full antialiased`}
       style={schoolThemeStyle(theme.school?.theme ?? NEUTRAL_THEME)}
     >
       <body className="min-h-full flex flex-col">
@@ -55,8 +60,18 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
               colorPrimaryForeground: 'var(--on-school)',
               colorInput: '#ffffff',
               colorInputForeground: 'var(--ink)',
-              fontFamily: 'var(--font-archivo), system-ui, sans-serif',
-              borderRadius: '0.375rem',
+              fontFamily: 'var(--font-hanken), system-ui, sans-serif',
+              borderRadius: '0.3125rem',
+            },
+            elements: {
+              headerTitle: {
+                fontFamily: 'var(--font-bricolage), sans-serif',
+                fontSize: '1.6rem',
+                fontWeight: 800,
+                letterSpacing: '-0.015em',
+                lineHeight: 1.1,
+              },
+              buttonArrowIcon: 'hidden',
             },
           }}
           signInUrl="/sign-in"

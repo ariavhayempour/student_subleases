@@ -105,6 +105,9 @@ export function GuidedDetails({ form, lockType, showAll }: GuidedDetailsProps) {
                 {LISTING_TYPE_LABELS[value]}
               </option>
             ))}
+            <option value="parking" disabled>
+              Parking spot (coming soon)
+            </option>
           </select>
         )}
         <FieldError id="type-error" message={errors.type?.message} />
@@ -233,7 +236,7 @@ export function GuidedDetails({ form, lockType, showAll }: GuidedDetailsProps) {
             className="space-y-2"
             aria-describedby={errors.roomFeatures ? 'roomFeatures-error' : undefined}
           >
-            <legend className="text-[13px] font-semibold text-ink">About the room</legend>
+            <legend className="text-[13px] font-bold text-ink">About the room</legend>
             <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
               {ROOM_FEATURES.map((feature) => (
                 <label key={feature} className={chipClass}>
@@ -261,7 +264,7 @@ export function GuidedDetails({ form, lockType, showAll }: GuidedDetailsProps) {
           className="space-y-2"
           aria-describedby={errors.amenities ? 'amenities-error' : undefined}
         >
-          <legend className="text-[13px] font-semibold text-ink">
+          <legend className="text-[13px] font-bold text-ink">
             {propertyType === 'house' ? 'House amenities' : 'Apartment and building amenities'}
           </legend>
           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">

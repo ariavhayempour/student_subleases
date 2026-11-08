@@ -1,367 +1,384 @@
 ---
 name: Student Subleases
-description: Student-to-student subleases, each school dressed in its own athletic colors.
+description: The student-union corkboard, online. Flyers pinned to cork, every school passing on printed packing tape.
 colors:
-  school: "#15171c"
+  school: "#1a1410"
   school-deep: "#000000"
   on-school: "#ffffff"
   school-secondary: "#ffffff"
-  on-school-secondary: "#15171c"
-  school-highlight: "#ffffff"
-  on-school-highlight: "#15171c"
-  school-tint: "#f1f2f4"
-  school-link: "#15171c"
-  ink: "#15171c"
-  ink-2: "#444a55"
-  ink-3: "#626977"
-  line: "#e2e4e8"
-  line-2: "#cdd1d7"
-  surface-2: "#f5f6f8"
-  background: "#ffffff"
+  on-school-secondary: "#1a1410"
+  school-highlight: "#1a1410"
+  on-school-highlight: "#ffffff"
+  school-tint: "#f4f1ec"
+  school-link: "#1a1410"
+  ink: "#1a1410"
+  ink-2: "#463a30"
+  ink-3: "#6b6058"
+  line: "#e4e0da"
+  line-2: "#cfc8bf"
+  surface-2: "#f7f5f2"
+  paper: "#ffffff"
   ok: "#1d6b3a"
   ok-bg: "#e6f2ea"
-  warn: "#8a5a00"
-  warn-bg: "#fff4d6"
+  warn: "#7a4f00"
+  warn-bg: "#fff3d1"
   bad: "#a4161a"
   bad-bg: "#fbe9e9"
+  cork: "#c08552"
+  alu-1: "#e6e8eb"
+  alu-2: "#c3c7cc"
+  alu-edge: "#9aa0a7"
+  wall: "#2f4858"
+  sticky: "#ffe36e"
+  masking-tape: "rgb(238 228 200 / 0.82)"
+  pin-red: "#d23a2e"
+  pin-blue: "#2a5bd7"
+  pin-yellow: "#f2c230"
+  pin-green: "#2e9a57"
 typography:
   display:
-    fontFamily: "Big Shoulders, Arial Narrow, sans-serif"
-    fontSize: "clamp(3.25rem, 7vw, 5.75rem)"
-    fontWeight: 900
-    lineHeight: 0.92
-    letterSpacing: "0.01em"
-  headline:
-    fontFamily: "Big Shoulders, Arial Narrow, sans-serif"
-    fontSize: "clamp(2.75rem, 6vw, 4rem)"
-    fontWeight: 900
-    lineHeight: 0.92
-    letterSpacing: "0.01em"
-  title:
-    fontFamily: "Big Shoulders, Arial Narrow, sans-serif"
-    fontSize: "1.75rem"
+    fontFamily: "Bricolage Grotesque, sans-serif"
+    fontSize: "clamp(2.7rem, 6.3vw, 5.8rem)"
     fontWeight: 800
-    lineHeight: 0.92
-    letterSpacing: "0.01em"
-  title-sm:
-    fontFamily: "Big Shoulders, Arial Narrow, sans-serif"
+    lineHeight: 0.9
+    letterSpacing: "-0.01em"
+    fontVariation: "'wdth' 78"
+  headline:
+    fontFamily: "Bricolage Grotesque, sans-serif"
+    fontSize: "clamp(2.2rem, 4.4vw, 3.6rem)"
+    fontWeight: 800
+    lineHeight: 0.98
+    letterSpacing: "-0.02em"
+  page-title:
+    fontFamily: "Bricolage Grotesque, sans-serif"
+    fontSize: "clamp(1.9rem, 3.4vw, 2.75rem)"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "-0.02em"
+  title:
+    fontFamily: "Bricolage Grotesque, sans-serif"
     fontSize: "1.375rem"
     fontWeight: 800
-    lineHeight: 0.92
-    letterSpacing: "0.02em"
-  numeral:
-    fontFamily: "Big Shoulders, Arial Narrow, sans-serif"
-    fontSize: "2.375rem"
+    lineHeight: 1.25
+    letterSpacing: "-0.015em"
+  price:
+    fontFamily: "Bricolage Grotesque, sans-serif"
+    fontSize: "30px"
     fontWeight: 800
-    lineHeight: 0.95
-    fontFeature: "tnum, lnum"
+    lineHeight: 1
+    letterSpacing: "-0.02em"
+    fontFeature: "'tnum'"
+  tape:
+    fontFamily: "Bricolage Grotesque, sans-serif"
+    fontSize: "21px"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "0.04em"
   body:
-    fontFamily: "Archivo, system-ui, sans-serif"
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
     fontSize: "15px"
     fontWeight: 400
     lineHeight: 1.5
-  lede:
-    fontFamily: "Archivo, system-ui, sans-serif"
-    fontSize: "17px"
+  body-reading:
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
+    fontSize: "16px"
     fontWeight: 400
-    lineHeight: 1.625
-  body-meta:
-    fontFamily: "Archivo, system-ui, sans-serif"
-    fontSize: "13px"
-    fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.75
   label:
-    fontFamily: "Archivo, system-ui, sans-serif"
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
     fontSize: "13px"
-    fontWeight: 600
+    fontWeight: 700
     lineHeight: 1
   tag:
-    fontFamily: "Big Shoulders, Arial Narrow, sans-serif"
-    fontSize: "12px"
-    fontWeight: 700
-    lineHeight: 1.25
+    fontFamily: "Bricolage Grotesque, sans-serif"
+    fontSize: "11.5px"
+    fontWeight: 800
+    lineHeight: 1.2
     letterSpacing: "0.06em"
+  scribble:
+    fontFamily: "Gochi Hand, cursive"
+    fontSize: "22px"
+    fontWeight: 400
+    lineHeight: 1.05
 rounded:
-  tag: "2px"
-  md: "0.3rem"
-  lg: "0.375rem"
-  bubble: "14px"
+  tag: "3px"
+  card: "4px"
+  control: "5px"
+  photo: "6px"
+  bubble: "12px"
   full: "9999px"
 spacing:
   gutter-sm: "16px"
   gutter-md: "24px"
   gutter-lg: "32px"
-  card: "20px"
   card-sm: "12px"
+  card: "20px"
+  sheet-top: "28px"
+  sheet-bottom: "64px"
+  section: "104px"
   container: "80rem"
+  container-landing: "77.5rem"
+  reading: "70ch"
 components:
   button-primary:
     backgroundColor: "{colors.school}"
     textColor: "{colors.on-school}"
-    typography: "{typography.label}"
-    rounded: "{rounded.md}"
+    rounded: "{rounded.control}"
     padding: "0 16px"
     height: "40px"
   button-primary-hover:
     backgroundColor: "{colors.school-deep}"
+  button-ink:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.paper}"
+    rounded: "{rounded.control}"
+    padding: "0 16px"
+    height: "40px"
   button-highlight:
     backgroundColor: "{colors.school-highlight}"
     textColor: "{colors.on-school-highlight}"
-    rounded: "{rounded.md}"
-    padding: "0 12px"
-    height: "36px"
+    rounded: "{rounded.control}"
+    height: "40px"
   button-outline:
-    backgroundColor: "{colors.background}"
+    backgroundColor: "{colors.paper}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    padding: "0 16px"
+    rounded: "{rounded.control}"
     height: "40px"
   button-outline-hover:
     backgroundColor: "{colors.surface-2}"
-  input:
-    backgroundColor: "{colors.background}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    padding: "4px 12px"
+  button-destructive:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.bad}"
+    rounded: "{rounded.control}"
     height: "40px"
-  tag:
+  button-destructive-hover:
+    backgroundColor: "{colors.bad-bg}"
+  button-link:
+    textColor: "{colors.school-link}"
+  input:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.control}"
+    padding: "4px 12px"
+    height: "42px"
+  label:
+    textColor: "{colors.ink}"
+    typography: "{typography.label}"
+  card:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.card}"
+    padding: "{spacing.card}"
+  tag-neutral:
+    backgroundColor: "{colors.surface-2}"
+    textColor: "{colors.ink-2}"
     typography: "{typography.tag}"
     rounded: "{rounded.tag}"
-    padding: "3px 7px"
   tag-new:
     backgroundColor: "{colors.school-highlight}"
     textColor: "{colors.on-school-highlight}"
+    typography: "{typography.tag}"
     rounded: "{rounded.tag}"
-  chip-active-filter:
+  chip-filter:
+    backgroundColor: "{colors.school-tint}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.full}"
+    height: "32px"
+  message-sent:
+    backgroundColor: "{colors.school}"
+    textColor: "{colors.on-school}"
+    padding: "10px 14px"
+  message-received:
+    backgroundColor: "{colors.surface-2}"
+    textColor: "{colors.ink}"
+    padding: "10px 14px"
+  avatar:
     backgroundColor: "{colors.school}"
     textColor: "{colors.on-school}"
     rounded: "{rounded.full}"
-    height: "32px"
-  card:
-    backgroundColor: "{colors.background}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    padding: "{spacing.card}"
-  school-ribbon-block:
+    size: "36px"
+  school-tape:
     backgroundColor: "{colors.school}"
-    textColor: "{colors.on-school}"
-    padding: "20px 20px 0"
-    width: "18.75rem"
-    height: "12rem"
-  school-ribbon-block-hover:
-    backgroundColor: "{colors.school-deep}"
+    textColor: "{colors.school-secondary}"
+    typography: "{typography.tape}"
+    height: "68px"
 ---
 
 # Design System: Student Subleases
 
 ## Overview
 
-**Creative North Star: "The Varsity Program"**
+**Creative North Star: "The Union Board"**
 
-Each school's pages wear that school the way its athletic department would: solid fields of the school primary, condensed block caps, jersey numerals, and one stripe in the school's second color. Underneath that dress sits a quiet, white, ink-on-paper marketplace that has to earn trust from students and parents, so the color is concentrated in a few structural places (the header, the browse band, primary actions, the timeline bar, map pins) and everything else stays neutral.
+The site is the corkboard in a student union, where sublets have always been posted. The landing and the top of every page are the board: a cork field framed in brushed aluminum, with white paper sheets held on by push pins and masking tape, tilted a degree or two the way real flyers hang. Every school passes across the board on a band of printed packing tape in its own colors. Under the board sits a clean white working sheet, where everything a visitor operates (filters, the map, forms, chat) lives flat, upright, and quiet.
 
-The system is data-driven by design. No school palette lives in code: every school role is a CSS custom property set on `<html>` from the school's `theme` row (see `lib/school-theme.ts` and `docs/design-system.md`). The tokens in the frontmatter for the `school-*` roles are the neutral fallback, which is also what admin and the signed-out landing at `/` wear. Density is moderate and operational: browse is a photo grid beside a sticky map, forms and admin are dense and calm.
+The materials are honest and few: cork, aluminum, paper, pins, tape, one painted cinderblock wall, one sticky note. Type is a flyer voice (Bricolage Grotesque at weight 800, narrowed to all-caps for flyer headlines) over a calm UI sans (Hanken Grotesk). Neutrals are warm so they sit with cork and paper. Density is moderate: the board is expressive and roomy, the working sheet is a desktop-first tool with tight, legible rows.
 
-The signed-out landing at `/` is "school-lit ink": an ink header running straight into an ink hero lit by soft, drifting glows in every school's color, then white sections below that wear one school's colors at a time, chosen by the visitor from the term example. The School Ribbon dresses each block in its own school, and the closing band carries a strip of every school's colors (behavior in `docs/site-pages.md`, "Landing page (`/`)").
+The world was chosen against the dark hero with glows, the split hero with a badge row, and stacked icon-card sections. School identity is carried by color only, never by logos, seals, or mascots.
 
 **Key Characteristics:**
-
-- White ground, ink text, school color as structure rather than decoration.
-- Big Shoulders condensed caps for headings and tags; Big Shoulders numerals for rent and counts; Archivo for everything you read.
-- One recurring motif: the varsity stripe in the school's secondary color.
-- Near-square corners; block-letter tags at 2px.
-- Rent is the loudest thing on a listing; dates are drawn, not just written (the term timeline).
+- Two zones: the board (cork, pins, tape, tilt) and the working sheet (white, flat, untilted).
+- Aluminum header and footer on every page, regardless of school.
+- School color travels on packing tape and on interactive state, never on the board materials.
+- Warm ink neutrals throughout; soft, warm-brown physical shadows.
+- Motion is physical and brief (tape unrolls, sheets pin on and settle) and switches off entirely under reduced motion.
 
 ## Colors
 
-A neutral ink-and-paper base, with a per-school set of role colors injected at runtime.
+A warm, physical palette of cork, aluminum, and paper, with one per-school color system layered on top for tape and interaction.
 
 ### Primary
-
-- **School Primary** (`school`): header bar, browse band, default buttons, active-filter chips, timeline bar, map pins and clusters, selection, focus rings, the rent panel head. Neutral fallback is ink. Launch values: UW–Madison #C5050C, Michigan #00274C, UCLA #2774AE.
-- **School Deep** (`school-deep`): hover and pressed state of anything filled with the primary. UW #9B0000, Michigan #001A33, UCLA #005587.
-- **On School** (`on-school`): text and icons on primary fields; white for all three launch schools.
+- **School Primary** (`school`, neutral fallback Warm Ink): the school's main color, set per page from the `schools.theme` data (UW–Madison #C5050C, Michigan #00274C, UCLA #2774AE, SDSU #A6192E). Fills the packing tape, primary buttons, active nav bars, filter chip hover, the unread count, the account avatar, sent messages, term bars, focus rings, and text selection. `school-deep` is its hover.
+- **School Secondary** (`school-secondary`): the color printed on the tape (the school name) and the focus ring color inside school-colored regions (Michigan and UCLA maize, white for Wisconsin and SDSU).
 
 ### Secondary
+- **School Highlight** (`school-highlight`): the "Same months" match mark and NEW tags on listing photos (maize for Michigan and UCLA; charcoal for Wisconsin, black for SDSU; ink when neutral).
+- **School Tint** (`school-tint`): selected rows, active filter chips, checked option chips, and the term chart sheet.
+- **School Link** (`school-link`): inline links and the link button on white.
 
-- **Varsity Stripe** (`school-secondary`, with `on-school-secondary`): only the stripe, the current-page bar under header nav links, and focus rings inside school-colored regions. UW white, Michigan maize #FFCB05, UCLA gold #FFD100.
-
-### Tertiary
-
-- **Highlight** (`school-highlight`, with `on-school-highlight`): Post a listing and Sign up, the school tag in the header, New tags, unread and count pills, the hovered map pin. Michigan maize on navy text, UCLA gold on #003B5C, UW charcoal #282728 on white (red-and-white has no third color, so UW borrows charcoal).
-- **Tint** (`school-tint`): selected rows, expanded filter toggle, avatar discs, empty-state icon discs. UW #FBEDEE, Michigan #EEF2F7, UCLA #EDF4FA.
-- **Link** (`school-link`): inline text links and link buttons on white; a darker cut of the primary that passes AA as text (UW #A8040A, Michigan #00396E, UCLA #005587).
+### Tertiary (board materials)
+- **Corkboard Tan** (`cork`): the board field, always drawn with its three-layer SVG granule texture, never flat.
+- **Brushed Aluminum** (`alu-1` to `alu-2`, edged by `alu-edge`): the frame: header, footer, and the strip above the wall.
+- **Painted Cinderblock** (`wall`): one wall, behind the landing's posting policy only.
+- **Sticky Yellow** (`sticky`): the one sticky note.
+- **Masking Tape** (`masking-tape`): translucent cream strips at the corners of a taped sheet.
+- **Pin Red, Blue, Yellow, Green** (`pin-*`): push-pin heads. Red is the default and the brand mark's pin.
 
 ### Neutral
-
-- **Ink** (`ink`): body text, headings, the neutral theme's primary, campus marker on maps, admin's 2px header rule.
-- **Ink 2** (`ink-2`): secondary text, metadata lines, labels on filters, table headers.
-- **Ink 3** (`ink-3`): placeholders, timeline axis labels, hover border on inputs and outline buttons.
-- **Line** (`line`): dividers, card rings, empty timeline segments.
-- **Line 2** (`line-2`): input and outline-button borders, table header rule.
-- **Surface 2** (`surface-2`): footer, filter panel, card footers, empty states, photo placeholders, the incoming message bubble.
-- **Status pairs** (`ok`/`ok-bg`, `warn`/`warn-bg`, `bad`/`bad-bg`): listing status tags and destructive actions only.
+- **Warm Ink** (`ink`): all primary text, the ink button, the admin sidebar.
+- **Walnut** (`ink-2`): secondary text, descriptions, metadata.
+- **Driftwood** (`ink-3`): placeholders, timeline month labels, input hover borders.
+- **Paper White** (`paper`): sheets, the working sheet, cards, inputs.
+- **Oat** (`surface-2`): muted fills, received messages, neutral tags, photo placeholders.
+- **Rule** (`line`) and **Strong Rule** (`line-2`): dividers and card rings; input and outline-button borders.
+- **Status** (`ok`, `warn`, `bad`, each with a `-bg`): status tags and notices; `bad` is the destructive color.
 
 ### Named Rules
+**The Tape Carries the School Rule.** School color appears on printed packing tape (the landing tape, the school-page tape band, flat strips on school cards) and on interactive state: primary buttons, active states, the avatar, sent messages, term bars. The cork, the paper, the pins, and the aluminum header never take school color.
 
-**The Colors Are Data Rule.** Never hardcode a school hex in a component. Use the role (`bg-school`, `text-on-school`, `bg-highlight`); to dress one element in a different school, spread `schoolThemeStyle(theme)` into its style. Map layers read the same custom properties at runtime.
+**The Warm Ink Rule.** Every neutral is warm-shifted to sit with cork and paper. New grays come from the ink and line families, not from a cool gray scale.
 
-**The Paired Text Rule.** Every fill role has an `on-*` partner, and text on that fill uses it. Each pairing must pass WCAG AA for every school; check before adding one.
-
-**The Scarce Highlight Rule.** The highlight color marks only the call to post, counts, New tags, the school tag, and the hot map pin. It is never a background for a section.
+**The Colors-Only Rule.** A school is identified by its colors and its name, never by a logo, seal, or mascot. Every `on-*` pairing must pass WCAG AA before a school ships.
 
 ## Typography
 
-**Display Font:** Big Shoulders (variable, optical-size axis; fallback Arial Narrow, sans-serif)
-**Body Font:** Archivo (fallback system-ui, sans-serif)
+**Display Font:** Bricolage Grotesque (variable, `opsz` and `wdth` axes), via `--font-display`
+**Body Font:** Hanken Grotesk (with system-ui), via `--font-sans`
+**Scribble Font:** Gochi Hand (not preloaded), via `--font-scribble`
+**Mono:** Geist Mono, for code-like values only
 
-**Character:** Big Shoulders is the scoreboard and the jersey: condensed, upright, all caps for headings and tabular for figures. Archivo is a sturdy grotesk that keeps forms, metadata, and messages plain and readable.
+**Character:** Bricolage at 800 is the flyer: loud, a little quirky, hand-set; narrowed to width 78 and set in caps it becomes the poster headline. Hanken Grotesk is the even, readable desk voice beneath it.
 
 ### Hierarchy
-
-- **Display** (900, clamp(3.25rem, 7vw, 5.75rem), 0.92): the school short name in the browse band only. It is visual; the real `h1` is screen-reader text beside it. The one documented exception is the landing hero headline: clamp(3.25rem, min(9.5vw, calc(40svh − 14rem)), 8.5rem) at 0.88 leading, capped at 19ch. Viewport height drives it so the School Ribbon always stays in the first viewport (about 136px at 1440×900, about 96px at 1280×800).
-- **Headline** (900, clamp(2.75rem, 6vw, 4rem), 0.92): page `h1` on content pages; the listing title runs a step smaller (clamp(2.25rem, 4.4vw, 3.5rem)); admin page titles are a fixed 2.5rem.
-- **Headline (landing)** (900, clamp(2.5rem, 5vw, 4rem), 0.92): section `h2`s on the landing page.
-- **Title** (800, 1.75rem): section headings on the listing page (About this place, Availability, Amenities, Location). Card and admin section titles use **Title SM** (800, 1.375rem, 0.02em).
-- **Numeral** (800, tabular lining figures, 0.95): rent on tiles (2.375rem), rent in the listing panel (3.75rem), stat counts in the band; at 12px inside count pills. The landing's step numerals reuse the 3.75rem size.
-- **Lede** (Archivo 400, 17px, 19px from 640px, relaxed 1.625 leading): the landing hero's sentence under the headline, white at 88% on ink, capped at 48ch; the landing's section intros use it at 17px in ink-2.
-- **Body** (400, 15px, 1.5): default text. Static/legal pages and landing body copy read at 16px with relaxed leading, capped near 52–70ch.
-- **Body meta** (13px, ink-2): facts lines, distance and dates, "/ month".
-- **Label** (600, 13px): form labels; buttons are 600 at 14px (13px small, 15px large).
-- **Tag** (Big Shoulders 700, 12px, 0.06em, uppercase): block-letter tags and timeline term labels; table headers and definition-list terms use the same face at 0.08em in ink-2.
+- **Display** (flyer caps: 800, width 78, uppercase, up to 5.8rem, 0.9): flyer headlines only: the landing hero, the closing flyer, the sign-in flyer, the posting policy.
+- **Headline** (800, up to 3.6rem, 0.98, -0.02em): landing section headings on pinned sheets and on the wall.
+- **Page Title** (800, up to 2.75rem, 1): the title on the pinned sheet in each page's board band, sentence case.
+- **Title** (800, 1.375rem to 1.6rem, tight): card titles and reading-page section headings.
+- **Price** (800, 30px, tabular figures): rent on listing tiles; display face also sets school names and tape text.
+- **Body** (400, 15px, 1.5): UI and working-sheet text. Reading pages step up to 16px with 1.75 line height in a 70ch column.
+- **Label** (700, 13px): form labels. The landing's fill-in lines use a 12.5px uppercase label at 0.08em.
+- **Tag** (Bricolage 800, 11.5px, 0.06em, uppercase): status tags, NEW, the sample-listing label, timeline block labels.
+- **Scribble** (Gochi Hand 400, 22px): the sticky note.
 
 ### Named Rules
+**The Flyer Voice Rule.** Narrowed all-caps (flyer caps) belongs to flyers on the board. Page titles, section heads, and anything on the working sheet use Bricolage in sentence case.
 
-**The Caps Are Display Rule.** Uppercase belongs to Big Shoulders only (the `varsity` treatment). Archivo is always sentence case.
-
-**The Rent Is A Numeral Rule.** Money and counts render in the `numeral` treatment with tabular figures, never in Archivo bold.
-
-Text selection is the school fill with on-school text; on ink regions (the landing hero and closing band) it inverts to white with ink text.
+**The One Sticky Note Rule.** Gochi Hand appears only on a sticky note, as decoration. It never sets body copy, UI, or a heading.
 
 ## Layout
 
-One centered container (80rem max) with gutters of 16px, 24px from 640px, 32px from 1024px; the header, band, filter bar, content, and footer all share it so edges line up. The header is a 64px school-colored bar. Browse is a two-column split from 768px: listing grid on the left, map sticky on the right below the filter bar (which is itself sticky from 768px); on phones the map stacks at 70dvh. Listing detail is content left with a sticky rent panel right from 1024px. Settings, the listing form's step nav, and admin side panels use the same sticky-side pattern at `top: 24px`. Long-form text caps at 52–70ch. Controls share a 40px height (36px small, 48px large); fields in the filter panel sit on a 4-column grid at 1024px, 2 at 640px.
+The page is a vertical stack: aluminum header (64px), the board band, the white working sheet, aluminum footer. Containers are centered at 80rem with 16px, 24px, and 32px gutters at the base, `sm`, and `lg` breakpoints; the landing runs a slightly narrower 77.5rem. The working sheet pads 20px to 28px on top and 48px to 64px below, and sits over the band with a soft upward shadow so it reads as the sheet the board is pinned above. Full-bleed layouts (browse list beside map, messages) drop the container and fill the sheet.
 
-The signed-out landing opens with an ink hero that fills the first viewport below the header (min-height min(100svh − 4rem, 58rem)): headline, lede, and call to action at the top of the container, the School Ribbon pinned to the hero's foot. The ribbon's label line sits in the container; the ribbon row itself runs full-bleed. Below the hero the landing alternates white and surface-2 sections on the shared container (80px vertical padding, 96–112px from 1024px), and closes with an ink call-to-action band.
+The landing alternates cork sections (72px to 104px vertical padding) holding one pinned heading sheet each, then an aluminum strip, the cinderblock wall, a plain warm-white FAQ, and a final cork flyer. Packing tape always runs wider than the viewport (106% to 112%) at a slight angle so its ends leave the frame.
 
-Desktop-first; every public surface works at 390px. Admin is desktop-only and uses a sticky left nav.
+Desktop-first and responsive to phone width: tilts flatten to 0deg below `sm`, header nav collapses to a menu below `md`, the board-band aside hides below `lg`, and Messages becomes icon-only on phones. Admin is desktop-only with its own ink sidebar.
+
+### Named Rules
+**The Board and the Sheet Rule.** Cork, pins, tape, and tilt belong to the board: landing sections and the title band at the top of each page (including a pinned aside note in that band). Inside the white working sheet there is no cork, no pin, and no rotation.
 
 ## Elevation & Depth
 
-Mostly flat with tonal layering: white surfaces separated by 1px lines and the surface-2 gray. Shadows are ambient and rare, used where an element floats over imagery or the page.
+Depth is physical. Paper casts a soft, warm-brown shadow onto the cork, pins cast a small offset shadow with an inner shade, tape has a glossy sheen and a drop shadow, and the aluminum header casts a short shadow down onto the board. On the working sheet, surfaces are flat and separated by rings and rules; shadow appears only on hover lift (school cards, the ink button) and on popovers.
 
 ### Shadow Vocabulary
-
-- **Panel at rest** (`box-shadow: 0 6px 24px rgb(21 23 28 / 0.07)`): the listing rent panel and similar raised summary panels.
-- **Dialog** (`box-shadow: 0 20px 60px rgb(0 0 0 / 0.3)` over an ink/60 backdrop): report dialog; the photo gallery uses 0.35 over ink/70.
-- **Over photo** (`box-shadow: 0 1px 4px rgb(0 0 0 / 0.18)`): the favorite button sitting on a tile photo.
-- **Highlight lift** (`0 1px 2px rgb(0 0 0 / 0.12)`, hover `0 2px 10px rgb(0 0 0 / 0.2)`): the highlight button only.
-- **Map halo** (`0 0 0 3px #fff`): white ring that lifts markers off map tiles.
+- **Paper on cork** (`box-shadow: 0 1px 1px rgb(40 20 5 / 0.18), 0 14px 22px -12px rgb(40 20 5 / 0.55)`): every pinned or taped sheet.
+- **Pin** (`box-shadow: inset -2px -3px 4px rgb(0 0 0 / 0.28), 3px 5px 5px -1px rgb(30 15 5 / 0.45)`): push-pin heads.
+- **Packing tape** (`box-shadow: 0 2px 3px rgb(40 20 5 / 0.28), 0 12px 20px -10px rgb(40 20 5 / 0.55)`): school tape bands, plus a screen-blended gloss overlay.
+- **Frame drop** (`box-shadow: 0 6px 10px -6px rgb(40 20 5 / 0.45)`): the aluminum header onto the page.
+- **Sheet lip** (`box-shadow: 0 -6px 14px -8px rgb(40 20 5 / 0.45)`): the working sheet's top edge over the band.
+- **Popover** (`box-shadow: 0 10px 30px -8px rgb(40 20 5 / 0.35)`): the account menu and similar floating panels.
+- **Hover lift** (`box-shadow: 0 6px 14px -8px rgb(26 20 16 / 0.7)` with a 1px rise): the ink button.
 
 ### Named Rules
-
-**The Line Before Shadow Rule.** Separate with a 1px line or a surface-2 field first; reach for a shadow only when something floats over a photo, a map, or the page.
+**The Soft Shadow Rule.** Shadows are warm brown, blurred, and physically plausible. No hard offset shadows, no colored glows.
 
 ## Shapes
 
-Near-square. Controls, cards, inputs, photos, and panels use a tight 0.3rem corner (Tailwind `rounded-md`); tags, the header school tag, map labels, and pins use 2px so they read as block letters. Fully round is reserved for small, single-purpose objects: active-filter chips, the More filters toggle, count pills, the favorite button, avatars, icon discs, and the listing pin dot. Message bubbles are the one soft form: 14px corners with the sender-side bottom corner pinched to 3px.
-
-The varsity stripe is the signature form: two 4px rules in the secondary color 13px apart, drawn full-width under the browse band. At the foot of the header (non-browse pages) and inside the rent panel head it appears as a single 4px rule. The signed-out landing drops the header stripe so the ink header runs into the ink hero; there the double stripe appears at the foot of each School Ribbon block instead.
+Corners are barely softened, like trimmed paper and cut tape: 3px for tags and tape marks, 4px for cards and the menu, 5px for every control (buttons, inputs, selects, option chips), 6px for listing photos. Pills (full radius) are reserved for the active-filter chips, the avatar, and counts; chat bubbles are 12px with a 4px tail corner toward the sender. Paper sheets are square-cornered. Controls carry a 1.5px border; the landing's flyer fill-in lines are a bare 2px ink underline instead of a box.
 
 ## Components
 
 ### Buttons
-
-Firm, compact, and colored by role.
-
-- **Shape:** gently squared (0.3rem), 600 weight, 40px default height; `active` nudges down 1px.
-- **Primary (default):** school fill, on-school text; hover to school-deep.
-- **Highlight:** highlight fill with its pair text and a faint lift; reserved for Post a listing and Sign up. On the neutral landing it reads white on ink, and the two account calls run large (52px, 16px text, 24px padding).
-- **On School:** transparent with a 55%-opacity on-school border, for secondary actions inside the header; hover adds a 10% white wash.
-- **Outline / Ghost / Destructive / Link:** outline is white with a line-2 border that darkens to ink-3 on hover over surface-2; destructive is a bad-tinted fill with bad text; link uses `school-link` and drops its underline on hover.
-- **Focus:** a 3px school-colored outline, 2px offset, site-wide; inside school-colored regions (`on-school`) the ring switches to the secondary color.
+Firm, flat, and bold (700 weight), with a 1px press-down on active.
+- **Shape:** gently squared (5px), 1.5px border; heights 40px default, 36px small, 48px large.
+- **Primary (`default`):** school fill with on-school text; hovers to school-deep.
+- **Ink:** the board's own black button (Post a listing, Create free account, the landing's flyer actions); hover rises 1px with a warm shadow.
+- **Highlight:** school highlight fill for a celebratory secondary action.
+- **Outline:** white with a strong-rule border; hover darkens the border to Driftwood and fills Oat.
+- **Ghost / Secondary:** Oat on hover or at rest; for low-emphasis actions.
+- **Destructive:** outlined, not filled: white with a translucent red border and red text; hover fills `bad-bg`.
+- **Link:** school-link text, underlined, underline drops on hover.
+- **Focus:** a 3px school-color outline at 2px offset; inside school-colored regions the ring switches to the school secondary.
 
 ### Chips
-
-- **Active filters:** 32px fully round school-filled chips with an X; each is a link that removes that filter; hover to school-deep.
-- **Toggle (More filters):** 40px round outline chip; when expanded, school border on school-tint, with a numeral count pill.
-
-### Tags
-
-Block-letter labels (Big Shoulders 700, 12px caps, 2px corners, min 22px tall). Status tones: neutral (surface-2 with line-2 ring), warning, danger, success from the status pairs. New uses the highlight pair. Long text (a rejection reason) wraps rather than truncating.
+- **Active filters:** 32px pills in school tint with a faint school ring, each with a round remove control that fills school color on hover.
+- **Option chips (forms):** 5px boxes with a 1.5px strong-rule border; checked turns the border school and the fill school tint.
 
 ### Cards / Containers
-
-- **Corner Style:** 0.3rem.
-- **Background:** white, with a 1px line ring rather than a border; footers on surface-2 with a top line.
-- **Shadow Strategy:** none at rest (see Elevation).
-- **Internal Padding:** 20px, 12px for the small size. Card titles are Title SM in caps.
+- **Corner Style:** 4px.
+- **Background:** Paper White, with a 1px Rule ring instead of a shadow; footers sit on Oat.
+- **Internal Padding:** 20px (12px for the small size).
+- **Listing tile:** no box at all: a 4:3 photo (6px corners, slow 1.035 zoom on hover), then price, title, facts, distance and dates, and a compact term timeline.
+- **School cards (/schools, onboarding):** a flat strip of school tape across the top (no gloss, no shadow), then name and city; hover darkens the border and lifts with a soft shadow.
 
 ### Inputs / Fields
-
-- **Style:** 40px, white, 1px line-2 border, 0.3rem corners, ink-3 placeholder; hover border to ink-3.
-- **Focus:** school border plus a 3px school ring at 20%.
-- **Error / Disabled:** destructive border and 20% destructive ring; disabled at 50% opacity.
-- **Labels:** 13px Archivo 600 in ink, above the field.
+- **Style:** 42px, white, 1.5px strong-rule border, 5px corners; hover darkens the border to Driftwood.
+- **Focus:** border turns school color with a 3px translucent school ring.
+- **Native selects:** the same box with a drawn Walnut chevron.
+- **Error / Disabled:** red border and ring; disabled at half opacity.
 
 ### Navigation
+- **Header:** brushed aluminum, 64px, on every page. Left, the push-pin wordmark in Bricolage 800 with a small school-color name tag on wide screens. Right, Hanken 14.5px semibold ink links that brighten on hover; the current page goes extra-bold with a 4px school-color bar along its bottom edge. Post a listing is the ink button; the account avatar is a school-color initials disc.
+- **Footer:** the matching aluminum strip with semibold ink links; hidden on Messages.
+- **Admin:** an ink sidebar of its own; fonts and colors from this system, no board materials.
 
-- **Header:** school-colored 64px bar. Brand is the app name in Big Shoulders 900 caps with the school short name as a small highlight tag. Links are 14px Archivo 500 on-school, a 10% white wash on hover; the current page goes bold with a 4px secondary-color bar along the header's bottom edge. Below 768px the links collapse into a menu.
-- **Footer:** surface-2 band with a top line, the unaffiliated statement left and plain ink links right.
-- **Admin:** neutral theme, sticky left nav, page headers closed by a 2px ink rule.
+### Board Band (signature)
+The top of every working page: a cork strip holding the page title on a pinned paper sheet (tilted -0.6deg from `sm` up), an optional back link and description on the sheet, and an optional pinned note to the side. On school pages a static band of packing tape runs beneath it, repeating the school's short name, city, and campus.
 
-### Listing Tile
+### School Tape (signature)
+On the landing, full-bleed packing tape made of one segment per school (school primary fill, secondary name, on-primary city), angled about -1.4deg. It unrolls on load, then drifts at 100px per second, holding still under hover, focus, or touch; under reduced motion it is a static, wrapping row.
 
-4:3 photo with 0.3rem corners and a slow 1.035 zoom on hover (500ms, expo-out), New tag top-left, favorite top-right; below it the rent numeral with "/ month", the title (underlines on hover), a facts line, distance and dates, and the compact term timeline.
+### Term Timeline and Term Chart
+A twelve-month axis of three four-month blocks. Tiles show a 6px compact bar; the detail page shows a 32px bar with month labels. On the landing's term chart, the host's months are a solid school bar and the guest's are hatched school stripes; the bars grow in and a highlight "Same months" mark stamps on after them.
 
-### Term Timeline
-
-The stay drawn to scale on a shared 12-month axis of three four-month terms (Jan–Apr, May–Aug, Sep–Dec), starting at the term containing the page's earliest move-in so every card compares. Compact: an 8px bar over line-gray segments with caps term labels, the active term in ink. Full (listing page): 32px segments on surface-2 with month ticks and the date range written inside the school bar.
-
-### School Band
-
-The browse page's hero: school field, the short name at Display size, a sub-line naming the campus and city, a count aside right, closed by the full double stripe.
-
-### School Ribbon
-
-The landing's roll call of schools: one solid school-primary block per active school, read from data so it scales to any number of schools, each block dressed with `schoolThemeStyle(theme)`.
-
-- **Block:** 16.5rem × 10rem on phones, 18.75rem × 12rem from 640px, 20px padding on top and sides, separated by 6px gaps that show the ink beneath. Square corners.
-- **Content:** school short name in Big Shoulders 900 caps (2.25rem, 2.75rem from 640px); a 14px line with the city left and "Browse" plus an arrow right (600); the full double varsity stripe in the school secondary at the block's foot, 16px up from the bottom edge.
-- **States:** hover deepens to school-deep (300ms) and nudges the arrow 2px right; focus draws the ring inset (−4px offset) in the school secondary.
-- **Entrance:** on load the blocks rise in from a bottom clip (0.8s, 70ms stagger, starting at 0.75s), and the drift waits 1.6s for them.
-- **Motion:** the row drifts left at 32px/s by moving `scrollLeft`, looping through repeated copies (repeats are hidden from the tab order and accessibility tree). It pauses while hovered, focused, touched, or the tab is hidden, and with a Pause / Play button (36px, white/55% border, on-school treatment) beside the label line; the button also pauses the hero's School Lights. Paused, the row shows a thin white/45% scrollbar so it can be scrolled by hand; playing, the scrollbar is hidden. Under reduced motion it renders as a still auto-fit grid of the same blocks with no Pause button.
-
-### School Lights
-
-The landing hero's atmosphere: one blurred radial glow per active school (up to four), blended with `screen` over ink, drifting on slow 23–31s loops, under a 6% film grain. Each glow takes `schoolGlowColor(theme)`: the primary, or the secondary when the primary is near-black (Michigan navy lights in maize). The glow layer fades in from transparent over the top 7rem so it never cuts a line under the header. The headline's second line is hollow (white stroke, 1.5–2.5px) so the lights show through the letters. The closing band repeats a single glow in the accent school. Glows pause with the ribbon's Pause button and hold still under reduced motion.
-
-### Landing Accent and Reveals
-
-Below the hero, the landing wears one school at a time. The term example carries a row of school chips (each in its own primary, 2px corners, Big Shoulders caps; the pressed chip gets a 2px tint gap and a 2px ink ring plus a secondary-color underline). Choosing one re-themes everything below the hero through `schoolThemeStyle`, with 450–500ms color transitions: the example's tint field, both term bars, the Same months tag (highlight pair), the Leaving / Looking links (`school-link`), the step rules and numerals, the promise checks, and the closing glow. The closing band's account button stays neutral white on ink whatever the accent.
-
-Each content block plays one entrance tied to its meaning, once, when it scrolls in: the two term bars draw toward each other (host from the left, guest from the right, hatched so the two differ by pattern) and then the Same months tag lands; the step rules draw left to right and each numeral fills from a line-2 outline in sequence; the promise rows rise in a short stagger; the closing strip's school segments wipe in. Picking another school replays the bars. Blocks already on screen at load, and every block under reduced motion, render in their finished state.
-
-### Map Pins
-
-Rent pills (rounded 3px, with a pointer) in the school primary, the hovered pin in the highlight pair; clusters are school circles with a 3px white stroke; the campus marker is an ink 2px square with a white halo and a caps label. All colors are read from the page's custom properties.
+### Messages
+Sent bubbles are school color with on-school text; received bubbles are Oat with a Rule border. The messages page uses a slim cork band with a small pinned title.
 
 ## Do's and Don'ts
 
 ### Do:
-
-- **Do** take every school color from its role token; dress single elements with `schoolThemeStyle(theme)`.
-- **Do** put text on a school fill in its `on-*` partner, and check AA for each school.
-- **Do** set headings, tags, and table headers in the Big Shoulders caps treatment, and rent and counts as tabular numerals.
-- **Do** keep corners tight: 0.3rem for controls and surfaces, 2px for tags and map labels.
-- **Do** use the varsity stripe as the one recurring motif: double under the browse band, single at the header foot and the rent panel head.
-- **Do** align every band and section to the shared 80rem container and its gutters.
+- **Do** keep cork, pins, masking tape, and tilt in the board: landing sections and the band at the top of each page.
+- **Do** put everything a visitor operates on the white working sheet, flat and upright.
+- **Do** carry school color on packing tape and on interactive state (primary buttons, active states, avatar, sent messages, term bars).
+- **Do** use the ink button for the board's own actions (Post a listing, Create free account) and the school button for actions on the working sheet.
+- **Do** draw cork with its granule texture and paper with the paper-on-cork shadow.
+- **Do** label sample content as a sample, in a tag.
+- **Do** switch all motion off under reduced motion; the tape becomes a static row.
 
 ### Don't:
-
-- **Don't** hardcode a school's hex, or add logos, seals, wordmarks, or mascots; schools are identified by color and name only.
-- **Don't** use the highlight color as a section background or for ordinary buttons.
-- **Don't** set Archivo in all caps, or set body copy in Big Shoulders.
-- **Don't** add new shadow values; use the vocabulary above.
-- **Don't** ship moving content that cannot be stopped; anything that drifts follows the School Ribbon's rules (pause on hover, focus, touch, hidden tab, and a button; still under reduced motion).
-- **Don't** hide content until a script runs; scroll reveals start from the rendered, visible state and only arm blocks that are still off screen.
+- **Don't** put cork, a pin, or a rotation inside the working sheet.
+- **Don't** paint the header, footer, cork, or paper in school color; the header is aluminum everywhere.
+- **Don't** use a school logo, seal, or mascot.
+- **Don't** use flyer caps or Gochi Hand outside the board.
+- **Don't** use cool grays; take neutrals from the warm ink and line families.
+- **Don't** use hard offset shadows or colored glows.

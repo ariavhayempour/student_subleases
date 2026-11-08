@@ -35,8 +35,11 @@ export function OnboardingForm({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-10" noValidate>
-      <h2 id="home-school-label" className="varsity text-[1.75rem] font-extrabold text-ink">
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-2" noValidate>
+      <h2
+        id="home-school-label"
+        className="font-display text-[22px] leading-tight font-extrabold tracking-[-0.01em] text-ink"
+      >
         Home school
       </h2>
       <div
@@ -50,7 +53,7 @@ export function OnboardingForm({
           <label
             key={school.id}
             style={schoolThemeStyle(school.theme)}
-            className="group relative block cursor-pointer overflow-hidden rounded-md bg-school text-on-school shadow-[0_1px_2px_rgb(0_0_0/0.12)] transition-[transform,box-shadow] duration-300 ease-out-expo hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgb(21_23_28/0.18)] has-[:checked]:shadow-[0_0_0_3px_var(--ink),0_10px_28px_rgb(21_23_28/0.18)] has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink"
+            className="group relative block cursor-pointer overflow-hidden rounded-md border-[1.5px] border-line-2 bg-white transition-[transform,box-shadow,border-color] duration-300 ease-out-expo hover:-translate-y-0.5 hover:border-ink-3 hover:shadow-[0_10px_22px_-12px_rgb(40_20_5/0.45)] has-[:checked]:border-ink has-[:checked]:shadow-[0_0_0_1.5px_var(--ink),0_10px_22px_-12px_rgb(40_20_5/0.45)] has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink"
           >
             <input
               type="radio"
@@ -58,20 +61,23 @@ export function OnboardingForm({
               className="absolute inset-0 z-10 cursor-pointer opacity-0"
               {...register('homeSchoolId')}
             />
-            <span className="flex min-h-28 flex-col px-5 pt-5 md:min-h-44">
-              <span className="varsity pr-10 text-[clamp(2.25rem,3.4vw,2.75rem)] font-black">
-                {school.shortName}
-              </span>
-              <span className="mt-2 text-sm">{school.name}</span>
-              {school.city && <span className="text-sm opacity-90">{school.city}</span>}
-              <span
-                aria-hidden="true"
-                className="absolute top-4 right-4 grid size-7 place-items-center rounded-full border-2 border-on-school/70 group-has-[:checked]:border-transparent group-has-[:checked]:bg-highlight group-has-[:checked]:text-on-highlight"
-              >
-                <Check className="hidden size-4 group-has-[:checked]:block" strokeWidth={3} />
-              </span>
+            <span
+              aria-hidden="true"
+              className="packing-tape flex h-14 items-center bg-school shadow-none after:hidden px-5 font-display text-[22px] font-extrabold tracking-[0.04em] text-school-secondary uppercase"
+            >
+              {school.shortName}
             </span>
-            <span aria-hidden="true" className="varsity-stripe mt-auto mb-3 block" />
+            <span className="flex min-h-24 flex-col px-5 pt-4 pb-5 pr-14 text-ink">
+              <span className="text-[15px] font-bold">{school.name}</span>
+              {school.city && <span className="mt-0.5 text-sm text-ink-2">{school.city}</span>}
+              <span className="mt-0.5 text-sm text-ink-2">Near {school.campusName}</span>
+            </span>
+            <span
+              aria-hidden="true"
+              className="absolute right-4 bottom-5 grid size-7 place-items-center rounded-full border-2 border-line-2 group-has-[:checked]:border-transparent group-has-[:checked]:bg-ink group-has-[:checked]:text-white"
+            >
+              <Check className="hidden size-4 group-has-[:checked]:block" strokeWidth={3} />
+            </span>
           </label>
         ))}
       </div>
@@ -82,7 +88,7 @@ export function OnboardingForm({
       )}
       {errors.root && <p className="mt-3 text-sm font-medium text-bad">{errors.root.message}</p>}
       <div className="mt-8 flex flex-wrap items-center gap-4">
-        <Button type="submit" size="lg" disabled={isSubmitting}>
+        <Button type="submit" variant="ink" size="lg" disabled={isSubmitting}>
           Continue
         </Button>
         <p className="text-sm text-ink-2">You can&apos;t switch schools after this step.</p>

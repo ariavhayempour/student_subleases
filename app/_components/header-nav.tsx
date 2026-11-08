@@ -11,9 +11,9 @@ const LINKS = [
   { href: '/settings', label: 'Settings' },
 ];
 
-// The current page's link gets a bar in the school's second color along the header's bottom edge.
+// Links sit on the aluminum strip; the current page gets a bar in the school color along its bottom edge.
 export const HEADER_LINK =
-  "relative flex items-center gap-1.5 px-3 text-sm font-medium text-on-school no-underline hover:bg-white/10 aria-[current=page]:font-bold aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3 aria-[current=page]:after:bottom-0 aria-[current=page]:after:h-1 aria-[current=page]:after:bg-school-secondary aria-[current=page]:after:content-['']";
+  "relative flex items-center gap-1.5 px-3 text-[14.5px] font-semibold text-ink no-underline hover:bg-white/35 aria-[current=page]:font-extrabold aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3 aria-[current=page]:after:bottom-0 aria-[current=page]:after:h-1 aria-[current=page]:after:bg-school aria-[current=page]:after:content-['']";
 
 export function useIsCurrent(): (href: string) => boolean {
   const pathname = usePathname();

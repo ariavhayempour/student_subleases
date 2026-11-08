@@ -5,9 +5,10 @@ import { withRollback } from '../helpers/db';
 
 // Page modules import Clerk, next/font, and components that only run inside Next.
 vi.mock('next/font/google', () => ({
-  Archivo: () => ({ variable: 'archivo' }),
-  Big_Shoulders: () => ({ variable: 'big-shoulders' }),
+  Bricolage_Grotesque: () => ({ variable: 'bricolage' }),
   Geist_Mono: () => ({ variable: 'geist-mono' }),
+  Gochi_Hand: () => ({ variable: 'gochi-hand' }),
+  Hanken_Grotesk: () => ({ variable: 'hanken' }),
 }));
 vi.mock('@clerk/nextjs', () => ({ ClerkProvider: () => null }));
 vi.mock('@clerk/ui/themes', () => ({ shadcn: {} }));
@@ -32,6 +33,7 @@ describe('canonical URLs', () => {
   });
 
   it.each([
+    ['/schools', () => import('@/app/schools/page')],
     ['/about', () => import('@/app/about/page')],
     ['/terms', () => import('@/app/terms/page')],
     ['/privacy', () => import('@/app/privacy/page')],

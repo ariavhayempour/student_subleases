@@ -33,7 +33,7 @@ import {
 } from '@/lib/validation/search';
 
 const selectClass =
-  'h-10 w-full appearance-none rounded-md border border-line-2 bg-background pr-9 pl-3 text-sm text-ink hover:border-ink-3 focus-visible:border-school focus-visible:ring-3 focus-visible:ring-school/20 focus-visible:outline-none';
+  'h-[42px] w-full cursor-pointer appearance-none rounded-[5px] border-[1.5px] border-line-2 bg-white pr-9 pl-3 text-sm text-ink hover:border-ink-3 focus-visible:border-school focus-visible:ring-3 focus-visible:ring-school/20 focus-visible:outline-none';
 const checkClass = 'size-4 accent-school';
 const GENDER_OPTIONS = ['women', 'men', 'nonbinary_friendly'] as const;
 const BAR_KEYS = ['q', 'sort', 'bounds'];
@@ -125,7 +125,7 @@ export function BrowseFilters({ schoolSlug, filters }: BrowseFiltersProps) {
         </div>
         <div className="flex flex-[1_1_auto] flex-wrap items-center gap-2.5 sm:flex-none">
           <div className="flex min-w-44 flex-1 items-center gap-2">
-            <Label htmlFor="sort" className="shrink-0 font-medium text-ink-2">
+            <Label htmlFor="sort" className="shrink-0 font-semibold text-ink-2">
               Sort by
             </Label>
             <div className="flex-1">
@@ -151,23 +151,23 @@ export function BrowseFilters({ schoolSlug, filters }: BrowseFiltersProps) {
             aria-expanded={detailsOpen}
             aria-controls={panelId}
             onClick={() => setDetailsOpen((open) => !open)}
-            className="inline-flex h-10 items-center gap-2 rounded-full border border-line-2 bg-background px-4 text-sm font-semibold text-ink hover:border-ink-3 aria-expanded:border-school aria-expanded:bg-school-tint"
+            className="inline-flex h-[42px] items-center gap-2 rounded-full border-[1.5px] border-line-2 bg-white px-4 text-sm font-bold text-ink hover:border-ink-3 aria-expanded:border-school aria-expanded:bg-school-tint"
           >
             <SlidersHorizontal aria-hidden="true" className="size-4" />
             More filters
             {detailCount > 0 && (
-              <span className="numeral min-w-5 rounded-full bg-school px-1.5 pt-0.5 text-center text-xs text-on-school">
+              <span className="grid h-[19px] min-w-[19px] place-items-center rounded-full bg-school px-1.5 text-[11.5px] font-extrabold text-on-school tabular-nums">
                 <span className="sr-only">, </span>
                 {detailCount}
                 <span className="sr-only"> active</span>
               </span>
             )}
           </button>
-          <Button id="apply-filters" type="submit">
+          <Button id="apply-filters" type="submit" className="h-[42px] max-sm:flex-1">
             Apply filters
           </Button>
           {hasActiveFilters(filters) && (
-            <Link href={`/${schoolSlug}`} className="text-sm font-semibold text-school-link">
+            <Link href={`/${schoolSlug}`} className="text-sm font-bold text-school-link underline">
               Clear filters
             </Link>
           )}
@@ -176,7 +176,7 @@ export function BrowseFilters({ schoolSlug, filters }: BrowseFiltersProps) {
       <div
         id={panelId}
         hidden={!detailsOpen}
-        className="mt-3 max-h-[60dvh] overflow-y-auto rounded-md border border-line bg-surface-2 p-4 sm:p-5"
+        className="mt-3 max-h-[60dvh] overflow-y-auto rounded-md border border-line bg-surface-2 p-4 sm:px-5 sm:py-[18px]"
       >
         <div className="grid gap-x-5 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-1.5">
@@ -324,7 +324,7 @@ export function BrowseFilters({ schoolSlug, filters }: BrowseFiltersProps) {
             </label>
           </div>
           <fieldset className="border-t border-line pt-4 sm:col-span-2 lg:col-span-4">
-            <legend className="float-left mb-3 w-full text-[13px] font-semibold text-ink">
+            <legend className="float-left mb-3 w-full text-[13px] font-bold text-ink">
               Amenities
             </legend>
             <div className="clear-left grid gap-2.5 text-sm text-ink sm:grid-cols-3 lg:grid-cols-5">

@@ -61,7 +61,10 @@ export default async function AdminReportPage({ params }: AdminReportPageProps) 
 
       {report.status === 'resolved' && (
         <section aria-labelledby="resolution-heading" className="space-y-1.5 text-sm">
-          <h2 id="resolution-heading" className="varsity text-[1.375rem] font-extrabold">
+          <h2
+            id="resolution-heading"
+            className="font-display text-[1.375rem] font-extrabold tracking-[-0.015em]"
+          >
             Resolution
           </h2>
           <p className="text-ink-2">
@@ -78,7 +81,10 @@ export default async function AdminReportPage({ params }: AdminReportPageProps) 
       )}
 
       <section aria-labelledby="target-heading" className="space-y-3">
-        <h2 id="target-heading" className="varsity text-[1.375rem] font-extrabold">
+        <h2
+          id="target-heading"
+          className="font-display text-[1.375rem] font-extrabold tracking-[-0.015em]"
+        >
           Reported {REPORT_TARGET_LABELS[report.targetType].toLowerCase()}
         </h2>
         {target.type === 'listing' &&

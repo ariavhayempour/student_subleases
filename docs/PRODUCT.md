@@ -22,21 +22,21 @@ the host's first reply, listings marked taken.
 ## Positioning
 
 Student-to-student only, per school: each school is its own market with its own campus, map, and
-colors. Every listing is reviewed by a person before it goes public. Free, with no payments or
-escrow.
+colors. New listings go live after a short review period. Free, with no payments or escrow.
 
 ## Operating Context
 
-- Launch schools: UW–Madison (`uw-madison`), University of Michigan (`umich`), UCLA (`ucla`). New
-  schools are data, not code.
+- Launch schools: UW–Madison (`uw-madison`), University of Michigan (`umich`), UCLA (`ucla`).
+  Added since: San Diego State University (`sdsu`, 2026-11-07). New schools are data, not code.
 - Desktop-first (≥1024px) and usable down to phone width, because shared links open on phones.
   Admin is desktop-only.
 - Students pick a home school once, at account creation. When signed in they land on that school's
   browse page and see its colors; students cannot switch schools (other schools' browse pages
   redirect to their own) and can post only to it. Admins switch schools freely with the dropdown on
   the browse page. Non-admins have one live listing at a time; admins have no limit.
-- Signed-out visitors start at the landing page on `/`, which explains the platform, names the open
-  schools, and points to sign-up. They can browse any school's pages view-only; saving, messaging,
+- Signed-out visitors start at the landing page on `/` (the Union Board: a corkboard with a pinned
+  flyer, a school search, and the schools on printed packing tape), which explains the platform,
+  names the open schools, and points to sign-up. They can browse any school's pages view-only; saving, messaging,
   and posting need an account. (Owner decision 2026-11-05.)
 
 ## Capabilities and Constraints
@@ -48,12 +48,16 @@ escrow.
   conversation with the host), map pin, distance to campus, host display name ("First L.") and
   join date, favorite, report, Message host.
 - Create / edit listing: school, address (Mapbox autocomplete), details, photos. Every new listing
-  goes to admin review, usually live within 24 hours. Max 2 active listings per student.
+  goes to the admin review queue and goes live after a short review period. Max 2 active listings
+  per student.
 - In-app messaging with live delivery, an unread count, block and report, and a pinned safety
   notice.
 - Favorites, my listings with status and review badges, settings (blocked users, delete account,
   Clerk profile).
 - Admin: overview, listing review queue, reports, users, conversations, audit log, trial stats.
+- Contact form (Web3Forms, hCaptcha) with a required topic: General question, Report a bug,
+  Account or sign-in help, or Add my school (asks for the school's name). `/contact?topic=<value>`
+  preselects one.
 - Never: social sign-in, school-email verification badges, payments, reviews or ratings, a mobile
   app.
 
@@ -62,8 +66,11 @@ escrow.
 - The name is "Student Subleases", read from the `APP_NAME` constant, and must not reference any
   one school.
 - Each school's pages use that school's colors: UW–Madison red and white, Michigan maize and blue,
-  UCLA blue and gold. The primary color carries structure (header, key accents) and the secondary
-  color (maize, gold) appears as deliberate highlights.
+  UCLA blue and gold, SDSU red and black. The header is the board's aluminum strip on every page;
+  a school's primary color carries its printed packing-tape band, buttons, active states, and the
+  avatar, and the secondary color (maize, gold) appears as deliberate highlights.
+- Never promise that a person reviews listings or a turnaround time. Say "new listings go live after
+  a short review period". (Owner decision 2026-11-07, to limit liability.)
 - Not affiliated with any university, and the site says so. School colors only; no university
   logos, wordmarks, seals, or mascots.
 - Voice: plain, friendly, student-to-student; professional and trustworthy, never hype.

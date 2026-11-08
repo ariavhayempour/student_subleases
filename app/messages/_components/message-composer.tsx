@@ -46,7 +46,7 @@ export function MessageComposer<T>({ onSubmit, onSent }: MessageComposerProps<T>
 
   return (
     <form
-      className="border-t border-line px-5 pt-3.5 pb-4"
+      className="border-t border-line px-3 pt-3 pb-3.5 sm:px-5 sm:pt-3.5 sm:pb-4"
       onSubmit={(event) => {
         event.preventDefault();
         submit();
@@ -76,12 +76,12 @@ export function MessageComposer<T>({ onSubmit, onSent }: MessageComposerProps<T>
             }
           }}
           placeholder="Write a message"
-          className="max-h-40 min-h-12 flex-1 resize-none rounded-md border border-line-2 bg-background px-3 py-2.5 text-[15px] text-ink placeholder:text-ink-3 hover:border-ink-3 focus-visible:border-school focus-visible:ring-3 focus-visible:ring-school/20 focus-visible:outline-none disabled:opacity-60"
+          className="max-h-40 min-h-12 min-w-0 flex-1 resize-none rounded-[5px] border-[1.5px] border-line-2 bg-white px-3 py-2.5 text-[15px] text-ink placeholder:text-ink-3 hover:border-ink-3 focus-visible:border-school focus-visible:ring-3 focus-visible:ring-school/20 focus-visible:outline-none disabled:opacity-60"
         />
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex h-12 items-center gap-2 rounded-md bg-school px-5 text-sm font-semibold text-on-school transition-colors hover:bg-school-deep disabled:opacity-60"
+          className="inline-flex h-12 shrink-0 items-center gap-2 rounded-[5px] bg-school px-4 text-[14.5px] font-bold text-on-school transition-colors hover:bg-school-deep disabled:opacity-60 sm:px-5"
         >
           <SendHorizontal aria-hidden="true" className="size-4" />
           Send

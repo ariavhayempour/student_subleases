@@ -1,16 +1,23 @@
-import { ArrowRight, Check } from 'lucide-react';
+import {
+  ArrowRight,
+  BanknoteX,
+  CalendarClock,
+  DoorClosed,
+  GraduationCap,
+  Plus,
+} from 'lucide-react';
 import type { Metadata } from 'next';
 import type { CSSProperties } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { LandingAccent } from '@/app/_components/landing-accent';
+import { LandingPreview } from '@/app/_components/landing-preview';
 import { LandingReveal } from '@/app/_components/landing-reveal';
-import { SchoolRibbon } from '@/app/_components/school-ribbon';
+import { LandingSearch } from '@/app/_components/landing-search';
+import { SchoolTape } from '@/app/_components/school-tape';
 import { TermMatch } from '@/app/_components/term-match';
-import { buttonVariants } from '@/components/ui/button';
 import { APP_NAME } from '@/lib/app-config';
-import { NEUTRAL_THEME, schoolGlowColor, schoolThemeStyle } from '@/lib/school-theme';
-import { cn } from '@/lib/utils';
+import { upcomingTerms } from '@/lib/terms';
 import { getActor } from '@/server/auth/get-actor';
 import { listActiveSchools } from '@/server/services/schools';
 import { getOnboardingState } from '@/server/services/users';
@@ -18,51 +25,64 @@ import { getOnboardingState } from '@/server/services/users';
 export const metadata: Metadata = {
   title: { absolute: `${APP_NAME}: student subleases near campus` },
   description:
-    'Students sublease their own apartments, houses, and rooms to other students. Every listing reviewed, always free.',
+    'Students sublease their own apartments, houses, and rooms to other students. Always free.',
   alternates: { canonical: '/' },
 };
 
-const STEPS = [
+const RULES = [
   {
-    title: 'Create an account',
-    body: 'A username or email and a password. Free, and it takes a minute.',
-  },
-  {
-    title: 'Pick your home school',
-    body: 'Chosen once. You’ll see that school’s listings, map, and colors.',
-  },
-  {
-    title: 'Browse or post',
-    body: 'Save listings, message hosts, or post your own place for review.',
-  },
-];
-
-const PROMISES = [
-  {
+    icon: GraduationCap,
     term: 'Students only',
     detail: 'Hosts are students subleasing their own place. No landlords or property managers.',
   },
   {
-    term: 'Every listing reviewed',
-    detail: 'A person checks each listing before it goes live, usually within 24 hours.',
+    icon: CalendarClock,
+    term: 'A short review period',
+    detail: 'New listings go live after a short review period, not the moment they’re posted.',
   },
   {
+    icon: BanknoteX,
     term: 'Free, no payments',
     detail:
-      'Posting and browsing cost nothing. The site never handles money; you arrange that with the host.',
+      'Posting and browsing cost nothing. The site never handles money; you arrange rent with the host.',
   },
   {
+    icon: DoorClosed,
     term: 'Unit number kept private',
     detail:
       'Listings show the street. The unit only shows to students in a conversation with the host.',
   },
 ];
 
-const ctaLarge = 'group h-13 gap-2.5 px-6 text-base';
-const ctaArrow =
-  'size-4 transition-transform duration-200 ease-out-expo group-hover:translate-x-[3px]';
-// The hero lights one glow per school, up to this many.
-const MAX_LIGHTS = 4;
+const FAQ = [
+  {
+    q: 'Is it really free?',
+    a: 'Yes. Posting, browsing, and messaging cost nothing. The site never takes payments or fees.',
+  },
+  {
+    q: 'Who can post a place?',
+    a: 'Students subleasing their own apartment, house, or room near their school. Landlords and property managers can’t post.',
+  },
+  {
+    q: 'When does my listing go live?',
+    a: 'New listings appear after a short review period. You can see your listing’s status under My listings.',
+  },
+  {
+    q: 'Is my address public?',
+    a: 'The street shows on the listing and the map. Your unit number only shows to students who are in a conversation with you.',
+  },
+  {
+    q: 'How do I pay rent?',
+    a: 'You and the host arrange it directly. The site never handles money, so never send money or a deposit before you’ve seen the place in person.',
+  },
+  {
+    q: 'Can I look at other schools?',
+    a: 'Yes. Without an account you can browse any school’s listings. When you sign up you pick one home school, once; saving, messaging, and posting happen there.',
+  },
+];
+
+const sectionHead = 'paper inline-block max-w-[760px] px-5 pt-6 pb-6 sm:px-8 sm:pt-7';
+const display = 'board-display text-[clamp(2.2rem,4.4vw,3.6rem)] text-balance';
 
 export default async function HomePage() {
   const actor = await getActor();
@@ -72,198 +92,262 @@ export default async function HomePage() {
     if (state.homeSchoolSlug) redirect(`/${state.homeSchoolSlug}`);
   }
   const schools = await listActiveSchools();
+  const terms = upcomingTerms(new Date());
+  const previewSchool = schools.find((school) => school.slug === 'umich') ?? schools[0];
 
   return (
     <main className="flex-1">
       <section
-        data-lights=""
-        className="on-school relative isolate flex min-h-[min(calc(100svh-4rem),58rem)] flex-col overflow-hidden bg-ink pt-14 text-white selection:bg-white selection:text-ink sm:pt-16"
+        aria-labelledby="hero-title"
+        className="cork relative overflow-hidden pt-6 pb-7 sm:pt-[30px] sm:pb-14"
       >
-        <div aria-hidden className="landing-lights">
-          {schools.slice(0, MAX_LIGHTS).map((school) => (
-            <span
-              key={school.slug}
-              className="landing-glow"
-              style={{ '--glow': schoolGlowColor(school.theme) } as CSSProperties}
-            />
-          ))}
-        </div>
-        <div aria-hidden className="landing-grain" />
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h1 className="varsity max-w-[19ch] text-[clamp(3.25rem,min(9.5vw,calc(40svh-14rem)),8.5rem)] leading-[0.88] font-black">
-            <span className="landing-line">
-              <span>Sublet near campus, </span>
-            </span>
-            <span className="landing-line">
-              <span className="landing-hollow">student to student.</span>
-            </span>
-          </h1>
-          <div className="landing-enter">
-            <p className="mt-6 max-w-[48ch] text-[17px] leading-relaxed text-white/88 sm:text-[19px]">
-              Sublease your place while you’re away, or find one for the summer, a semester, or an
-              internship. Students only, every listing reviewed by a person, always free.
+        <div className="mx-auto grid max-w-310 items-center gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,770px)_300px] lg:justify-between lg:gap-12 lg:px-8 xl:grid-cols-[minmax(0,770px)_340px]">
+          <div
+            className="paper pin-on px-5 pt-[34px] pb-6 sm:px-[46px] sm:pt-[42px] sm:pb-[34px] lg:[--r:-1deg]"
+            style={{ '--d': 0 } as CSSProperties}
+          >
+            <span aria-hidden="true" className="pin pin-red top-3.5 left-1/2" />
+            <h1 id="hero-title" className="flyer-caps text-[clamp(2.7rem,6.3vw,5.8rem)]">
+              Sublet near campus.
+            </h1>
+            <p className="mt-3.5 max-w-[30ch] font-display text-[clamp(1.2rem,1.9vw,1.65rem)] leading-tight font-bold tracking-[-0.01em]">
+              Leaving for a term? Post your place. Coming for one? Find a place.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-              <Link
-                href="/sign-up"
-                className={cn(buttonVariants({ variant: 'highlight' }), ctaLarge)}
-              >
-                Create your free account
-                <ArrowRight aria-hidden className={ctaArrow} />
-              </Link>
-              <a
-                href="#schools"
-                className="font-semibold text-white underline underline-offset-4 hover:no-underline"
-              >
-                or look around first
-              </a>
-            </div>
+            <p className="mt-3 max-w-[60ch] text-[16px] text-ink-2 sm:text-[17px]">
+              Students sublease their own apartments, houses, and rooms to other students.{' '}
+              <strong className="text-ink">Students only, always free.</strong> New listings go live
+              after a short review period.
+            </p>
+            <LandingSearch
+              schools={schools.map(({ slug, shortName }) => ({ slug, shortName }))}
+              terms={terms}
+              defaultTermKey={terms[1]?.key ?? ''}
+            />
           </div>
+          <SampleListing />
         </div>
-        <div className="mt-auto pt-10">
-          <SchoolRibbon id="schools" schools={schools} />
+        <SchoolTape
+          id="schools"
+          schools={schools}
+          className="relative z-[3] mt-10 -ml-[6vw] w-[112vw] -rotate-[2.2deg] sm:mt-12 sm:-ml-[4vw] sm:w-[108vw] sm:-rotate-[1.4deg]"
+        />
+      </section>
+
+      <section aria-labelledby="who-title" className="cork pt-10 pb-18 sm:pb-26">
+        <div className="mx-auto max-w-310 px-4 sm:px-6 lg:px-8">
+          <div data-reveal="" className={`${sectionHead} [--r:-0.6deg] max-sm:[--r:0deg]`}>
+            <span aria-hidden="true" className="pin pin-yellow top-2.5 left-3.5" />
+            <span aria-hidden="true" className="pin pin-green top-2.5 right-3.5" />
+            <h2 id="who-title" className={display}>
+              Every term, someone leaves and someone arrives.
+            </h2>
+            <p className="mt-3 max-w-[58ch] text-[16px] text-ink-2 sm:text-[17px]">
+              Internships, study abroad, co-ops, early graduations. The same months one student is
+              gone, another needs a place near campus.
+            </p>
+          </div>
+          <TermMatch schools={schools} />
         </div>
       </section>
 
-      <LandingAccent schools={schools}>
-        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-          <h2 className="varsity max-w-[18ch] text-[clamp(2.5rem,5vw,4rem)] font-black text-ink">
-            Away for a term? Someone needs your place.
-          </h2>
-          <p className="mt-5 max-w-[62ch] text-[17px] leading-relaxed text-ink-2">
-            Students leave for internships, study abroad, and summers at home, and other students
-            arrive for those same months. {APP_NAME} puts the two in touch, one school at a time.
-          </p>
-          <TermMatch />
-          <div className="mt-14 grid gap-12 md:grid-cols-2 md:gap-0">
-            <div className="md:border-r md:border-line md:pr-12">
-              <h3 className="varsity text-[1.75rem] font-extrabold text-ink">Leaving</h3>
-              <p className="mt-3 max-w-[48ch] text-[16px] leading-relaxed text-ink-2">
-                Post your apartment, house, or room with photos, dates, and rent. Once a person
-                reviews it, students at your school can find it and message you here.
+      {previewSchool && (
+        <section aria-labelledby="preview-title" className="cork pt-6 pb-18 sm:pb-26">
+          <div className="mx-auto max-w-310 px-4 sm:px-6 lg:px-8">
+            <div data-reveal="" className={`${sectionHead} [--r:0.7deg] max-sm:[--r:0deg]`}>
+              <span aria-hidden="true" className="pin pin-red top-2.5 left-3.5" />
+              <span aria-hidden="true" className="pin pin-blue top-2.5 right-3.5" />
+              <h2 id="preview-title" className={display}>
+                Like the board, but online.
+              </h2>
+              <p className="mt-3 max-w-[58ch] text-[16px] text-ink-2 sm:text-[17px]">
+                Every listing has photos, dates, rent, and how far it is from campus. Filter to the
+                months you need, see every place on a map, and message the host right here.
               </p>
-              <Link
-                href="/sign-up"
-                className="group mt-5 inline-flex items-center gap-1.5 font-semibold text-school-link no-underline transition-colors duration-500"
-              >
-                Post your place
-                <ArrowRight aria-hidden className={ctaArrow} />
-              </Link>
             </div>
-            <div className="md:pl-12">
-              <h3 className="varsity text-[1.75rem] font-extrabold text-ink">Looking</h3>
-              <p className="mt-3 max-w-[48ch] text-[16px] leading-relaxed text-ink-2">
-                Filter by rent, dates, bedrooms, and distance to campus, see every place on a map,
-                and message the host without leaving the site.
-              </p>
-              <a
-                href="#schools"
-                className="group mt-5 inline-flex items-center gap-1.5 font-semibold text-school-link no-underline transition-colors duration-500"
-              >
-                Browse a school
-                <ArrowRight aria-hidden className={ctaArrow} />
-              </a>
-            </div>
+            <LandingPreview school={previewSchool} />
           </div>
         </section>
+      )}
 
-        <section className="border-y border-line bg-surface-2">
-          <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
-            <h2 className="varsity text-[clamp(2.5rem,5vw,4rem)] font-black text-ink">
-              Three steps to your school.
+      <div aria-hidden="true" className="alu h-[18px] border-y border-alu-edge" />
+
+      <section aria-labelledby="rules-title" className="wall py-18 text-white sm:py-26">
+        <div className="relative z-[1] mx-auto grid max-w-310 items-start gap-9 px-4 sm:px-6 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-8">
+          <div>
+            <h2 id="rules-title" className={display}>
+              Board rules.
             </h2>
-            <ol data-reveal="" className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
-              {STEPS.map((step, index) => (
-                <li
-                  key={step.title}
-                  className="landing-step"
-                  style={{ '--i': index } as CSSProperties}
+            <p className="mt-[18px] max-w-[40ch] text-[18px] text-white/90">
+              The same four rules hold at every school, for every listing.
+            </p>
+          </div>
+          <article
+            data-reveal=""
+            aria-labelledby="notice-title"
+            className="paper px-[18px] pt-7 pb-5 text-ink sm:px-[42px] sm:pt-10 sm:pb-[30px] sm:[--r:0.8deg]"
+          >
+            <span aria-hidden="true" className="masking-tape -top-3 -left-4 [--tr:-32deg]" />
+            <span aria-hidden="true" className="masking-tape -top-3 -right-4 [--tr:30deg]" />
+            <span aria-hidden="true" className="masking-tape -bottom-2.5 -left-4 [--tr:28deg]" />
+            <span aria-hidden="true" className="masking-tape -right-4 -bottom-2.5 [--tr:-30deg]" />
+            <div className="flex flex-col gap-1 border-b-[3px] border-ink pb-3.5 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+              <h3 id="notice-title" className="flyer-caps text-[30px]">
+                Posting policy
+              </h3>
+              <span className="text-[13px] font-bold text-ink-2 sm:text-right">
+                {APP_NAME}
+                <br className="max-sm:hidden" /> Applies at every school
+              </span>
+            </div>
+            <dl>
+              {RULES.map(({ icon: Icon, term, detail }) => (
+                <div
+                  key={term}
+                  className="grid grid-cols-[30px_1fr] gap-x-3.5 gap-y-1 border-b border-line py-[18px] sm:grid-cols-[34px_190px_1fr]"
                 >
-                  <span aria-hidden className="landing-step-numeral numeral block text-[3.75rem]">
-                    {index + 1}
-                  </span>
-                  <h3 className="varsity mt-3 text-[1.375rem] font-extrabold tracking-[0.02em] text-ink">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 max-w-[36ch] text-[15px] text-ink-2">{step.body}</p>
-                </li>
+                  <Icon aria-hidden="true" className="size-[26px]" strokeWidth={1.75} />
+                  <dt className="font-display text-[19px] leading-tight font-extrabold">{term}</dt>
+                  <dd className="text-[15.5px] text-ink-2 max-sm:col-start-2">{detail}</dd>
+                </div>
               ))}
-            </ol>
-          </div>
-        </section>
-
-        <section className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[5fr_7fr] lg:gap-16 lg:px-8 lg:py-28">
-          <h2 className="varsity max-w-[12ch] text-[clamp(2.5rem,5vw,4rem)] font-black text-ink lg:sticky lg:top-24 lg:self-start">
-            Students only, checked by people.
-          </h2>
-          <dl data-reveal="" className="divide-y divide-line border-y border-line">
-            {PROMISES.map((promise, index) => (
-              <div
-                key={promise.term}
-                className="landing-promise grid gap-2 py-6 sm:grid-cols-[14rem_1fr] sm:gap-8"
-                style={{ '--i': index } as CSSProperties}
-              >
-                <dt className="varsity flex items-start gap-2.5 text-[1.375rem] font-extrabold tracking-[0.02em] text-ink">
-                  <span
-                    aria-hidden
-                    className="mt-px grid size-5 shrink-0 place-items-center rounded-[2px] bg-school text-on-school transition-colors duration-500"
-                  >
-                    <Check className="size-3.5" strokeWidth={3} />
-                  </span>
-                  {promise.term}
-                </dt>
-                <dd className="max-w-[52ch] text-[16px] leading-relaxed text-ink-2">
-                  {promise.detail}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-
-        <section
-          data-reveal=""
-          className="on-school relative isolate overflow-hidden bg-ink text-white selection:bg-white selection:text-ink"
-        >
-          <div aria-hidden className="landing-guard flex h-3.5">
-            {schools.map((school, index) => (
-              <span
-                key={school.slug}
-                className="flex-1 border-b-4 border-school-secondary bg-school"
-                style={{ ...schoolThemeStyle(school.theme), '--i': index } as CSSProperties}
-              />
-            ))}
-          </div>
-          <div aria-hidden className="landing-glow landing-glow-closing" />
-          <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-16 sm:px-6 md:flex-row md:items-end md:justify-between lg:px-8 lg:py-20">
-            <h2 className="varsity max-w-[14ch] text-[clamp(2.5rem,5vw,4rem)] font-black">
-              Find a place, or fill yours.
-            </h2>
-            {/* The account call stays white on ink whichever school dresses the band. */}
-            <div
-              className="flex flex-col items-start gap-4 md:items-end"
-              style={schoolThemeStyle(NEUTRAL_THEME)}
-            >
-              <Link
-                href="/sign-up"
-                className={cn(buttonVariants({ variant: 'highlight' }), ctaLarge)}
-              >
-                Create your free account
-                <ArrowRight aria-hidden className={ctaArrow} />
-              </Link>
-              <p className="text-sm text-white/80">
-                Don’t see your school?{' '}
-                <Link
-                  href="/contact"
-                  className="font-semibold text-white underline underline-offset-4 hover:no-underline"
-                >
-                  Tell us
+            </dl>
+            <div className="mt-4 flex justify-between gap-3 text-[13px] font-semibold text-ink-2">
+              <span>
+                Questions?{' '}
+                <Link href="/contact" className="text-ink underline">
+                  Contact us
                 </Link>
-              </p>
+              </span>
+              <span>Posted for all students</span>
             </div>
+          </article>
+        </div>
+      </section>
+
+      <section
+        id="faq"
+        aria-labelledby="faq-title"
+        className="scroll-mt-6 bg-[#fbfaf7] py-18 sm:py-26"
+      >
+        <div className="mx-auto grid max-w-310 gap-9 px-4 sm:px-6 lg:grid-cols-[4fr_8fr] lg:gap-16 lg:px-8">
+          <div>
+            <h2 id="faq-title" className={display}>
+              Questions, answered.
+            </h2>
+            <p className="mt-[18px] max-w-[32ch] text-[17px] text-ink-2">
+              Something else?{' '}
+              <Link href="/contact" className="text-ink underline">
+                Send us a note
+              </Link>{' '}
+              and we’ll get back to you.
+            </p>
+            <p
+              aria-hidden="true"
+              className="paper scribble mt-[30px] w-[190px] bg-sticky! px-3.5 pt-3.5 pb-3 text-[22px] leading-[1.05] [--r:-3deg] max-lg:hidden"
+            >
+              Parents ask these too
+            </p>
           </div>
-        </section>
-      </LandingAccent>
+          <div className="border-t-2 border-ink">
+            {FAQ.map((item, index) => (
+              <details key={item.q} open={index === 0} className="group border-b border-line">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-0.5 py-5 font-display text-[18px] font-bold tracking-[-0.01em] hover:underline hover:underline-offset-4 sm:text-[20px] [&::-webkit-details-marker]:hidden">
+                  {item.q}
+                  <Plus
+                    aria-hidden="true"
+                    className="size-[18px] shrink-0 transition-transform duration-300 ease-out-expo group-open:rotate-45"
+                  />
+                </summary>
+                <p className="mb-[22px] max-w-[64ch] text-[16.5px] text-ink-2">{item.a}</p>
+              </details>
+            ))}
+            <details className="group border-b border-line">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-0.5 py-5 font-display text-[18px] font-bold tracking-[-0.01em] hover:underline hover:underline-offset-4 sm:text-[20px] [&::-webkit-details-marker]:hidden">
+                My school isn’t listed. Can you add it?
+                <Plus
+                  aria-hidden="true"
+                  className="size-[18px] shrink-0 transition-transform duration-300 ease-out-expo group-open:rotate-45"
+                />
+              </summary>
+              <p className="mb-[22px] max-w-[64ch] text-[16.5px] text-ink-2">
+                Tell us which school on the{' '}
+                <Link href="/contact?topic=add-school" className="text-ink underline">
+                  contact page
+                </Link>
+                .
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="close-title" className="cork px-4 py-18 sm:py-28">
+        <div
+          data-reveal=""
+          className="paper mx-auto w-full max-w-[700px] px-5 pt-[38px] pb-8 text-center sm:px-12 sm:pt-[46px] sm:pb-10 sm:[--r:0.8deg]"
+        >
+          <span aria-hidden="true" className="pin pin-red top-3.5 left-1/2" />
+          <h2 id="close-title" className="flyer-caps text-[clamp(2.4rem,5vw,4rem)] leading-[0.92]">
+            Find a place, or fill yours.
+          </h2>
+          <p className="mx-auto mt-3.5 max-w-[44ch] text-[17px] text-ink-2">
+            Free for students. New listings go live after a short review period.
+          </p>
+          <Link
+            href="/sign-up"
+            className="group mt-6 inline-flex h-[52px] items-center justify-center gap-2.5 rounded-[5px] border-[1.5px] border-ink bg-ink px-[22px] text-[17px] font-bold text-white no-underline transition-[transform,box-shadow] duration-200 ease-out-expo hover:-translate-y-px hover:shadow-[0_8px_16px_-8px_rgb(26_20_16/0.6)]"
+          >
+            Create your free account
+            <ArrowRight
+              aria-hidden="true"
+              className="size-[18px] transition-transform duration-200 ease-out-expo group-hover:translate-x-[3px]"
+            />
+          </Link>
+          <p className="mt-4 text-[15px]">
+            Don’t see your school?{' '}
+            <Link href="/contact?topic=add-school" className="font-bold text-ink underline">
+              Tell us
+            </Link>
+          </p>
+        </div>
+      </section>
       <LandingReveal />
     </main>
+  );
+}
+
+// A pinned print of one sample listing beside the hero flyer.
+function SampleListing() {
+  return (
+    <article
+      aria-label="Sample listing"
+      className="paper pin-on mx-auto w-full max-w-[330px] px-3.5 pt-3.5 pb-[18px] [--r:1.5deg] lg:mr-[22px] lg:[--r:2.5deg]"
+      style={{ '--d': 2 } as CSSProperties}
+    >
+      <span aria-hidden="true" className="pin pin-blue -top-1.5 left-1/2" />
+      <div className="relative h-[200px] overflow-hidden bg-surface-2 lg:h-[180px] xl:h-[214px]">
+        <Image
+          src="/landing/sample-living-room.webp"
+          alt="Sunny living room with plants and a gray sofa"
+          fill
+          sizes="330px"
+          priority
+          className="object-cover"
+        />
+        <span className="absolute top-2.5 left-2.5 rounded-[3px] bg-ink px-2 py-1 text-[11.5px] font-bold tracking-[0.08em] text-white uppercase">
+          Sample listing
+        </span>
+      </div>
+      <h3 className="mt-3 font-display text-[19px] leading-tight font-bold tracking-[-0.01em]">
+        Private room near campus
+      </h3>
+      <p className="font-display text-[26px] font-extrabold tracking-[-0.02em]">
+        $725<small className="font-sans text-[14px] font-semibold text-ink-2"> /mo</small>
+      </p>
+      <ul className="mt-2 grid gap-[3px] text-[14px] text-ink-2">
+        <li>Jun 1 – Aug 15</li>
+        <li>0.6 mi to campus · furnished</li>
+      </ul>
+    </article>
   );
 }
