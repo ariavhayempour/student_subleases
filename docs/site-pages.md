@@ -162,7 +162,8 @@ Copy states only product facts; there are no counts or testimonials, and every s
 person is labeled as a sample. Listings are never described as reviewed by a person or by a
 deadline; the wording is "new listings go live after a short review period".
 
-**Search** (`app/_components/landing-search.tsx`): a school select (every active school) and a
+**Search** (`app/_components/landing-search.tsx`): a required school select (every active school,
+starting on a disabled **Select school** placeholder) and a
 **When** select listing the current term and the two after it from `upcomingTerms()` in
 `lib/terms.ts` (Spring Jan 1–Apr 30, Summer May 1–Aug 31, Fall Sep 1–Dec 31), plus **Any dates**.
 It defaults to the next term. **Post or find a place** opens `/{school}?from=…&to=…`; the browse

@@ -25,7 +25,7 @@ describe('schools service', () => {
     for (const { slug } of rows) expect(isReservedSlug(slug)).toBe(false);
   });
 
-  it('lists only active schools, sorted by name', () =>
+  it('lists only active schools, UW–Madison first, then by name', () =>
     withRollback(async () => {
       await createSchool({ name: 'AAA Closed University', isActive: false });
       const list = await listActiveSchools();
@@ -33,8 +33,9 @@ describe('schools service', () => {
         expect.arrayContaining(['uw-madison', 'umich', 'ucla', 'sdsu']),
       );
       expect(list.some((school) => school.name === 'AAA Closed University')).toBe(false);
-      const names = list.map((school) => school.name);
-      expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
+      expect(list[0]?.slug).toBe('uw-madison');
+      const rest = list.slice(1).map((school) => school.name);
+      expect(rest).toEqual([...rest].sort((a, b) => a.localeCompare(b)));
     }));
 
   it('finds an active school by slug', async () => {

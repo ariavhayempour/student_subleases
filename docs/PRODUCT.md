@@ -28,6 +28,8 @@ colors. New listings go live after a short review period. Free, with no payments
 
 - Launch schools: UW–Madison (`uw-madison`), University of Michigan (`umich`), UCLA (`ucla`).
   Added since: San Diego State University (`sdsu`, 2026-11-07). New schools are data, not code.
+  Every school list sorts by `schools.sort_order` (lower first, default 100), then name;
+  UW–Madison is pinned first at 0.
 - Desktop-first (≥1024px) and usable down to phone width, because shared links open on phones.
   Admin is desktop-only.
 - Students pick a home school once, at account creation. When signed in they land on that school's

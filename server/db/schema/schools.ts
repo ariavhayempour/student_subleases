@@ -15,5 +15,7 @@ export const schools = pgTable('schools', {
   timezone: text('timezone').notNull(),
   warnRadiusKm: smallint('warn_radius_km').notNull().default(25),
   isActive: boolean('is_active').notNull().default(true),
+  // Lower sorts first in every school list; ties fall back to name.
+  sortOrder: smallint('sort_order').notNull().default(100),
   createdAt: createdAt(),
 }).enableRLS();
