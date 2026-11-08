@@ -249,8 +249,8 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="border-t-2 border-ink">
-            {FAQ.map((item, index) => (
-              <details key={item.q} open={index === 0} className="group border-b border-line">
+            {FAQ.map((item) => (
+              <details key={item.q} className="group border-b border-line">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-0.5 py-5 font-display text-[18px] font-bold tracking-[-0.01em] hover:underline hover:underline-offset-4 sm:text-[20px] [&::-webkit-details-marker]:hidden">
                   {item.q}
                   <Plus
