@@ -280,13 +280,14 @@ export default async function ListingPage({ params }: ListingPageProps) {
                   reporting are only available for listings at your own school.
                 </p>
               )}
-              {(canInteract || listing.viewer === 'owner') && (
+              {(visitor || listing.viewer === 'owner') && (
                 <div className="mt-[18px] grid gap-2">
-                  {canInteract && (
+                  {visitor && (
                     <MessageHostButton
                       listingId={listing.id}
                       conversationId={listing.conversationId}
                       signedIn={actor.kind === 'user'}
+                      crossSchool={listing.crossSchool}
                     />
                   )}
                   {canInteract && (

@@ -28,7 +28,8 @@
 - **Cross-school viewing:** a signed-in non-admin can open another school's public listing
   (`ListingDetail.crossSchool`) but cannot message, save, or report it; `startConversation`,
   `setFavorite` (saving only) and `createReport` (listings) throw `Forbidden`
-  (`server/services/school-lock.ts`). The page hides those actions and says why.
+  (`server/services/school-lock.ts`). The page shows a disabled, locked "Message host", hides Save
+  and Report, and says why.
 - **Rate limits:** 5 new listings per rolling 24 h per non-admin (listings table); 20 signed photo upload URLs
   per user per clock hour, counted when issued (`RATE_LIMITS.photoUploads`; see `rate-limits.md`).
 - **Limit-check order:** photo processing (sharp) is the expensive step, and raw uploads survive a
@@ -106,5 +107,6 @@ The host's name and join date (`host`) are returned only to the owner, admins, a
 students whose home school is the listing's school; signed-out and other-school visitors get
 `host: null` and see a locked "Student host" placeholder.
 The listing page shows **Message host** to visitors (owners and admins see no button); it becomes
-**View conversation** when `conversationId` is set. `/messages`, `/messages/new?listing=<id>`, and
+**View conversation** when `conversationId` is set. Signed out it is a locked "Sign in to message
+host"; another school's student gets it disabled with a lock. `/messages`, `/messages/new?listing=<id>`, and
 `/messages/[id]` are described in `messaging.md`.
