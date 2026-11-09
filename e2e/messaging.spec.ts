@@ -43,8 +43,27 @@ test('signed-out visitors are sent to sign up when messaging a host', async ({ p
   await seedBrowseListings([{ title: 'Zebracorn message studio', rentCents: 90_000 }]);
   await page.goto('/uw-madison?q=zebracorn');
   await page.getByRole('link', { name: /Zebracorn message studio/ }).click();
-  await page.getByRole('button', { name: 'Message host' }).click();
+  await page.getByRole('button', { name: 'Sign in to message host' }).click();
   await expect(page).toHaveURL(/\/sign-up/);
+});
+
+test('a student from another school sees a locked, disabled Message host', async ({ page }) => {
+  test.skip(!testUserEmail && !process.env.CI, 'E2E Clerk user not set');
+  await setupClerkTestingToken({ page });
+  renterId = await signInTestUser(page, testUserEmail);
+  await page.goto('/');
+  await prepareHost(renterId, 'umich');
+  try {
+    const [listingId] = await seedBrowseListings([
+      { title: 'Zebracorn other-school studio', rentCents: 90_000 },
+    ]);
+    await page.goto(`/uw-madison/listings/${listingId}`);
+    await expect(page.getByRole('button', { name: 'Message host' })).toBeDisabled();
+    await expect(page.getByRole('link', { name: 'Message host' })).toHaveCount(0);
+    await expect(page.getByText('This listing is at another school.')).toBeVisible();
+  } finally {
+    await prepareHost(renterId, 'uw-madison');
+  }
 });
 
 test('a renter messages a host, they reply live, and the host blocks the renter', async ({

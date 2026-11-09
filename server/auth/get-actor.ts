@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/nextjs';
 import { cache } from 'react';
 import { clientIp } from '@/lib/client-ip';
 import type { Actor } from '@/server/services/actor';
-import { ensureUser, getUserById } from '@/server/services/users';
+import { ensureUser, getUserById, syncAdminFlag } from '@/server/services/users';
 
 const anonymous = async (): Promise<Actor> => ({
   kind: 'anonymous',
@@ -15,7 +15,9 @@ const anonymous = async (): Promise<Actor> => ({
 export const getActor = cache(async (): Promise<Actor> => {
   const { userId, sessionClaims } = await auth();
   if (!userId) return anonymous();
-  if (!(await getUserById(userId))) {
+  const isAdmin = sessionClaims?.metadata?.role === 'admin';
+  const row = await getUserById(userId);
+  if (!row) {
     // A deleted user's token stays valid briefly; treat them as signed out instead of recreating a row.
     const clerkUser = await currentUser().catch((error: unknown) => {
       if (isClerkAPIResponseError(error) && error.status === 404) return null;
@@ -26,8 +28,11 @@ export const getActor = cache(async (): Promise<Actor> => {
       id: userId,
       firstName: clerkUser.firstName ?? null,
       lastName: clerkUser.lastName ?? null,
+      isAdmin,
     });
+  } else if (row.isAdmin !== isAdmin) {
+    await syncAdminFlag(userId, isAdmin);
   }
   Sentry.setUser({ id: userId });
-  return { kind: 'user', userId, isAdmin: sessionClaims?.metadata?.role === 'admin' };
+  return { kind: 'user', userId, isAdmin };
 });

@@ -11,7 +11,7 @@ import { deleteProcessedPhotos } from './photos';
 
 export type UserRow = typeof users.$inferSelect;
 export type ClerkUserNames = { firstName: string | null; lastName: string | null };
-export type ClerkUserSnapshot = ClerkUserNames & { id: string; banned: boolean };
+export type ClerkUserSnapshot = ClerkUserNames & { id: string; banned: boolean; isAdmin: boolean };
 
 const nameColumns = ({ firstName, lastName }: ClerkUserNames) => ({
   firstName: firstName?.trim() || null,
@@ -26,6 +26,7 @@ export async function syncUserFromClerk(
   const values = {
     ...nameColumns(snapshot),
     status: snapshot.banned ? 'banned' : 'active',
+    isAdmin: snapshot.isAdmin,
   } as const;
   await executor
     .insert(users)
@@ -52,14 +53,21 @@ export async function getUserById(userId: string): Promise<UserRow | null> {
 }
 
 // Covers webhook delay and local development, where the Clerk webhook may never arrive.
-export async function ensureUser(snapshot: ClerkUserNames & { id: string }): Promise<UserRow> {
+export async function ensureUser(
+  snapshot: ClerkUserNames & { id: string; isAdmin: boolean },
+): Promise<UserRow> {
   await db()
     .insert(users)
-    .values({ id: snapshot.id, ...nameColumns(snapshot) })
+    .values({ id: snapshot.id, ...nameColumns(snapshot), isAdmin: snapshot.isAdmin })
     .onConflictDoNothing();
   const row = await getUserById(snapshot.id);
   if (!row) throw new Error(`Could not create user ${snapshot.id}`);
   return row;
+}
+
+// The session claim is fresher than a missed webhook, so the request path corrects the mirror.
+export async function syncAdminFlag(userId: string, isAdmin: boolean): Promise<void> {
+  await db().update(users).set({ isAdmin, updatedAt: new Date() }).where(eq(users.id, userId));
 }
 
 export async function getOnboardingState(

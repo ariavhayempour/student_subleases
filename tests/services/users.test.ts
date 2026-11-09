@@ -11,6 +11,7 @@ import {
   ensureUser,
   getOnboardingState,
   getUserById,
+  syncAdminFlag,
   syncUserFromClerk,
 } from '@/server/services/users';
 import { withRollback } from '../helpers/db';
@@ -35,18 +36,21 @@ describe('Clerk sync', () => {
         firstName: 'Ada',
         lastName: 'Lovelace',
         banned: false,
+        isAdmin: false,
       });
       await syncUserFromClerk({
         id: 'user_sync',
         firstName: 'Ada',
         lastName: 'Lovelace',
         banned: false,
+        isAdmin: false,
       });
       await syncUserFromClerk({
         id: 'user_sync',
         firstName: 'Ada',
         lastName: 'Byron',
         banned: true,
+        isAdmin: false,
       });
       const row = await getUserById('user_sync');
       expect(row).toMatchObject({
@@ -57,6 +61,22 @@ describe('Clerk sync', () => {
       });
     }));
 
+  it('mirrors the Clerk admin role and clears it on demotion', () =>
+    withRollback(async () => {
+      const snapshot = { id: 'user_role', firstName: 'Ada', lastName: 'L', banned: false };
+      await syncUserFromClerk({ ...snapshot, isAdmin: true });
+      expect(await getUserById('user_role')).toMatchObject({ isAdmin: true });
+      await syncUserFromClerk({ ...snapshot, isAdmin: false });
+      expect(await getUserById('user_role')).toMatchObject({ isAdmin: false });
+    }));
+
+  it('syncAdminFlag updates only the admin flag', () =>
+    withRollback(async () => {
+      const user = await createUser({ status: 'banned' });
+      await syncAdminFlag(user.id, true);
+      expect(await getUserById(user.id)).toMatchObject({ isAdmin: true, status: 'banned' });
+    }));
+
   it('does not overwrite the home school on update', () =>
     withRollback(async () => {
       const user = await createUser({ homeSchoolId: await seededId('ucla') });
@@ -65,6 +85,7 @@ describe('Clerk sync', () => {
         firstName: 'Grace',
         lastName: 'Hopper',
         banned: false,
+        isAdmin: false,
       });
       expect(await getUserById(user.id)).toMatchObject({
         displayName: 'Grace H.',
@@ -84,7 +105,12 @@ describe('Clerk sync', () => {
 describe('ensureUser', () => {
   it('creates a missing user and leaves an existing one untouched', () =>
     withRollback(async () => {
-      const created = await ensureUser({ id: 'user_lazy', firstName: 'Alan', lastName: 'Turing' });
+      const created = await ensureUser({
+        id: 'user_lazy',
+        firstName: 'Alan',
+        lastName: 'Turing',
+        isAdmin: false,
+      });
       expect(created).toMatchObject({
         id: 'user_lazy',
         firstName: 'Alan',
@@ -92,10 +118,20 @@ describe('ensureUser', () => {
         displayName: 'Alan T.',
         homeSchoolId: null,
         status: 'active',
+        isAdmin: false,
       });
       const existing = await createUser({ displayName: 'Grace H.' });
-      const again = await ensureUser({ id: existing.id, firstName: 'Ignored', lastName: 'Name' });
-      expect(again).toMatchObject({ firstName: existing.firstName, displayName: 'Grace H.' });
+      const again = await ensureUser({
+        id: existing.id,
+        firstName: 'Ignored',
+        lastName: 'Name',
+        isAdmin: true,
+      });
+      expect(again).toMatchObject({
+        firstName: existing.firstName,
+        displayName: 'Grace H.',
+        isAdmin: false,
+      });
     }));
 });
 
