@@ -7,6 +7,9 @@ import { users } from '@/server/db/schema';
 import { getActor } from '@/server/auth/get-actor';
 import { ANONYMOUS, requireAdmin, requireUser, type UserActor } from '@/server/services/actor';
 import { Forbidden } from '@/server/services/errors';
+import { getUserById } from '@/server/services/users';
+import { withRollback } from '../helpers/db';
+import { createUser } from '../helpers/fixtures';
 
 vi.mock('@clerk/nextjs/server', () => ({ auth: vi.fn(), currentUser: vi.fn() }));
 vi.mock('next/headers', () => ({
@@ -61,6 +64,24 @@ describe('getActor for a deleted user', () => {
     await expect(getActor()).resolves.toEqual(signedOut);
     expect(await userRow()).toHaveLength(0);
   });
+});
+
+describe('getActor admin mirror', () => {
+  it('corrects users.is_admin from the session claim', () =>
+    withRollback(async () => {
+      const user = await createUser();
+      const signIn = (role?: string) =>
+        vi.mocked(auth).mockResolvedValue({
+          userId: user.id,
+          sessionClaims: { metadata: role ? { role } : {} },
+        } as unknown as Awaited<ReturnType<typeof auth>>);
+      signIn('admin');
+      await expect(getActor()).resolves.toMatchObject({ isAdmin: true });
+      expect((await getUserById(user.id))?.isAdmin).toBe(true);
+      signIn();
+      await expect(getActor()).resolves.toMatchObject({ isAdmin: false });
+      expect((await getUserById(user.id))?.isAdmin).toBe(false);
+    }));
 });
 
 describe('getActor when signed out', () => {

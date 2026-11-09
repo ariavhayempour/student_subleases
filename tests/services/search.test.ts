@@ -361,6 +361,33 @@ describe('searchListings sorting and paging', () => {
       ]);
     }));
 
+  it('pins admin-owned listings above all others under every sort', () =>
+    withRollback(async () => {
+      const owner = await createUser();
+      const admin = await createUser({ isAdmin: true });
+      const school = await createSchool();
+      const other = await createSchool();
+      await insertListing(owner.id, school.id, {
+        ...live,
+        title: 'Student cheap',
+        rentCents: 50_000,
+        createdAt: new Date('2026-03-01T00:00:00Z'),
+      });
+      await insertListing(admin.id, school.id, {
+        ...live,
+        title: 'Admin pricey',
+        rentCents: 200_000,
+        createdAt: new Date('2026-01-01T00:00:00Z'),
+      });
+      await insertListing(admin.id, other.id, { ...live, title: 'Admin elsewhere' });
+      for (const sort of ['newest', 'rent_asc', 'rent_desc', 'distance'] as const) {
+        expect(await titles(school.id, { sort })).toEqual(['Admin pricey', 'Student cheap']);
+      }
+      expect(await titles(school.id, { q: 'cheap' })).toEqual(['Student cheap']);
+      const pins = await searchMapPins(ANONYMOUS, { schoolId: school.id, filters: {} });
+      expect(pins.map((pin) => pin.title)).toEqual(['Admin pricey', 'Student cheap']);
+    }));
+
   it('pages by PAGE_SIZE with a total and the next offset', () =>
     withRollback(async () => {
       const owner = await createUser();

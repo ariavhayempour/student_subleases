@@ -90,6 +90,8 @@ are no usernames, and email lives only in Clerk. `first_name`/`last_name` are nu
 allows users without names, e.g. created from the dashboard). `display_name` is never edited
 directly: `syncUserFromClerk` and `ensureUser` derive it with `formatDisplayName`
 (`lib/display-name.ts`) as "First L." so the full last name is never shown to other users.
+`is_admin` (migration `0015_admin-flag.sql`) mirrors Clerk's `publicMetadata.role = "admin"` so
+search can pin admin listings; it is never used for authorization (see `auth.md`).
 
 ## Rate-limit counters
 

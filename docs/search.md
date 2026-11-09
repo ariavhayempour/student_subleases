@@ -20,12 +20,16 @@ in the school band (`school-switcher.tsx`) that navigates to `/<slug>` with filt
   offered and is the default only when `q` is set. A chosen sort that is not the default is kept;
   an untouched one (or one equal to the default) follows the default, so adding a keyword switches
   it to "Best match".
+- **Admin listings are pinned.** Listings whose owner is an admin (`users.is_admin`) sort above
+  all others under every sort, in both results and map pins (`users.is_admin desc` first); the
+  chosen sort orders each group. Filters still apply to them. Only the listing's own school
+  shows it, like any listing.
 - The filter form is uncontrolled and remounts (`key={query}`) on every new search, which is how
   "Clear filters" and Back/Forward show the fields for the URL. To keep keyboard focus across
   that remount, the form remembers the `id` of the focused control when it navigates and focuses
   the same control after mounting.
 - **Load more** calls `loadMoreListingsAction` with the canonical query string and an offset. It
-  is not in the URL. Offsets use a stable tiebreak (`created_at desc, id`); the client skips
+  is not in the URL. Offsets use a stable order (admin pin, the sort, then `created_at desc, id`); the client skips
   cards it already shows. A rejected action (network failure) shows the same inline error as a
   failed result. It goes through `loadMoreListings`, limited to 20 per minute per user, or 120 per
   minute per IP when signed out (see `rate-limits.md`); the server-rendered first page is never

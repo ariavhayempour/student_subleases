@@ -17,6 +17,10 @@
   session token claim `metadata.role`, which requires the session-token customization
   `{ "metadata": "{{user.public_metadata}}" }` in every Clerk instance. A role change takes
   effect on the user's next token refresh (≤ 60 s).
+- **Admin mirror:** `users.is_admin` copies the role for search ordering only; permission checks
+  always use the session claim. `syncUserFromClerk` sets it (webhook and ban/unban), `ensureUser`
+  sets it on lazy creation, and `getActor` calls `syncAdminFlag` when the claim and the row
+  disagree, so local dev (no webhooks) and a missed webhook both converge on the next request.
 - **Clerk Backend API wrapper** (`server/clerk/users.ts`, the only module that calls the Backend
   API for users): `getClerkAccount` (null on 404), `setClerkBan`, `deleteClerkAccount` (a 404
   counts as success). Called by `admin-users` (the admin flag on the user page, ban/unban) and

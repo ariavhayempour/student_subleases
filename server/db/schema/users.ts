@@ -1,4 +1,4 @@
-import { pgTable, text, uuid } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, text, uuid } from 'drizzle-orm/pg-core';
 import { createdAt, updatedAt } from './columns';
 import { userStatus } from './enums';
 import { schools } from './schools';
@@ -11,6 +11,8 @@ export const users = pgTable('users', {
   displayName: text('display_name').notNull(),
   homeSchoolId: uuid('home_school_id').references(() => schools.id),
   status: userStatus('status').notNull().default('active'),
+  // Mirrors Clerk publicMetadata.role so search can pin admin listings; Clerk stays the authority.
+  isAdmin: boolean('is_admin').notNull().default(false),
   updatedAt: updatedAt(),
   createdAt: createdAt(),
 }).enableRLS();

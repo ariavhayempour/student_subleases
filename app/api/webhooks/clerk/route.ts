@@ -21,6 +21,7 @@ export async function POST(request: NextRequest): Promise<Response> {
         firstName: event.data.first_name,
         lastName: event.data.last_name,
         banned: event.data.banned,
+        isAdmin: event.data.public_metadata?.role === 'admin',
       });
       break;
     case 'user.deleted':

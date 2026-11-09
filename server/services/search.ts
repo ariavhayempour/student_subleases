@@ -91,22 +91,26 @@ function whereClause(actor: Actor, schoolId: string, filters: SearchFilters): SQ
   );
 }
 
+// Admin-owned listings come first under every sort.
+const pinned = desc(users.isAdmin);
+const tiebreak = [desc(listings.createdAt), asc(listings.id)];
+
 function orderBy(filters: SearchFilters): SQL[] {
-  const tiebreak = [desc(listings.createdAt), asc(listings.id)];
   switch (effectiveSort(filters)) {
     case 'rent_asc':
-      return [asc(listings.rentCents), ...tiebreak];
+      return [pinned, asc(listings.rentCents), ...tiebreak];
     case 'rent_desc':
-      return [desc(listings.rentCents), ...tiebreak];
+      return [pinned, desc(listings.rentCents), ...tiebreak];
     case 'distance':
-      return [asc(distance), ...tiebreak];
+      return [pinned, asc(distance), ...tiebreak];
     case 'relevance':
       return [
+        pinned,
         desc(sql`ts_rank(${listings.searchVector}, ${tsQuery(filters.q ?? '')})`),
         ...tiebreak,
       ];
     case 'newest':
-      return tiebreak;
+      return [pinned, ...tiebreak];
   }
 }
 
@@ -163,7 +167,7 @@ export async function searchMapPins(
     .innerJoin(users, eq(users.id, listings.ownerId))
     .leftJoin(listingPhotos, coverJoin)
     .where(whereClause(actor, schoolId, filters))
-    .orderBy(desc(listings.createdAt), asc(listings.id))
+    .orderBy(pinned, ...tiebreak)
     .limit(MAX_MAP_PINS);
   return rows.map(({ coverPath, ...pin }) => ({
     ...pin,
