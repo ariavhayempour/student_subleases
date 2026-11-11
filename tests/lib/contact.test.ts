@@ -60,6 +60,15 @@ describe('contactSchema', () => {
     ).toBe('Ohio State');
   });
 
+  it('accepts 150 words and rejects 151', () => {
+    const words = (n: number) => Array.from({ length: n }, () => 'word').join(' \n ');
+    expect(contactSchema.safeParse({ ...message, message: words(150) }).success).toBe(true);
+    const result = contactSchema.safeParse({ ...message, message: words(151) });
+    expect(result.error?.flatten().fieldErrors.message).toEqual([
+      'Messages can be up to 150 words',
+    ]);
+  });
+
   it('rejects a message over 5,000 characters', () => {
     const result = contactSchema.safeParse({ ...message, message: 'a'.repeat(5001) });
     expect(result.success).toBe(false);

@@ -2,8 +2,15 @@ import { z } from 'zod';
 
 export const CONTACT_NAME_MAX_LENGTH = 100;
 export const CONTACT_MESSAGE_MIN_LENGTH = 10;
+export const CONTACT_MESSAGE_MAX_WORDS = 150;
+// Character backstop so one giant space-free "word" can't slip past the word limit.
 export const CONTACT_MESSAGE_MAX_LENGTH = 5000;
 export const CONTACT_SCHOOL_MAX_LENGTH = 120;
+
+export function countWords(text: string): number {
+  const trimmed = text.trim();
+  return trimmed === '' ? 0 : trimmed.split(/\s+/).length;
+}
 
 export const CONTACT_TOPICS = [
   { value: 'general', label: 'General question' },
@@ -41,7 +48,10 @@ export const contactSchema = z
       .string()
       .trim()
       .min(CONTACT_MESSAGE_MIN_LENGTH, 'Write at least 10 characters')
-      .max(CONTACT_MESSAGE_MAX_LENGTH, 'Messages can be up to 5,000 characters'),
+      .max(CONTACT_MESSAGE_MAX_LENGTH, 'Messages can be up to 5,000 characters')
+      .refine((text) => countWords(text) <= CONTACT_MESSAGE_MAX_WORDS, {
+        error: 'Messages can be up to 150 words',
+      }),
   })
   .superRefine((value, ctx) => {
     if (value.topic === 'add-school' && value.school.length === 0) {

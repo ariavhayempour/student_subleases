@@ -72,7 +72,10 @@ access key. No server code, dependency, or environment variable is involved.
   (`parseContactTopic`). Reports about a specific listing, message, or user still belong in the
   Report option on that item, and the page says so.
 - **Validation:** `lib/validation/contact.ts` (topic, school name when adding a school, name 1–100,
-  email, message 10–5,000; all trimmed), used by the form through `zodResolver`.
+  email, message at least 10 characters and at most 150 words, with a 5,000-character backstop;
+  all trimmed), used by the form through `zodResolver`. Words are whitespace-separated runs
+  (`countWords`); the counter under the message shows `n / 150 words` and turns red past the
+  limit. Over the limit: "Messages can be up to 150 words".
 - **Payload:** `access_key`, `h-captcha-response`, a `subject` that starts with the topic label
   (`Report a bug: new message from the … contact form`), `from_name` naming `APP_NAME`, the `topic`
   label, `school` (only for Add my school), and the visitor's `name`, `email` (Web3Forms uses it as

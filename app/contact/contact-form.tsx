@@ -19,10 +19,12 @@ import { submitContactMessage } from '@/lib/contact';
 import { cooldownRemaining, recordContactSent } from '@/lib/contact-cooldown';
 import {
   CONTACT_MESSAGE_MAX_LENGTH,
+  CONTACT_MESSAGE_MAX_WORDS,
   CONTACT_NAME_MAX_LENGTH,
   CONTACT_SCHOOL_MAX_LENGTH,
   CONTACT_TOPICS,
   contactSchema,
+  countWords,
   DEFAULT_CONTACT_TOPIC,
   type ContactInput,
   type ContactMessage,
@@ -92,7 +94,7 @@ export function ContactForm({
     defaultValues: { topic: defaultTopic, school: '', name: '', email: '', message: '' },
   });
   const topic = useWatch({ control, name: 'topic' });
-  const messageLength = useWatch({ control, name: 'message' })?.length ?? 0;
+  const messageWords = countWords(useWatch({ control, name: 'message' }) ?? '');
 
   async function onSubmit(values: ContactMessage) {
     // Honeypot: only bots fill the hidden field, so pretend success without sending.
@@ -270,9 +272,13 @@ export function ContactForm({
           ) : (
             <span />
           )}
-          <span id="contact-message-count" className="shrink-0 text-[12px] text-ink-2 tabular-nums">
-            {messageLength.toLocaleString('en-US')} /{' '}
-            {CONTACT_MESSAGE_MAX_LENGTH.toLocaleString('en-US')}
+          <span
+            id="contact-message-count"
+            className={`shrink-0 text-[12px] tabular-nums ${
+              messageWords > CONTACT_MESSAGE_MAX_WORDS ? 'font-bold text-bad' : 'text-ink-2'
+            }`}
+          >
+            {messageWords} / {CONTACT_MESSAGE_MAX_WORDS} words
           </span>
         </div>
       </div>
